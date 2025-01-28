@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="295.0" prefWidth="538.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein2.Controlers.ControlerAlumnos">
+   <children>
+      <Label alignment="CENTER" prefHeight="81.0" prefWidth="601.0" text="Añade un alumno" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="52.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="165.0" text="Introduce su dni:" textAlignment="CENTER" />
+            <TextField fx:id="txt_dni" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="256.0" promptText="Escribe el dni" />
+         </children>
+      </HBox>
+      <HBox prefHeight="55.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="167.0" text="Introduce su nombre:" textAlignment="CENTER" />
+            <TextField fx:id="txt_nombre" alignment="TOP_LEFT" prefHeight="24.0" prefWidth="255.0" promptText="Escribe el nombre" />
+         </children>
+      </HBox>
+      <HBox prefHeight="52.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="170.0" text="Introduce su primer apellido" textAlignment="CENTER" />
+            <TextField fx:id="txt_ape1" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="Escribe el primer apellido" />
+         </children>
+      </HBox>
+      <HBox prefHeight="52.0" prefWidth="600.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="170.0" text="Introduce su segundo apellido" textAlignment="CENTER" />
+            <TextField fx:id="txt_ape2" alignment="TOP_LEFT" prefHeight="19.0" prefWidth="255.0" promptText="Escribe el segundo apellido" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="75.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#guardarAlumno" prefHeight="40.0" prefWidth="191.0" text="Guardar" />
+            <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="189.0" text="Cancelar" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
