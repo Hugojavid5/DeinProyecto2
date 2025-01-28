@@ -1,7 +1,5 @@
 package org.hugo.dein.proyectodein2.Dao;
 
-
-
 import org.hugo.dein.proyectodein2.Modelos.ModeloGestionPrestamo;
 import org.hugo.dein.proyectodein2.Modelos.ModeloHistorico;
 
