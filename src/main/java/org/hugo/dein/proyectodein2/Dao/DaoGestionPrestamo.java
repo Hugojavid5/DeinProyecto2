@@ -15,6 +15,12 @@ public class DaoGestionPrestamo {
 
     // Alta de un préstamo
     public boolean agregarPrestamo(ModeloGestionPrestamo prestamo) {
+        // Verificar si el libro ya está prestado
+        if (libroYaPrestado(prestamo.getCodigoLibro())) {
+            System.err.println("Error: El libro ya está prestado.");
+            return false;  // No se puede agregar el préstamo
+        }
+
         String sql = "INSERT INTO Prestamo (dni_alumno, codigo_libro, fecha_prestamo, fecha_devolucion) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, prestamo.getDniAlumno()); // Asignar el DNI del alumno
@@ -24,6 +30,22 @@ public class DaoGestionPrestamo {
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al agregar el préstamo: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // Metodo para comprobar si el libro ya está prestado
+    private boolean libroYaPrestado(int codigoLibro) {
+        String sql = "SELECT COUNT(*) FROM Prestamo WHERE codigo_libro = ? AND fecha_devolucion IS NULL";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, codigoLibro);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Si el conteo es mayor a 0, el libro está prestado
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al comprobar si el libro está prestado: " + e.getMessage());
         }
         return false;
     }
