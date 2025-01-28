@@ -1,26 +1,27 @@
 package org.hugo.dein.proyectodein2.App;
 
-import org.hugo.dein.proyectodein2.BBDD.ConexionBBDD;
-import java.sql.Connection;
-import java.sql.SQLException;
-public class AppBiblioteca {
-        public static void main(String[] args) {
-            try {
-                // Intentamos establecer la conexión
-                ConexionBBDD conexionBBDD = new ConexionBBDD();
-                Connection connection = conexionBBDD.getConnection();
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
-                // Verificamos si la conexión es válida
-                if (connection != null && !connection.isClosed()) {
-                    System.out.println("Conexión exitosa a la base de datos.");
-                } else {
-                    System.out.println("Error en la conexión a la base de datos.");
-                }
+public class AppBiblioteca extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Cargar el archivo FXML con la ruta correcta
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/biblioGeneral.fxml"));
 
-                // Cerramos la conexión después de verificar
-                conexionBBDD.closeConnection();
-            } catch (SQLException e) {
-                System.err.println("Error al conectar con la base de datos: " + e.getMessage());
-            }
-        }
+        // Si está en el mismo paquete, la ruta sería algo como "/nombreDelArchivo.fxml"
+        AnchorPane root = loader.load();
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Biblioteca");
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
