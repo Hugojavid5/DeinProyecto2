@@ -15,12 +15,12 @@ public class DaoGestionPrestamo {
 
     // Alta de un préstamo
     public boolean agregarPrestamo(ModeloGestionPrestamo prestamo) {
-        String sql = "INSERT INTO Prestamo (codigo_libro, id_alumno, fecha_prestamo, fecha_devolucion) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Prestamo (dni_alumno, codigo_libro, fecha_prestamo, fecha_devolucion) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, prestamo.getCodigoLibro());
-            ps.setInt(2, prestamo.getIdAlumno());
-            ps.setDate(3, Date.valueOf(prestamo.getFechaPrestamo()));
-            ps.setDate(4, Date.valueOf(prestamo.getFechaDevolucion()));
+            ps.setString(1, prestamo.getDniAlumno()); // Asignar el DNI del alumno
+            ps.setInt(2, prestamo.getCodigoLibro());
+            ps.setDate(3, Date.valueOf(prestamo.getFechaPrestamo())); // Convertir LocalDate a Date
+            ps.setDate(4, prestamo.getFechaDevolucion() != null ? Date.valueOf(prestamo.getFechaDevolucion()) : null); // Si la fecha de devolución es nula, asignar null
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al agregar el préstamo: " + e.getMessage());
@@ -30,17 +30,17 @@ public class DaoGestionPrestamo {
 
     // Consulta de un préstamo por ID
     public ModeloGestionPrestamo buscarPrestamoPorId(int id) {
-        String sql = "SELECT * FROM Prestamo WHERE id = ?";
+        String sql = "SELECT * FROM Prestamo WHERE id_prestamo = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new ModeloGestionPrestamo(
-                            rs.getInt("id"),
+                            rs.getInt("id_prestamo"),
+                            rs.getString("dni_alumno"), // Leer el DNI del alumno
                             rs.getInt("codigo_libro"),
-                            rs.getInt("id_alumno"),
                             rs.getDate("fecha_prestamo").toLocalDate(),
-                            rs.getDate("fecha_devolucion").toLocalDate()
+                            rs.getDate("fecha_devolucion") != null ? rs.getDate("fecha_devolucion").toLocalDate() : null // Manejo de fechaDevolucion nula
                     );
                 }
             }
@@ -58,11 +58,11 @@ public class DaoGestionPrestamo {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 prestamos.add(new ModeloGestionPrestamo(
-                        rs.getInt("id"),
+                        rs.getInt("id_prestamo"),
+                        rs.getString("dni_alumno"), // Leer el DNI del alumno
                         rs.getInt("codigo_libro"),
-                        rs.getInt("id_alumno"),
                         rs.getDate("fecha_prestamo").toLocalDate(),
-                        rs.getDate("fecha_devolucion").toLocalDate()
+                        rs.getDate("fecha_devolucion") != null ? rs.getDate("fecha_devolucion").toLocalDate() : null // Manejo de fechaDevolucion nula
                 ));
             }
         } catch (SQLException e) {
@@ -71,20 +71,20 @@ public class DaoGestionPrestamo {
         return prestamos;
     }
 
-    // Listar préstamos por alumno
-    public List<ModeloGestionPrestamo> listarPrestamosPorAlumno(int idAlumno) {
+    // Listar préstamos por alumno (por DNI)
+    public List<ModeloGestionPrestamo> listarPrestamosPorAlumno(String dniAlumno) {
         List<ModeloGestionPrestamo> prestamos = new ArrayList<>();
-        String sql = "SELECT * FROM Prestamo WHERE id_alumno = ?";
+        String sql = "SELECT * FROM Prestamo WHERE dni_alumno = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, idAlumno);
+            ps.setString(1, dniAlumno);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     prestamos.add(new ModeloGestionPrestamo(
-                            rs.getInt("id"),
+                            rs.getInt("id_prestamo"),
+                            rs.getString("dni_alumno"), // Leer el DNI del alumno
                             rs.getInt("codigo_libro"),
-                            rs.getInt("id_alumno"),
                             rs.getDate("fecha_prestamo").toLocalDate(),
-                            rs.getDate("fecha_devolucion").toLocalDate()
+                            rs.getDate("fecha_devolucion") != null ? rs.getDate("fecha_devolucion").toLocalDate() : null // Manejo de fechaDevolucion nula
                     ));
                 }
             }

@@ -1,12 +1,11 @@
 package org.hugo.dein.proyectodein2.Modelos;
 
-
 public class ModeloLibro {
     private int codigo;
     private String titulo;
     private String autor;
     private String editorial;
-    private String estado;
+    private String estado; // Puede ser Nuevo, Usado nuevo, Usado seminuevo, Usado estropeado, Restaurado
     private boolean baja;
 
     // Constructor completo
@@ -19,7 +18,7 @@ public class ModeloLibro {
         this.baja = baja;
     }
 
-    // Constructor para nuevos libros (sin código)
+    // Constructor sin código (para nuevos libros)
     public ModeloLibro(String titulo, String autor, String editorial, String estado, boolean baja) {
         this.titulo = titulo;
         this.autor = autor;

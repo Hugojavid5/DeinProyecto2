@@ -5,5 +5,6 @@ module org.hugo.dein.proyectodein2 {
 
 
     opens org.hugo.dein.proyectodein2 to javafx.fxml;
-    exports org.hugo.dein.proyectodein2;
+    opens org.hugo.dein.proyectodein2.Modelos to javafx.base;
+
 }

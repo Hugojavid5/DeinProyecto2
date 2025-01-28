@@ -1,37 +1,46 @@
 package org.hugo.dein.proyectodein2.Modelos;
+
 import java.time.LocalDate;
 
 public class ModeloGestionPrestamo {
-    private int id;
-    private int codigoLibro;
-    private int idAlumno;
-    private LocalDate fechaPrestamo;
-    private LocalDate fechaDevolucion;
+    private int idPrestamo; // Corresponde al campo id_prestamo
+    private String dniAlumno; // Corresponde al campo dni_alumno
+    private int codigoLibro; // Corresponde al campo codigo_libro
+    private LocalDate fechaPrestamo; // Corresponde al campo fecha_prestamo
+    private LocalDate fechaDevolucion; // Corresponde al campo fecha_devolucion
 
     // Constructor completo
-    public ModeloGestionPrestamo(int id, int codigoLibro, int idAlumno, LocalDate fechaPrestamo, LocalDate fechaDevolucion) {
-        this.id = id;
+    public ModeloGestionPrestamo(int idPrestamo, String dniAlumno, int codigoLibro, LocalDate fechaPrestamo, LocalDate fechaDevolucion) {
+        this.idPrestamo = idPrestamo;
+        this.dniAlumno = dniAlumno;
         this.codigoLibro = codigoLibro;
-        this.idAlumno = idAlumno;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
     }
 
     // Constructor para nuevos préstamos (sin ID)
-    public ModeloGestionPrestamo(int codigoLibro, int idAlumno, LocalDate fechaPrestamo, LocalDate fechaDevolucion) {
+    public ModeloGestionPrestamo(String dniAlumno, int codigoLibro, LocalDate fechaPrestamo, LocalDate fechaDevolucion) {
+        this.dniAlumno = dniAlumno;
         this.codigoLibro = codigoLibro;
-        this.idAlumno = idAlumno;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
     }
 
     // Getters y setters
-    public int getId() {
-        return id;
+    public int getIdPrestamo() {
+        return idPrestamo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdPrestamo(int idPrestamo) {
+        this.idPrestamo = idPrestamo;
+    }
+
+    public String getDniAlumno() {
+        return dniAlumno;
+    }
+
+    public void setDniAlumno(String dniAlumno) {
+        this.dniAlumno = dniAlumno;
     }
 
     public int getCodigoLibro() {
@@ -40,14 +49,6 @@ public class ModeloGestionPrestamo {
 
     public void setCodigoLibro(int codigoLibro) {
         this.codigoLibro = codigoLibro;
-    }
-
-    public int getIdAlumno() {
-        return idAlumno;
-    }
-
-    public void setIdAlumno(int idAlumno) {
-        this.idAlumno = idAlumno;
     }
 
     public LocalDate getFechaPrestamo() {
@@ -68,13 +69,12 @@ public class ModeloGestionPrestamo {
 
     @Override
     public String toString() {
-        return "Prestamo{" +
-                "id=" + id +
+        return "ModeloGestionPrestamo{" +
+                "idPrestamo=" + idPrestamo +
+                ", dniAlumno='" + dniAlumno + '\'' +
                 ", codigoLibro=" + codigoLibro +
-                ", idAlumno=" + idAlumno +
                 ", fechaPrestamo=" + fechaPrestamo +
                 ", fechaDevolucion=" + fechaDevolucion +
                 '}';
     }
 }
-

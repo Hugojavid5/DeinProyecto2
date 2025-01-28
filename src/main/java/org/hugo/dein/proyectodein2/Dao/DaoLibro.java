@@ -1,6 +1,7 @@
 package org.hugo.dein.proyectodein2.Dao;
 
 import org.hugo.dein.proyectodein2.Modelos.ModeloLibro;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,8 @@ public class DaoLibro {
         this.connection = connection;
     }
 
-    // Alta de un libro
-    public boolean agregarLibro(ModeloLibro libro) {
+    // Registrar un nuevo libro
+    public boolean registrarLibro(ModeloLibro libro) {
         String sql = "INSERT INTO Libro (titulo, autor, editorial, estado, baja) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, libro.getTitulo());
@@ -24,24 +25,12 @@ public class DaoLibro {
             ps.setBoolean(5, libro.isBaja());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al agregar el libro: " + e.getMessage());
+            System.err.println("Error al registrar libro: " + e.getMessage());
         }
         return false;
     }
 
-    // Baja de un libro (marcar como dado de baja)
-    public boolean darDeBajaLibro(int codigo) {
-        String sql = "UPDATE Libro SET baja = 1 WHERE codigo = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, codigo);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al dar de baja el libro: " + e.getMessage());
-        }
-        return false;
-    }
-
-    // Modificación de un libro
+    // Actualizar información de un libro
     public boolean actualizarLibro(ModeloLibro libro) {
         String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ? WHERE codigo = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -53,38 +42,27 @@ public class DaoLibro {
             ps.setInt(6, libro.getCodigo());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al actualizar el libro: " + e.getMessage());
+            System.err.println("Error al actualizar libro: " + e.getMessage());
         }
         return false;
     }
 
-    // Consulta de un libro por código
-    public ModeloLibro buscarLibroPorCodigo(int codigo) {
-        String sql = "SELECT * FROM Libro WHERE codigo = ?";
+    // Marcar un libro como dado de baja
+    public boolean darDeBajaLibro(int codigoLibro) {
+        String sql = "UPDATE Libro SET baja = true WHERE codigo = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, codigo);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new ModeloLibro(
-                            rs.getInt("codigo"),
-                            rs.getString("titulo"),
-                            rs.getString("autor"),
-                            rs.getString("editorial"),
-                            rs.getString("estado"),
-                            rs.getBoolean("baja")
-                    );
-                }
-            }
+            ps.setInt(1, codigoLibro);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Error al buscar el libro: " + e.getMessage());
+            System.err.println("Error al dar de baja el libro: " + e.getMessage());
         }
-        return null;
+        return false;
     }
 
-    // Listar todos los libros
-    public List<ModeloLibro> listarLibros() {
+    // Consultar libros (excluyendo los dados de baja)
+    public List<ModeloLibro> listarLibrosActivos() {
+        String sql = "SELECT * FROM Libro WHERE baja = false";
         List<ModeloLibro> libros = new ArrayList<>();
-        String sql = "SELECT * FROM Libro";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -98,7 +76,29 @@ public class DaoLibro {
                 ));
             }
         } catch (SQLException e) {
-            System.err.println("Error al listar los libros: " + e.getMessage());
+            System.err.println("Error al listar libros activos: " + e.getMessage());
+        }
+        return libros;
+    }
+
+    // Consultar libros dados de baja
+    public List<ModeloLibro> listarLibrosDadosDeBaja() {
+        String sql = "SELECT * FROM Libro WHERE baja = true";
+        List<ModeloLibro> libros = new ArrayList<>();
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                libros.add(new ModeloLibro(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getBoolean("baja")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al listar libros dados de baja: " + e.getMessage());
         }
         return libros;
     }
