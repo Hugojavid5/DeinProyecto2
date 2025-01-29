@@ -218,8 +218,29 @@ public class ControlerGeneral {
 
     @FXML
     void modificarAlumno(ActionEvent event) {
+        ModeloAlumno alumno=tablaAlumnos.getSelectionModel().getSelectedItem();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/alumnos.fxml"));
+            Parent root = fxmlLoader.load();
 
+            ControlerAlumno controller=fxmlLoader.getController();
+            controller.setAlumnos(alumno);
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Editar alumno");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+            // Establecer un evento que se ejecute cuando se cierre la ventana
+            // stage.setOnHidden(windowEvent -> cargarAlumnos());
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 
     @FXML
     void modificarLibro(ActionEvent event) {

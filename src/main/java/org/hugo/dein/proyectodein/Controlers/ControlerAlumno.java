@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.hugo.dein.proyectodein.Dao.DaoAlumno;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
 public class ControlerAlumno {
 
@@ -88,6 +89,12 @@ public class ControlerAlumno {
         } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo registrar el alumno: " + e.getMessage());
         }
+    }
+
+    private ModeloAlumno alumnos;
+
+    public void setAlumnos(ModeloAlumno alumnos) {
+        this.alumnos = alumnos;
     }
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
