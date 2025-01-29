@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
 public class ControlerPrestamo {
 
@@ -19,7 +20,7 @@ public class ControlerPrestamo {
     private ComboBox<?> comboEstudiante;
 
     @FXML
-    private ComboBox<?> comboLibro;
+    private ComboBox<ModeloLibro> comboLibro;
 
     @FXML
     private DatePicker dpFechaPrestamo;
