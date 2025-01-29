@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerLibros">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="600.0" text="Libros">
@@ -49,11 +48,11 @@
             <HBox prefHeight="39.0" prefWidth="600.0">
                <children>
                   <Label fx:id="lbl_imagen" prefHeight="40.0" prefWidth="165.0" text="Portada del libro:" />
-                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="253.0" text="Selecciona una imagen" />
-                  <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="153.0" text="Borrar imagen" />
+                  <Button fx:id="btt_seleccionar" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="45.0" prefWidth="253.0" text="Selecciona una imagen" />
+                  <Button fx:id="btt_borrar" mnemonicParsing="false" onAction="#borrarImagen" prefHeight="28.0" prefWidth="153.0" text="Borrar imagen" />
                </children>
             </HBox>
-            <ImageView fitHeight="133.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="img_portada" fitHeight="133.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imagenes/portada.jpg" />
                </image>
@@ -63,8 +62,8 @@
             </ImageView>
             <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="600.0" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button defaultButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="161.0" text="Guardar " />
-                  <Button cancelButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="161.0" text="Cancelar" />
+                  <Button fx:id="btt_guardar" defaultButton="true" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="35.0" prefWidth="161.0" text="Guardar " />
+                  <Button fx:id="btt_cancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelarCambios" prefHeight="35.0" prefWidth="161.0" text="Cancelar" />
                </children>
             </HBox>
          </children>

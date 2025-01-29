@@ -106,4 +106,16 @@ public class DaoLibro {
         }
         return libros;
     }
+    // Metodo para convertir byte[] a Blob
+    public static Blob convertirABlob(byte[] imagenBytes) {
+        if (imagenBytes != null && imagenBytes.length > 0) {
+            try {
+                // Crear un Blob a partir del array de bytes
+                return new javax.sql.rowset.serial.SerialBlob(imagenBytes);
+            } catch (SQLException e) {
+                System.err.println("Error al convertir la imagen a Blob: " + e.getMessage());
+            }
+        }
+        return null;
+    }
 }
