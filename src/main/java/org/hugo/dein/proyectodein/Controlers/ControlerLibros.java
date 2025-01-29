@@ -7,13 +7,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
+import javafx.stage.Stage;
+
 import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import javafx.collections.ObservableList;
 import java.io.File;
 import java.nio.file.Files;
-import java.sql.Connection;
 
 public class ControlerLibros {
     private byte[] imagenBytes;
@@ -46,6 +46,10 @@ public class ControlerLibros {
 
     @FXML
     private TextField txt_libro;
+    private Runnable onCloseCallback;
+    public void setOnCloseCallback(Runnable onCloseCallback) {
+        this.onCloseCallback = onCloseCallback;
+    }
 
     @FXML
     public void initialize() {
@@ -68,7 +72,14 @@ public class ControlerLibros {
 
     @FXML
     void cancelarCambios(ActionEvent event) {
-        // Puedes agregar lógica para cancelar cambios si es necesario.
+        // Ejecutar el callback si está configurado
+        if (onCloseCallback != null) {
+            onCloseCallback.run();
+        }
+
+        // Cerrar la ventana
+        Stage stage = (Stage) txt_libro.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -120,7 +131,7 @@ public class ControlerLibros {
             mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
 
             // Cerrar la ventana después de guardar
-            //cancelar(event);
+            cancelarCambios(event);
 
         } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo registrar el libro: " + e.getMessage());

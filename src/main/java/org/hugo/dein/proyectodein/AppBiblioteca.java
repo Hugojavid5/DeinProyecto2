@@ -40,9 +40,9 @@ public class AppBiblioteca extends Application {
         Scene scene = new Scene(fxmlLoader.load());
 
         // Configurar la ventana
-        stage.setTitle("Mi Biblioteca!");  // Establece el título de la ventana
-        stage.setScene(scene);  // Establece la escena en el escenario
-        stage.show();  // Muestra la ventana
+        stage.setTitle("BiblioRusty");
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**

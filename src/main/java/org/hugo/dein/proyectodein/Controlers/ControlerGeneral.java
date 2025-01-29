@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
 import javax.enterprise.inject.Model;
@@ -35,13 +36,13 @@ public class ControlerGeneral {
     private Tab colLibros;
 
     @FXML
-    private TableColumn<?, ?> col_ape1;
+    private TableColumn<String, ModeloAlumno> col_ape1;
 
     @FXML
-    private TableColumn<?, ?> col_dni;
+    private TableColumn<String, ModeloAlumno> col_dni;
 
     @FXML
-    private TableColumn<?, ?> col_nombre;
+    private TableColumn<String, ModeloAlumno> col_nombre;
 
     @FXML
     private ImageView imgView_biblio;
@@ -83,7 +84,7 @@ public class ControlerGeneral {
     private Menu menu_informes;
 
     @FXML
-    private TableView<?> tablaAlumnos;
+    private TableView<ModeloAlumno> tablaAlumnos;
 
     @FXML
     private TabPane tablaGeneral;
@@ -120,7 +121,19 @@ public class ControlerGeneral {
 
     @FXML
     void aniadirAlumno(ActionEvent event) {
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/alumnos.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Añadir Alumno");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+     }
     }
 
     @FXML
