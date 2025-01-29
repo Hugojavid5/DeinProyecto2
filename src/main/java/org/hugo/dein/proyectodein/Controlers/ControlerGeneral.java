@@ -2,19 +2,17 @@ package org.hugo.dein.proyectodein.Controlers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
+
+import javax.enterprise.inject.Model;
+import java.io.IOException;
 
 public class ControlerGeneral {
 
@@ -91,7 +89,7 @@ public class ControlerGeneral {
     private TabPane tablaGeneral;
 
     @FXML
-    private TableView<?> tablaLibros;
+    private TableView<ModeloLibro> tablaLibros;
 
     @FXML
     private TableColumn<?, ?> tcAutorTabLibros;
@@ -127,7 +125,22 @@ public class ControlerGeneral {
 
     @FXML
     void aniadirLibro(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/libro.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Añadir Libro");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
+            // Establecer un evento que se ejecute cuando se cierre la ventana
+           // stage.setOnHidden(windowEvent -> cargarLibros());
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML
@@ -197,7 +210,27 @@ public class ControlerGeneral {
 
     @FXML
     void modificarLibro(ActionEvent event) {
+        ModeloLibro libro=tablaLibros.getSelectionModel().getSelectedItem();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/libro.fxml"));
+            Parent root = fxmlLoader.load();
 
+            ControlerLibros controller=fxmlLoader.getController();
+            controller.setLibro(libro);
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Editar Libro");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+            // Establecer un evento que se ejecute cuando se cierre la ventana
+           // stage.setOnHidden(windowEvent -> cargarLibros());
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML

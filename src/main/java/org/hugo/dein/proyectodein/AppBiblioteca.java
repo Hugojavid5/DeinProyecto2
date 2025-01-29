@@ -10,7 +10,7 @@ public class AppBiblioteca extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Cargar el archivo FXML con la ruta correcta
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/biblioGeneral.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/biblioGeneral.fxml"));
 
         // Si está en el mismo paquete, la ruta sería algo como "/nombreDelArchivo.fxml"
         AnchorPane root = loader.load();

@@ -7,24 +7,27 @@ public class ModeloLibro {
     private String editorial;
     private String estado; // Puede ser Nuevo, Usado nuevo, Usado seminuevo, Usado estropeado, Restaurado
     private boolean baja;
+    private byte[] imagenPortada; // Imagen en formato BLOB
 
     // Constructor completo
-    public ModeloLibro(int codigo, String titulo, String autor, String editorial, String estado, boolean baja) {
+    public ModeloLibro(int codigo, String titulo, String autor, String editorial, String estado, boolean baja, byte[] imagenPortada) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
         this.estado = estado;
         this.baja = baja;
+        this.imagenPortada = imagenPortada;
     }
 
     // Constructor sin código (para nuevos libros)
-    public ModeloLibro(String titulo, String autor, String editorial, String estado, boolean baja) {
+    public ModeloLibro(String titulo, String autor, String editorial, String estado, boolean baja, byte[] imagenPortada) {
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
         this.estado = estado;
         this.baja = baja;
+        this.imagenPortada = imagenPortada;
     }
 
     // Getters y setters
@@ -74,6 +77,14 @@ public class ModeloLibro {
 
     public void setBaja(boolean baja) {
         this.baja = baja;
+    }
+
+    public byte[] getImagenPortada() {
+        return imagenPortada;
+    }
+
+    public void setImagenPortada(byte[] imagenPortada) {
+        this.imagenPortada = imagenPortada;
     }
 
     @Override

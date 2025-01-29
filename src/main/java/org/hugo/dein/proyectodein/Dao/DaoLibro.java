@@ -16,13 +16,14 @@ public class DaoLibro {
 
     // Registrar un nuevo libro
     public boolean registrarLibro(ModeloLibro libro) {
-        String sql = "INSERT INTO Libro (titulo, autor, editorial, estado, baja) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Libro (titulo, autor, editorial, estado, baja, imagen) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, libro.getTitulo());
             ps.setString(2, libro.getAutor());
             ps.setString(3, libro.getEditorial());
             ps.setString(4, libro.getEstado());
             ps.setBoolean(5, libro.isBaja());
+            ps.setBytes(6, libro.getImagenPortada());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al registrar libro: " + e.getMessage());
@@ -32,14 +33,15 @@ public class DaoLibro {
 
     // Actualizar información de un libro
     public boolean actualizarLibro(ModeloLibro libro) {
-        String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ? WHERE codigo = ?";
+        String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ?, imagen = ? WHERE codigo = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, libro.getTitulo());
             ps.setString(2, libro.getAutor());
             ps.setString(3, libro.getEditorial());
             ps.setString(4, libro.getEstado());
             ps.setBoolean(5, libro.isBaja());
-            ps.setInt(6, libro.getCodigo());
+            ps.setBytes(6, libro.getImagenPortada());
+            ps.setInt(7, libro.getCodigo());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al actualizar libro: " + e.getMessage());
@@ -72,7 +74,8 @@ public class DaoLibro {
                         rs.getString("autor"),
                         rs.getString("editorial"),
                         rs.getString("estado"),
-                        rs.getBoolean("baja")
+                        rs.getBoolean("baja"),
+                        rs.getBytes("imagen")
                 ));
             }
         } catch (SQLException e) {
@@ -94,7 +97,8 @@ public class DaoLibro {
                         rs.getString("autor"),
                         rs.getString("editorial"),
                         rs.getString("estado"),
-                        rs.getBoolean("baja")
+                        rs.getBoolean("baja"),
+                        rs.getBytes("imagen")
                 ));
             }
         } catch (SQLException e) {
