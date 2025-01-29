@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.Hugo.Dein</groupId>
+    <groupId>org.hugo.dein</groupId>
     <artifactId>ProyectoDein2</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ProyectoDein2</name>
@@ -82,7 +82,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.hugo.dein.proyectodein2/org.hugo.dein.proyectodein2.App.AppBiblioteca
+                            <mainClass>org.hugo.dein.proyectodein/org.hugo.dein.proyectodein.AppBiblioteca
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

@@ -1,6 +1,6 @@
-package org.hugo.dein.proyectodein2.Dao;
+package org.hugo.dein.proyectodein.Dao;
 
-import org.hugo.dein.proyectodein2.Modelos.ModeloLibro;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.hugo.dein.proyectodein2.BBDD;
+package org.hugo.dein.proyectodein.BBDD;
 
 import java.io.FileInputStream;
 import java.io.IOException;

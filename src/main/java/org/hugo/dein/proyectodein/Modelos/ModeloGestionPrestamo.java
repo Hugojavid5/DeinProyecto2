@@ -1,4 +1,4 @@
-package org.hugo.dein.proyectodein2.Modelos;
+package org.hugo.dein.proyectodein.Modelos;
 
 import java.time.LocalDate;
 

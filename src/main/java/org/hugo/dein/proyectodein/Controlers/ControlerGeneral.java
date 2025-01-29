@@ -1,4 +1,4 @@
-package org.hugo.dein.proyectodein2.Controlers;
+package org.hugo.dein.proyectodein.Controlers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,25 +40,10 @@ public class ControlerGeneral {
     private TableColumn<?, ?> col_ape1;
 
     @FXML
-    private TableColumn<?, ?> col_autor;
-
-    @FXML
-    private TableColumn<?, ?> col_baja;
-
-    @FXML
     private TableColumn<?, ?> col_dni;
 
     @FXML
-    private TableColumn<?, ?> col_editorial;
-
-    @FXML
-    private TableColumn<?, ?> col_estado;
-
-    @FXML
     private TableColumn<?, ?> col_nombre;
-
-    @FXML
-    private TableColumn<?, ?> col_titulo;
 
     @FXML
     private ImageView imgView_biblio;
@@ -103,16 +88,25 @@ public class ControlerGeneral {
     private TableView<?> tablaAlumnos;
 
     @FXML
-    private TableView<?> tablaDevoluciones;
-
-    @FXML
     private TabPane tablaGeneral;
 
     @FXML
-    private TableView<?> tablaHistorico;
+    private TableView<?> tablaLibros;
 
     @FXML
-    private TableView<?> tablaLibros;
+    private TableColumn<?, ?> tcAutorTabLibros;
+
+    @FXML
+    private TableColumn<?, ?> tcBajaTabLibros;
+
+    @FXML
+    private TableColumn<?, ?> tcEditorialTabLibros;
+
+    @FXML
+    private TableColumn<?, ?> tcEstadoTabLibros;
+
+    @FXML
+    private TableColumn<?, ?> tcTituloTabLibros;
 
     @FXML
     private TextField tfFiltrarPrestamo;

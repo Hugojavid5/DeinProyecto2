@@ -1,7 +1,7 @@
-package org.hugo.dein.proyectodein2.Dao;
+package org.hugo.dein.proyectodein.Dao;
 
-import org.hugo.dein.proyectodein2.Modelos.ModeloGestionPrestamo;
-import org.hugo.dein.proyectodein2.Modelos.ModeloHistorico;
+import org.hugo.dein.proyectodein.Modelos.ModeloGestionPrestamo;
+import org.hugo.dein.proyectodein.Modelos.ModeloHistorico;
 
 import java.sql.*;
 import java.time.LocalDate;
