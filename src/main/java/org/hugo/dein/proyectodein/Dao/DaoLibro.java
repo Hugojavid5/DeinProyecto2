@@ -6,8 +6,7 @@ import javafx.collections.ObservableList;
 import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+
 import java.sql.*;
 
 /**
