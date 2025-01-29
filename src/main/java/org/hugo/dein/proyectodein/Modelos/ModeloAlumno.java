@@ -1,12 +1,13 @@
 package org.hugo.dein.proyectodein.Modelos;
 
+import java.util.Objects;
+
 public class ModeloAlumno {
     private String dni;
     private String nombre;
     private String apellido1;
     private String apellido2;
 
-    // Constructor
     public ModeloAlumno(String dni, String nombre, String apellido1, String apellido2) {
         this.dni = dni;
         this.nombre = nombre;
@@ -14,7 +15,14 @@ public class ModeloAlumno {
         this.apellido2 = apellido2;
     }
 
-    // Getters y setters
+    public ModeloAlumno() {
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     public String getDni() {
         return dni;
     }
@@ -48,12 +56,14 @@ public class ModeloAlumno {
     }
 
     @Override
-    public String toString() {
-        return "Alumno{" +
-                "dni='" + dni + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", apellido1='" + apellido1 + '\'' +
-                ", apellido2='" + apellido2 + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ModeloAlumno alumno = (ModeloAlumno) o;
+        return Objects.equals(dni, alumno.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(dni);
     }
 }

@@ -1,79 +1,51 @@
 package org.hugo.dein.proyectodein.Dao;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
-
+import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class DaoAlumno {
-    private Connection connection;
 
-    // Constructor
-    public DaoAlumno(Connection connection) {
-        this.connection = connection;
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
     }
 
-    // Alta de un alumno
-    public boolean agregarAlumno(ModeloAlumno alumno) {
-        String sql = "INSERT INTO Alumno (dni, nombre, apellido1, apellido2) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, alumno.getDni());
-            ps.setString(2, alumno.getNombre());
-            ps.setString(3, alumno.getApellido1());
-            ps.setString(4, alumno.getApellido2());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al agregar el alumno: " + e.getMessage());
-        }
-        return false;
+    public DaoAlumno() throws SQLException {
     }
 
-    // Modificación de un alumno
-    public boolean actualizarAlumno(ModeloAlumno alumno) {
-        String sql = "UPDATE Alumno SET nombre = ?, apellido1 = ?, apellido2 = ? WHERE dni = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, alumno.getNombre());
-            ps.setString(2, alumno.getApellido1());
-            ps.setString(3, alumno.getApellido2());
-            ps.setString(4, alumno.getDni());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar el alumno: " + e.getMessage());
-        }
-        return false;
-    }
-
-    // Consulta de un alumno por DNI
-    public ModeloAlumno buscarAlumnoPorDni(String dni) {
+    public static ModeloAlumno getAlumno(String dni) {
         String sql = "SELECT * FROM Alumno WHERE dni = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, dni);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new ModeloAlumno(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("apellido1"),
-                            rs.getString("apellido2")
-                    );
-                }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, dni);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new ModeloAlumno(
+                        rs.getString("dni"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido1"),
+                        rs.getString("apellido2")
+                );
             }
         } catch (SQLException e) {
-            System.err.println("Error al buscar el alumno: " + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
+    public static ObservableList<ModeloAlumno> getTodosAlumnos() {
+        ObservableList<ModeloAlumno> listaAlumnos = FXCollections.observableArrayList();
 
-    // Consulta de todos los alumnos
-    public List<ModeloAlumno> listarAlumnos() {
-        List<ModeloAlumno> alumnos = new ArrayList<>();
         String sql = "SELECT * FROM Alumno";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
             while (rs.next()) {
-                alumnos.add(new ModeloAlumno(
+                listaAlumnos.add(new ModeloAlumno(
                         rs.getString("dni"),
                         rs.getString("nombre"),
                         rs.getString("apellido1"),
@@ -81,9 +53,63 @@ public class DaoAlumno {
                 ));
             }
         } catch (SQLException e) {
-            System.err.println("Error al listar los alumnos: " + e.getMessage());
+            e.printStackTrace();
         }
-        return alumnos;
+        return listaAlumnos;
+    }
+
+    public static boolean insertAlumno(ModeloAlumno alumno) {
+        String sql = "INSERT INTO Alumno (dni, nombre, apellido1, apellido2) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, alumno.getDni());
+            pstmt.setString(2, alumno.getNombre());
+            pstmt.setString(3, alumno.getApellido1());
+            pstmt.setString(4, alumno.getApellido2());
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean updateAlumno(ModeloAlumno alumno) {
+        String sql = "UPDATE Alumno SET nombre = ?, apellido1 = ?, apellido2 = ? WHERE dni = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, alumno.getNombre());
+            pstmt.setString(2, alumno.getApellido1());
+            pstmt.setString(3, alumno.getApellido2());
+            pstmt.setString(4, alumno.getDni());
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean deleteAlumno(String dni) {
+        String sql = "DELETE FROM Alumno WHERE dni = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, dni);
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean existeAlumno(String dni) {
+        String sql = "SELECT dni FROM Alumno WHERE dni = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, dni);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
-

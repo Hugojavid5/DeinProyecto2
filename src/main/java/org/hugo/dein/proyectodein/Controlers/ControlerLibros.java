@@ -73,7 +73,58 @@ public class ControlerLibros {
 
     @FXML
     void guardarCambios(ActionEvent event) {
+        StringBuilder errores = new StringBuilder();
 
+        // Validar los campos
+        String titulo = txt_libro.getText();
+        String autor = txt_autor.getText();
+        String editorial = txt_editorial.getText();
+        String estado = comboEstado.getValue(); // Estado seleccionado
+
+        if (titulo == null || titulo.isEmpty()) {
+            errores.append("- El título no puede estar vacío.\n");
+        }
+
+        if (autor == null || autor.isEmpty()) {
+            errores.append("- El autor no puede estar vacío.\n");
+        }
+
+        if (editorial == null || editorial.isEmpty()) {
+            errores.append("- La editorial no puede estar vacía.\n");
+        }
+
+        if (estado == null || estado.isEmpty()) {
+            errores.append("- Debes seleccionar un estado para el libro.\n");
+        }
+
+        if (imagenBytes == null || imagenBytes.length == 0) {
+            errores.append("- Debes seleccionar una imagen válida.\n");
+        }
+
+        if (errores.length() > 0) {
+            mostrarAlerta("Errores de Validación", errores.toString());
+            return;
+        }
+
+        // Crear el objeto LibroModel
+        ModeloLibro libro = new ModeloLibro();
+        libro.setTitulo(titulo);
+        libro.setAutor(autor);
+        libro.setEditorial(editorial);
+        libro.setEstado(estado);
+
+        // Convertir la imagen a Blob antes de insertar
+        try {
+            libro.setImagen(DaoLibro.convertirABlob(imagenBytes));
+            DaoLibro.insertLibro(libro);
+            mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
+
+            // Cerrar la ventana después de guardar
+            //cancelar(event);
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo registrar el libro: " + e.getMessage());
+        }
     }
 
 
