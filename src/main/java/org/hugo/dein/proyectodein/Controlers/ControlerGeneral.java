@@ -182,8 +182,24 @@ public class ControlerGeneral {
 
     @FXML
     void devolverLibro(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/devolucion.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Devolver un prestamo");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
+            // Establecer un evento que se ejecute cuando se cierre la ventana
+            // stage.setOnHidden(windowEvent -> cargarPrestamos());
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 
     @FXML
     void filtrarAlumno(ActionEvent event) {
@@ -268,7 +284,22 @@ public class ControlerGeneral {
 
     @FXML
     void prestarLibro(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/prestamo.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Prestar un libro");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
+            // Establecer un evento que se ejecute cuando se cierre la ventana
+            // stage.setOnHidden(windowEvent -> cargarPrestamos());
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }
