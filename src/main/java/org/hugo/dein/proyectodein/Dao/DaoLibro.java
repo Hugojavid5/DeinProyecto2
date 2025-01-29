@@ -70,29 +70,21 @@ public class DaoLibro {
         return libros;
     }
 
-    public static Blob convertFileToBlob(File file) {
+    public static Blob convertBytesToBlob(byte[] bytes) {
         ConexionBBDD connection;
         try {
             connection = new ConexionBBDD();
-            try (Connection conn = connection.getConnection();
-                 FileInputStream inputStream = new FileInputStream(file)) {
-                // Create Blob
+            try (Connection conn = connection.getConnection()) {
                 Blob blob = conn.createBlob();
-                // Write the file's bytes to the Blob
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                try (var outputStream = blob.setBinaryStream(1)) {
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
+                blob.setBytes(1, bytes);
                 return blob;
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             logger.error(e.getMessage());
             return null;
         }
     }
+
 
     public static boolean esEliminable(ModeloLibro libro) {
         ConexionBBDD connection;

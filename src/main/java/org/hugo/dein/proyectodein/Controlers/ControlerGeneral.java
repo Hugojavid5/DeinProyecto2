@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
 import java.io.IOException;
 

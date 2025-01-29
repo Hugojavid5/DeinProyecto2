@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import org.hugo.dein.proyectodein.Modelos.ModeloHistoricoPrestamo;
 
 public class ControlerDevolucion {
 
@@ -15,7 +16,7 @@ public class ControlerDevolucion {
     private Button btt_guardar;
 
     @FXML
-    private ComboBox<ModeloHistorico> comboEstudiante;
+    private ComboBox<ModeloHistoricoPrestamo> comboEstudiante;
 
     @FXML
     private DatePicker doFechaPrestamo;

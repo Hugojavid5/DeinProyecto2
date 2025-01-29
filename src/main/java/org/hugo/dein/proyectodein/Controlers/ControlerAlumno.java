@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
+import org.hugo.dein.proyectodein.Dao.DaoAlumno;
 
 public class ControlerAlumno {
 
@@ -78,7 +79,7 @@ public class ControlerAlumno {
 
         // Insertar el alumno en la base de datos
         try {
-            DaoAlumno.insertAlumno(alumno);
+            DaoAlumno.insertar(alumno);
             mostrarAlerta("Éxito", "El alumno ha sido registrado correctamente.");
 
             // Cerrar la ventana después de guardar

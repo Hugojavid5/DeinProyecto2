@@ -8,8 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import javafx.collections.ObservableList;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
+
 import java.io.File;
 import java.nio.file.Files;
 
@@ -124,8 +126,8 @@ public class ControlerLibros {
 
         // Convertir la imagen a Blob antes de insertar
         try {
-            libro.setImagen(DaoLibro.convertirABlob(imagenBytes));
-            DaoLibro.insertLibro(libro);
+            libro.setPortada(DaoLibro.convertBytesToBlob(imagenBytes));
+            DaoLibro.insertar(libro);
             mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
 
             // Cerrar la ventana después de guardar
