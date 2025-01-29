@@ -1,36 +1,35 @@
 package org.hugo.dein.proyectodein.Modelos;
 
+import java.sql.Blob;
+import java.util.Objects;
+
 public class ModeloLibro {
     private int codigo;
     private String titulo;
     private String autor;
     private String editorial;
-    private String estado; // Puede ser Nuevo, Usado nuevo, Usado seminuevo, Usado estropeado, Restaurado
-    private boolean baja;
-    private byte[] imagenPortada; // Imagen en formato BLOB
+    private String estado;
+    private int baja;
+    private Blob imagen;
 
-    // Constructor completo
-    public ModeloLibro(int codigo, String titulo, String autor, String editorial, String estado, boolean baja, byte[] imagenPortada) {
+    public ModeloLibro(int codigo, String titulo, String autor, String editorial, String estado, int baja, Blob imagen) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
         this.estado = estado;
         this.baja = baja;
-        this.imagenPortada = imagenPortada;
+        this.imagen = imagen;
     }
 
-    // Constructor sin código (para nuevos libros)
-    public ModeloLibro(String titulo, String autor, String editorial, String estado, boolean baja, byte[] imagenPortada) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.editorial = editorial;
-        this.estado = estado;
-        this.baja = baja;
-        this.imagenPortada = imagenPortada;
+    public ModeloLibro() {
     }
 
-    // Getters y setters
+    @Override
+    public String toString() {
+        return titulo;
+    }
+
     public int getCodigo() {
         return codigo;
     }
@@ -71,31 +70,31 @@ public class ModeloLibro {
         this.estado = estado;
     }
 
-    public boolean isBaja() {
+    public int getBaja() {
         return baja;
     }
 
-    public void setBaja(boolean baja) {
+    public void setBaja(int baja) {
         this.baja = baja;
     }
 
-    public byte[] getImagenPortada() {
-        return imagenPortada;
+    public Blob getImagen() {
+        return imagen;
     }
 
-    public void setImagenPortada(byte[] imagenPortada) {
-        this.imagenPortada = imagenPortada;
+    public void setImagen(Blob imagen) {
+        this.imagen = imagen;
     }
 
     @Override
-    public String toString() {
-        return "Libro{" +
-                "codigo=" + codigo +
-                ", titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                ", editorial='" + editorial + '\'' +
-                ", estado='" + estado + '\'' +
-                ", baja=" + baja +
-                '}';
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ModeloLibro libroModel = (ModeloLibro) o;
+        return codigo == libroModel.codigo;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(codigo);
     }
 }

@@ -7,12 +7,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import javafx.collections.ObservableList;
 import java.io.File;
 import java.nio.file.Files;
-import java.sql.Blob;
+import java.sql.Connection;
 
 public class ControlerLibros {
     private byte[] imagenBytes;
@@ -58,7 +59,6 @@ public class ControlerLibros {
         comboEstado.setItems(estados);
     }
 
-
     @FXML
     void borrarImagen(ActionEvent event) {
         // Restablecer la imagen por defecto
@@ -66,16 +66,16 @@ public class ControlerLibros {
         img_portada.setImage(imagenPorDefecto);
     }
 
-
-
     @FXML
     void cancelarCambios(ActionEvent event) {
-
+        // Puedes agregar lógica para cancelar cambios si es necesario.
     }
+
     @FXML
     void guardarCambios(ActionEvent event) {
 
     }
+
 
     @FXML
     void seleccionarImagen(ActionEvent event) {
@@ -103,8 +103,9 @@ public class ControlerLibros {
     }
 
     private ModeloLibro libro;
+
     public void setLibro(ModeloLibro libro) {
-        this.libro=libro;
+        this.libro = libro;
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {
@@ -115,4 +116,3 @@ public class ControlerLibros {
         alert.showAndWait();
     }
 }
-
