@@ -1,115 +1,164 @@
 package org.hugo.dein.proyectodein.Dao;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
-import java.sql.*;
+import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 public class DaoAlumno {
 
-    private static Connection conn;
-
-    static {
-        conn = ConexionBBDD.getConnection();
-    }
-
-    public DaoAlumno() throws SQLException {
-    }
+    private static final Logger logger = LoggerFactory.getLogger(DaoAlumno.class);
 
     public static ModeloAlumno getAlumno(String dni) {
-        String sql = "SELECT * FROM Alumno WHERE dni = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, dni);
-            ResultSet rs = pstmt.executeQuery();
-
+        ConexionBBDD connection;
+        ModeloAlumno alumno = null;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "SELECT dni,nombre,apellido1,apellido2 FROM Alumno WHERE dni = ?";
+            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
+            ps.setString(1, dni);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new ModeloAlumno(
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido1"),
-                        rs.getString("apellido2")
-                );
+                String dni_db = rs.getString("dni");
+                String nombre = rs.getString("nombre");
+                String apellido1 = rs.getString("apellido1");
+                String apellido2 = rs.getString("apellido2");
+                alumno = new ModeloAlumno(dni_db, nombre, apellido1, apellido2);
             }
+            rs.close();
+            connection.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
-        return null;
+        return alumno;
     }
-    public static ObservableList<ModeloAlumno> getTodosAlumnos() {
-        ObservableList<ModeloAlumno> listaAlumnos = FXCollections.observableArrayList();
 
-        String sql = "SELECT * FROM Alumno";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
+    public static ObservableList<ModeloAlumno> cargarListado() {
+        ConexionBBDD connection;
+        ObservableList<ModeloAlumno> alumnos = FXCollections.observableArrayList();
+        try{
+            connection = new ConexionBBDD();
+            String consulta = "SELECT dni,nombre,apellido1,apellido2 FROM Alumno";
+            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                listaAlumnos.add(new ModeloAlumno(
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellido1"),
-                        rs.getString("apellido2")
-                ));
+                String dni = rs.getString("dni");
+                String nombre = rs.getString("nombre");
+                String apellido1 = rs.getString("apellido1");
+                String apellido2 = rs.getString("apellido2");
+                ModeloAlumno alumno = new ModeloAlumno(dni, nombre, apellido1, apellido2);
+                alumnos.add(alumno);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            rs.close();
+            connection.closeConnection();
+        }catch (SQLException e) {
+            logger.error(e.getMessage());
         }
-        return listaAlumnos;
+        return alumnos;
     }
 
-    public static boolean insertAlumno(ModeloAlumno alumno) {
-        String sql = "INSERT INTO Alumno (dni, nombre, apellido1, apellido2) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, alumno.getDni());
-            pstmt.setString(2, alumno.getNombre());
-            pstmt.setString(3, alumno.getApellido1());
-            pstmt.setString(4, alumno.getApellido2());
-            return pstmt.executeUpdate() > 0;
-
+    public static boolean esEliminable(ModeloAlumno alumno) {
+        ConexionBBDD connection;
+        try {
+            connection = new ConexionBBDD();
+            // Prestamos
+            String consulta = "SELECT count(*) as cont FROM Prestamo WHERE dni_alumno = ?";
+            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
+            ps.setString(1, alumno.getDni());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int cont = rs.getInt("cont");
+                if (cont != 0) {
+                    rs.close();
+                    connection.closeConnection();
+                    return false;
+                }
+            }
+            rs.close();
+            ps.close();
+            // Historial_prestamos
+            consulta = "SELECT count(*) as cont FROM Historico_prestamo WHERE dni_alumno = ?";
+            ps = connection.getConnection().prepareStatement(consulta);
+            ps.setString(1, alumno.getDni());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                int cont = rs.getInt("cont");
+                rs.close();
+                connection.closeConnection();
+                return (cont == 0);
+            }
+            rs.close();
+            connection.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return false;
     }
 
-    public static boolean updateAlumno(ModeloAlumno alumno) {
-        String sql = "UPDATE Alumno SET nombre = ?, apellido1 = ?, apellido2 = ? WHERE dni = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, alumno.getNombre());
-            pstmt.setString(2, alumno.getApellido1());
-            pstmt.setString(3, alumno.getApellido2());
-            pstmt.setString(4, alumno.getDni());
-            return pstmt.executeUpdate() > 0;
-
+    public static boolean modificar(ModeloAlumno alumno) {
+        ConexionBBDD connection;
+        PreparedStatement ps;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "UPDATE Alumno SET nombre = ?,apellido1 = ?,apellido2 = ? WHERE dni = ?";
+            ps = connection.getConnection().prepareStatement(consulta);
+            ps.setString(1, alumno.getNombre());
+            ps.setString(2, alumno.getApellido1());
+            ps.setString(3, alumno.getApellido2());
+            ps.setString(4, alumno.getDni());
+            int filasAfectadas = ps.executeUpdate();
+            ps.close();
+            connection.closeConnection();
+            return filasAfectadas > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            return false;
         }
-        return false;
     }
 
-    public static boolean deleteAlumno(String dni) {
-        String sql = "DELETE FROM Alumno WHERE dni = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, dni);
-            return pstmt.executeUpdate() > 0;
 
+    public  static boolean insertar(ModeloAlumno alumno) {
+        ConexionBBDD connection;
+        PreparedStatement ps;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "INSERT INTO Alumno (dni,nombre,apellido1,apellido2) VALUES (?,?,?,?) ";
+            ps = connection.getConnection().prepareStatement(consulta);
+            ps.setString(1, alumno.getDni());
+            ps.setString(2, alumno.getNombre());
+            ps.setString(3, alumno.getApellido1());
+            ps.setString(4, alumno.getApellido2());
+            int filasAfectadas = ps.executeUpdate();
+            connection.closeConnection();
+            return (filasAfectadas > 0);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            return false;
         }
-        return false;
     }
 
-    public static boolean existeAlumno(String dni) {
-        String sql = "SELECT dni FROM Alumno WHERE dni = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, dni);
-            ResultSet rs = pstmt.executeQuery();
-            return rs.next();
-
+    public static boolean eliminar(ModeloAlumno alumno) {
+        ConexionBBDD connection;
+        PreparedStatement ps;
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "DELETE FROM Alumno WHERE dni = ?";
+            ps = connection.getConnection().prepareStatement(consulta);
+            ps.setString(1, alumno.getDni());
+            int filasAfectadas = ps.executeUpdate();
+            ps.close();
+            connection.closeConnection();
+            return filasAfectadas > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            return false;
         }
-        return false;
     }
 }

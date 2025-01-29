@@ -3,6 +3,7 @@ package org.hugo.dein.proyectodein.Modelos;
 import java.sql.Blob;
 import java.util.Objects;
 
+
 public class ModeloLibro {
     private int codigo;
     private String titulo;
@@ -10,20 +11,21 @@ public class ModeloLibro {
     private String editorial;
     private String estado;
     private int baja;
-    private Blob imagen;
+    private Blob portada;
 
-    public ModeloLibro(int codigo, String titulo, String autor, String editorial, String estado, int baja, Blob imagen) {
+    public ModeloLibro(int codigo, String titulo, String autor, String editorial, String estado, int baja, Blob portada) {
         this.codigo = codigo;
         this.titulo = titulo;
         this.autor = autor;
         this.editorial = editorial;
         this.estado = estado;
         this.baja = baja;
-        this.imagen = imagen;
+        this.portada = portada;
     }
 
-    public ModeloLibro() {
-    }
+
+    public ModeloLibro() {}
+
 
     @Override
     public String toString() {
@@ -78,19 +80,19 @@ public class ModeloLibro {
         this.baja = baja;
     }
 
-    public Blob getImagen() {
-        return imagen;
+    public Blob getPortada() {
+        return portada;
     }
 
-    public void setImagen(Blob imagen) {
-        this.imagen = imagen;
+    public void setPortada(Blob portada) {
+        this.portada = portada;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ModeloLibro libroModel = (ModeloLibro) o;
-        return codigo == libroModel.codigo;
+        ModeloLibro libro = (ModeloLibro) o;
+        return codigo == libro.codigo;
     }
 
     @Override

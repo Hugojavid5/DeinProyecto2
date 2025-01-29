@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import org.hugo.dein.proyectodein.Modelos.ModeloHistorico;
 
 public class ControlerDevolucion {
 

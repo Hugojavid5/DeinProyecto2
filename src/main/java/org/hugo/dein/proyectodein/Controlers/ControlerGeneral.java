@@ -9,10 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
-import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
-import javax.enterprise.inject.Model;
 import java.io.IOException;
 
 public class ControlerGeneral {

@@ -9,8 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import org.hugo.dein.proyectodein.Dao.DaoLibro;
-import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import javafx.collections.ObservableList;
 import java.io.File;
 import java.nio.file.Files;
