@@ -1,0 +1,184 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="proyectoInforme1" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a40ea654-c589-4bf7-9018-9c2bc5a5234c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="115"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="885"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ContraDockerExamen1"/>
+	<parameter name="ID_PRESTAMO" class="java.lang.String"/>
+	<parameter name="IMAGE_PATH" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT  libros.`Prestamo`.fecha_prestamo ,
+			 libros.`Prestamo`.id_prestamo ,
+			 libros.`Alumno`.dni ,
+			 libros.`Alumno`.nombre ,
+			 libros.`Alumno`.apellido1 ,
+			 libros.`Alumno`.apellido2 , 
+			 libros.`Libro`.codigo ,
+			 libros.`Libro`.titulo ,
+			 libros.`Libro`.autor ,
+			 libros.`Libro`.editorial ,
+			 libros.`Libro`.estado ,
+			 libros.`Libro`.baja,
+			 DATE_ADD(Prestamo.fecha_prestamo, INTERVAL 15 DAY) AS fecha_devolucion
+			FROM  libros.`Prestamo` 
+			INNER JOIN  libros.`Alumno`  ON  libros.`Alumno`.dni  =  libros.`Prestamo`.dni_alumno 
+			INNER JOIN  libros.`Libro`  ON  libros.`Libro`.codigo  =  libros.`Prestamo`.codigo_libro 
+			WHERE  libros.`Prestamo`.id_prestamo  =  $P{ID_PRESTAMO}]]></query>
+	<field name="fecha_prestamo" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_prestamo"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_prestamo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Prestamo"/>
+	</field>
+	<field name="id_prestamo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_prestamo"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_prestamo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Prestamo"/>
+	</field>
+	<field name="dni" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dni"/>
+		<property name="com.jaspersoft.studio.field.label" value="dni"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="apellido1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellido1"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellido1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="apellido2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellido2"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellido2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Alumno"/>
+	</field>
+	<field name="codigo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="titulo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.label" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="autor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="autor"/>
+		<property name="com.jaspersoft.studio.field.label" value="autor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="editorial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="editorial"/>
+		<property name="com.jaspersoft.studio.field.label" value="editorial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="baja" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="baja"/>
+		<property name="com.jaspersoft.studio.field.label" value="baja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="fecha_devolucion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_devolucion"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_devolucion"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="80" splitType="Stretch">
+		<element kind="staticText" uuid="75c585b7-9633-4c99-b14e-728c1cd0ba52" mode="Opaque" x="0" y="0" width="560" height="80" forecolor="#E0FF00" backcolor="#050000" fontSize="40.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[PRESTAMO]]></text>
+		</element>
+	</title>
+	<pageHeader height="80" splitType="Stretch">
+		<element kind="staticText" uuid="39bae3c5-15bb-4696-ae32-ca36f43f98fc" mode="Opaque" x="80" y="0" width="390" height="80" forecolor="#E0FF00" backcolor="#050000" fontSize="40.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[BiblioRusty]]></text>
+		</element>
+		<element kind="image" uuid="87d61db4-f3cb-4b6a-bc25-43d258dc860e" x="0" y="0" width="80" height="80">
+			<expression><![CDATA[$P{IMAGE_PATH}+"biblioteca.png"]]></expression>
+		</element>
+		<element kind="image" uuid="11a54213-7623-4a9d-a877-293e0a4283b7" x="469" y="0" width="91" height="80">
+			<expression><![CDATA[$P{IMAGE_PATH}+"biblioteca.png"]]></expression>
+		</element>
+	</pageHeader>
+	<detail>
+		<band height="160" splitType="Stretch">
+			<element kind="staticText" uuid="f17e98f5-5aad-4497-a863-b8e61af66e56" mode="Opaque" x="100" y="29" width="100" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Titulo]]></text>
+			</element>
+			<element kind="staticText" uuid="5e12741c-0b52-42f8-a0ba-c42a53f3ce4e" mode="Opaque" x="300" y="29" width="110" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Editor]]></text>
+			</element>
+			<element kind="staticText" uuid="54b8495b-1120-4525-b1b4-0572b88aecdb" mode="Opaque" x="200" y="29" width="100" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Autor]]></text>
+			</element>
+			<element kind="staticText" uuid="d52b1dfe-1be3-4af0-b723-25679df31733" mode="Opaque" x="410" y="29" width="150" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Estado]]></text>
+			</element>
+			<element kind="staticText" uuid="337b81e8-9162-4477-89d7-3ab574d49e17" mode="Opaque" x="459" y="100" width="100" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Fecha devolucion]]></text>
+			</element>
+			<element kind="textField" uuid="2fd48998-e915-463e-a26a-7ce46c5332f5" mode="Opaque" x="100" y="50" width="100" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{titulo}]]></expression>
+			</element>
+			<element kind="textField" uuid="0bcfce43-b5fd-4142-88e7-39a4437ac5dd" mode="Opaque" x="200" y="50" width="100" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{autor}]]></expression>
+			</element>
+			<element kind="textField" uuid="e294a6f8-a9e9-4ee0-9709-bf5c273b3a25" mode="Opaque" x="300" y="50" width="110" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{editorial}]]></expression>
+			</element>
+			<element kind="textField" uuid="7b858a39-4358-4604-9e7d-33897c3097c4" mode="Opaque" x="410" y="49" width="150" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{estado}]]></expression>
+			</element>
+			<element kind="textField" uuid="ba851f01-20e5-4858-8a4f-d621be6feb19" mode="Opaque" x="459" y="120" width="101" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{fecha_devolucion}]]></expression>
+			</element>
+			<element kind="staticText" uuid="3d5bb4fb-6b11-460d-be5f-c398a6e5ec85" mode="Opaque" x="1" y="0" width="559" height="29" forecolor="#E0FF00" backcolor="#050000" fontSize="20.0" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Libro]]></text>
+			</element>
+			<element kind="staticText" uuid="a6a436b9-7d7a-4edd-8e0d-c0615cf37829" mode="Opaque" x="0" y="29" width="100" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Codigo]]></text>
+			</element>
+			<element kind="textField" uuid="abb768d1-b2fe-4e34-af34-c793ecf60adf" mode="Opaque" x="0" y="49" width="100" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{codigo}]]></expression>
+			</element>
+			<element kind="staticText" uuid="74550bcc-bc5f-4d3a-a002-0fad10bacd12" mode="Opaque" x="1" y="70" width="559" height="30" forecolor="#E0FF00" backcolor="#050000" fontSize="20.0" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[Alumno]]></text>
+			</element>
+			<element kind="staticText" uuid="4f4a9397-1af0-4c71-ac79-783f1698323a" mode="Opaque" x="0" y="100" width="100" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  DNI]]></text>
+			</element>
+			<element kind="textField" uuid="3e5ea25e-59cf-4c89-8055-8ca22736a9f8" mode="Opaque" x="0" y="120" width="100" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{dni}]]></expression>
+			</element>
+			<element kind="staticText" uuid="f227888b-c14d-45d3-a697-5bcb7f6c48db" mode="Opaque" x="100" y="100" width="259" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Nombre]]></text>
+			</element>
+			<element kind="textField" uuid="760315a9-6414-4bdf-bec6-2d37d991d0b7" mode="Opaque" x="100" y="120" width="259" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{nombre}+ " " + $F{apellido1} + " " +$F{apellido2}]]></expression>
+			</element>
+			<element kind="staticText" uuid="30973b89-4e54-4f43-92c5-98e1d46d44c1" mode="Opaque" x="359" y="100" width="100" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Fecha del prestamo]]></text>
+			</element>
+			<element kind="textField" uuid="1cd4ced3-f206-45a3-bd83-9399d89b42b0" mode="Opaque" x="359" y="120" width="100" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{fecha_prestamo}]]></expression>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="31" splitType="Stretch">
+		<element kind="textField" uuid="68e804c0-4104-4d7b-a1c5-bd49a9ca5067" x="370" y="0" width="100" height="30" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Página "+$V{PAGE_NUMBER}+" /"]]></expression>
+		</element>
+		<element kind="textField" uuid="2fad74ad-b924-47ed-aff7-dfdff8315e15" x="470" y="0" width="79" height="30" evaluationTime="Report" vTextAlign="Middle">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="33bd22c3-7ff4-4e86-b7d4-28837ab982cf" x="0" y="14" width="230" height="15" pattern="EEEE, d 'de' MMMM 'del' yyyy">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

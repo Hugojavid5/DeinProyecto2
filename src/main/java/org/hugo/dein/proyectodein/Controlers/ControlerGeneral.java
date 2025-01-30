@@ -12,6 +12,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import org.hugo.dein.proyectodein.Dao.DaoAlumno;
 import org.hugo.dein.proyectodein.Dao.DaoHistorialPrestamo;
@@ -23,9 +29,12 @@ import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloPrestamo;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -141,16 +150,16 @@ public class ControlerGeneral implements Initializable {
     private VBox vbox_general;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("iniciando...");
+     public void initialize(URL location, ResourceBundle resources) {
+       System.out.println("iniciando...");
         try {
-            ConexionBBDD con = new ConexionBBDD();
+            ConexionBBDD conexionBBDD = new ConexionBBDD();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         //cargarDatosTablas();
-        cargarFiltrosHistorico();
+      cargarFiltrosHistorico();
     }
 
 
@@ -227,6 +236,35 @@ public class ControlerGeneral implements Initializable {
         });
     }
 
+
+    private void generarReporte(String reportePath, Map<String, Object> parameters) {
+        try {
+            ConexionBBDD conexionbbdd = new ConexionBBDD();
+            InputStream reportStream = getClass().getResourceAsStream(reportePath);
+
+            if (reportStream == null) {
+                System.out.println("El archivo jasper no se encuentra " + reportePath);
+                return;
+            }
+
+            JasperReport report = (JasperReport) JRLoader.loadObject(reportStream);
+            JasperPrint jprint = JasperFillManager.fillReport(report, parameters, conexionbbdd.getConnection());
+            JasperViewer viewer = new JasperViewer(jprint, false);
+            viewer.setVisible(true);
+
+        } catch (SQLException | JRException e) {
+            e.printStackTrace();
+            mostrarError("Error", "Problema al generar el informe");
+        }
+    }
+    private void mostrarError(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
     @FXML
     void cargarGuia(ActionEvent event) {
 
@@ -242,9 +280,10 @@ public class ControlerGeneral implements Initializable {
 
     }
 
-    @FXML
-    void cargarInforme4(ActionEvent event) {
-
+    public void cargarInforme4(ActionEvent event) {
+       // Map<String, Object> parameters = new HashMap<>();
+        //parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
+        //generarReporte("/jasper/Informe4Datos.jasper", parameters);
     }
 
     @FXML
