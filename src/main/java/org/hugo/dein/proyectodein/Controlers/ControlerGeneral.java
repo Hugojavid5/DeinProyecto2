@@ -1,5 +1,8 @@
 package org.hugo.dein.proyectodein.Controlers;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,9 +12,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -28,10 +34,13 @@ import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloPrestamo;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,17 +53,34 @@ public class ControlerGeneral implements Initializable {
     private Button btt_aniadir;
 
     @FXML
+    private TableColumn<LocalDateTime, ModeloPrestamo> col_fecha;
+    @FXML
+    private TableColumn<ModeloAlumno, String> col_alumno;
+    @FXML
+    private TableColumn<ModeloLibro, String> col_libroPrestamo;
+    @FXML
+    private TableColumn<ModeloHistoricoPrestamo, String> col_AlumnoHistorico;
+    @FXML
+    private TableColumn<ModeloHistoricoPrestamo, String> col_LibroHistorico;
+
+    @FXML
     private Button btt_baja;
+
+    @FXML
+    private TableColumn<LocalDateTime, ModeloHistoricoPrestamo> col_fechaPrestamo;
+
+    @FXML
+    private TableColumn<ModeloHistoricoPrestamo, LocalDateTime> col_fechaDevolucion;
 
     @FXML
     private Button btt_modificar;
 
-    @FXML
-    private Tab tablahistoricosPrestamos;
 
     @FXML
     private ComboBox<String> cbFiltroHistorico;
 
+    @FXML
+    private TableColumn<ModeloLibro, ImageView> tcBajaTabLibros;
     @FXML
     private Tab colAlumnos;
 
@@ -63,7 +89,8 @@ public class ControlerGeneral implements Initializable {
 
     @FXML
     private TableColumn<String, ModeloAlumno> col_ape1;
-
+    @FXML
+    private TableColumn<String, ModeloAlumno> col_ape2;
     @FXML
     private TableColumn<String, ModeloAlumno> col_dni;
 
@@ -121,19 +148,17 @@ public class ControlerGeneral implements Initializable {
     private TableView<ModeloLibro> tablaLibros;
 
     @FXML
-    private TableColumn<?, ?> tcAutorTabLibros;
+    private TableColumn<String, ModeloLibro> tcAutorTabLibros;
+
 
     @FXML
-    private TableColumn<?, ?> tcBajaTabLibros;
+    private TableColumn<String, ModeloLibro> tcEditorialTabLibros;
 
     @FXML
-    private TableColumn<?, ?> tcEditorialTabLibros;
+    private TableColumn<String, ModeloLibro> tcEstadoTabLibros;
 
     @FXML
-    private TableColumn<?, ?> tcEstadoTabLibros;
-
-    @FXML
-    private TableColumn<?, ?> tcTituloTabLibros;
+    private TableColumn<String, ModeloLibro> tcTituloTabLibros;
     @FXML
     private TableView<ModeloPrestamo> tablaPrestamos;
 
@@ -151,16 +176,81 @@ public class ControlerGeneral implements Initializable {
 
     @Override
      public void initialize(URL location, ResourceBundle resources) {
-//       System.out.println("iniciando...");
-//        try {
-//            ConexionBBDD conexionBBDD = new ConexionBBDD();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        //cargarDatosTablas();
+       System.out.println("iniciando...");
+        try {
+            ConexionBBDD conexionBBDD = new ConexionBBDD();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        cargarDatosTablas();
 //      cargarFiltrosHistorico();
     }
+    void cargarDatosTablas() {
+        // Tabla de alumnos
+        List<ModeloAlumno> alumnos = DaoAlumno.cargarListado();
+        tablaAlumnos.getItems().setAll(alumnos);
+        col_dni.setCellValueFactory(new PropertyValueFactory<>("dni"));
+        col_nombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        col_ape1.setCellValueFactory(new PropertyValueFactory<>("apellido1"));
+        col_ape2.setCellValueFactory(new PropertyValueFactory<>("apellido2"));
+
+        //Tabla de libros
+        List<ModeloLibro> libros = DaoLibro.cargarListado();
+        tablaLibros.getItems().setAll(libros);
+        tcTituloTabLibros.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        tcAutorTabLibros.setCellValueFactory(new PropertyValueFactory<>("autor"));
+        tcEditorialTabLibros.setCellValueFactory(new PropertyValueFactory<>("editorial"));
+        tcBajaTabLibros.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ModeloLibro, ImageView>, ObservableValue<ImageView>>() {
+            @Override
+            public ObservableValue<ImageView> call(TableColumn.CellDataFeatures<ModeloLibro, ImageView> cellData) {
+                ModeloLibro libro = cellData.getValue();
+                ImageView imageView = new ImageView();
+
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                imageView.setPreserveRatio(true);
+
+                if (libro.getPortada() != null) {
+                    imageView.setImage(blobToImage(libro.getPortada()));
+                }
+
+                return new SimpleObjectProperty<>(imageView);
+            }
+        });
+
+        // Tabla de préstamos
+        List<ModeloPrestamo> prestamos = DaoPrestamo.cargarListado();
+        tablaPrestamos.getItems().setAll(prestamos);
+        col_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
+        col_alumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDni()));
+        col_libroPrestamo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitulo()));
+
+        // Tabla de histórico de préstamos
+        List<ModeloHistoricoPrestamo> historicoPrestamos = DaoHistorialPrestamo.cargarListado();
+        tablaHistorico.getItems().setAll(historicoPrestamos);
+        col_fechaPrestamo.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
+        col_fechaDevolucion.setCellValueFactory(new PropertyValueFactory<>("fecha_devolucion"));
+        col_AlumnoHistorico.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
+        col_LibroHistorico.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getLibro().getTitulo())
+        );
+
+
+
+    }
+    private Image blobToImage(Blob blob) {
+        try {
+            if (blob != null) {
+                byte[] bytes = blob.getBytes(1, (int) blob.length());
+                return new Image(new ByteArrayInputStream(bytes));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 

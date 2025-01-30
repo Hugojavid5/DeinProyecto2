@@ -113,7 +113,7 @@
                                  <TableColumn fx:id="col_dni" prefWidth="117.0" text="DNI" />
                                  <TableColumn fx:id="col_nombre" prefWidth="135.0" text="Nombre" />
                                  <TableColumn fx:id="col_ape1" prefWidth="95.0" text="Apellido 1" />
-                                 <TableColumn prefWidth="169.0" text="Apellido 2" />
+                                 <TableColumn fx:id="col_ape2" prefWidth="169.0" text="Apellido 2" />
                               </columns>
                               <columnResizePolicy>
                                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -148,9 +148,9 @@
                            <TableView fx:id="tablaPrestamos" layoutY="88.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="185.0" prefWidth="690.0">
                               <columns>
                                  <TableColumn prefWidth="75.0" text="Id prestamo" />
-                                 <TableColumn prefWidth="75.0" text="Dni del alumno" />
-                                 <TableColumn prefWidth="75.0" text="Titulo del libro" />
-                                 <TableColumn prefWidth="75.0" text="Fecha del prestamo" />
+                                 <TableColumn fx:id="col_alumno" prefWidth="75.0" text="Dni del alumno" />
+                                 <TableColumn fx:id="col_libroPrestamo" prefWidth="75.0" text="Titulo del libro" />
+                                 <TableColumn fx:id="col_fecha" prefWidth="75.0" text="Fecha del prestamo" />
                               </columns>
                               <columnResizePolicy>
                                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -180,7 +180,7 @@
                                  <TableColumn prefWidth="75.0" text="Id prestamo" />
                                  <TableColumn prefWidth="75.0" text="Dni del alumno" />
                                  <TableColumn prefWidth="75.0" text="Titulo del libro" />
-                                 <TableColumn prefWidth="75.0" text="Fecha  prestamo" />
+                                 <TableColumn fx:id="col_fechaPrestamo" prefWidth="75.0" text="Fecha  prestamo" />
                                  <TableColumn prefWidth="75.0" text="Fecha devolucion" />
                               </columns>
                               <columnResizePolicy>
