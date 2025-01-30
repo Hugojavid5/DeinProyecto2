@@ -32,9 +32,9 @@
                </Menu>
                <Menu fx:id="menu_informes" mnemonicParsing="false" text="Informes">
                   <items>
-                     <MenuItem fx:id="menuItem_inforLib" mnemonicParsing="false" onAction="#cargarInforme2" text="Informe con libros con prestamos" />
-                     <MenuItem fx:id="menuItem_inforGra" mnemonicParsing="false" onAction="#cargarInforme3" text="Informe con graficos" />
-                     <MenuItem fx:id="menuItem_inforDatos" mnemonicParsing="false" onAction="#cargarInforme4" text="Informe con datos calculados de alumnos" />
+                     <MenuItem fx:id="menuItem_inforLib" mnemonicParsing="false" onAction="#cargarInforme2Libros" text="Informe con libros con prestamos" />
+                     <MenuItem fx:id="menuItem_inforGra" mnemonicParsing="false" onAction="#cargarInforme3Graficos" text="Informe con graficos" />
+                     <MenuItem fx:id="menuItem_inforDatos" mnemonicParsing="false" onAction="#cargarInforme4Datos" text="Informe con datos calculados de alumnos" />
                   </items>
                </Menu>
                <Menu fx:id="menu_ayuda" mnemonicParsing="false" text="Ayuda">

@@ -151,15 +151,15 @@ public class ControlerGeneral implements Initializable {
 
     @Override
      public void initialize(URL location, ResourceBundle resources) {
-       System.out.println("iniciando...");
-        try {
-            ConexionBBDD conexionBBDD = new ConexionBBDD();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        //cargarDatosTablas();
-      cargarFiltrosHistorico();
+//       System.out.println("iniciando...");
+//        try {
+//            ConexionBBDD conexionBBDD = new ConexionBBDD();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //cargarDatosTablas();
+//      cargarFiltrosHistorico();
     }
 
 
@@ -271,7 +271,7 @@ public class ControlerGeneral implements Initializable {
     }
 
     @FXML
-    void cargarInforme2(ActionEvent event) {
+    void cargarInforme2Libros(ActionEvent event) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
         parameters.put("SUBINFORME_PATH", getClass().getResource("/jasper/").toString());
@@ -279,11 +279,14 @@ public class ControlerGeneral implements Initializable {
     }
 
     @FXML
-    void cargarInforme3(ActionEvent event) {
-
+    void cargarInforme3Graficos(ActionEvent event) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
+        parameters.put("SUBINFORME_PATH", getClass().getResource("/jasper/").toString());
+        generarReporte("/jasper/Informe3Graficos.jasper", parameters);
     }
 
-    public void cargarInforme4(ActionEvent event) {
+    public void cargarInforme4Datos(ActionEvent event) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
         generarReporte("/jasper/Informe4Datos.jasper", parameters);
