@@ -218,24 +218,31 @@ public class ControlerGeneral implements Initializable {
                 return new SimpleObjectProperty<>(imageView);
             }
         });
-
+/*
         // Tabla de préstamos
         List<ModeloPrestamo> prestamos = DaoPrestamo.cargarListado();
         tablaPrestamos.getItems().setAll(prestamos);
         col_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
         col_alumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDni()));
         col_libroPrestamo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitulo()));
+        */
 
+/*
         // Tabla de histórico de préstamos
         List<ModeloHistoricoPrestamo> historicoPrestamos = DaoHistorialPrestamo.cargarListado();
         tablaHistorico.getItems().setAll(historicoPrestamos);
         col_fechaPrestamo.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
         col_fechaDevolucion.setCellValueFactory(new PropertyValueFactory<>("fecha_devolucion"));
         col_AlumnoHistorico.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
-        col_LibroHistorico.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getLibro().getTitulo())
-        );
+        col_LibroHistorico.setCellValueFactory(cellData -> {
+            if (cellData.getValue().getLibro() != null) {
+                return new SimpleStringProperty(cellData.getValue().getLibro().getTitulo());
+            } else {
+                return new SimpleStringProperty("Sin título");
+            }
+        });
 
+*/
 
 
     }
