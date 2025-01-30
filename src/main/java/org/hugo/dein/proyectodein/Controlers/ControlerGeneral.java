@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
+import org.hugo.dein.proyectodein.Dao.DaoLibro;
 
 import java.io.IOException;
 
@@ -157,7 +158,37 @@ public class ControlerGeneral {
 
     @FXML
     void bajaLibro(ActionEvent event) {
+        // Primero, obtenemos el libro seleccionado en la tabla
+        ModeloLibro libroSeleccionado = tablaLibros.getSelectionModel().getSelectedItem();
 
+        // Si no hay libro seleccionado, mostramos un mensaje de error
+        if (libroSeleccionado == null) {
+            mostrarAlerta("Error", "No has seleccionado ningún libro", "Por favor, selecciona un libro para dar de baja.");
+            return;
+        }
+
+        // Si hay libro seleccionado, mostramos una ventana emergente de confirmación
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación de Baja");
+        alert.setHeaderText("¿Estás seguro de que deseas dar de baja el libro?");
+        alert.setContentText("Libro: " + libroSeleccionado.getTitulo());
+
+        // Si el usuario confirma, llamamos al metodo bajaDelLibro
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Llamamos al metodo bajaDelLibro para dar de baja el libro en la base de datos
+                boolean exito = DaoLibro.darDeBaja(libroSeleccionado);
+
+                // Mostramos un mensaje dependiendo si la operación fue exitosa o no
+                if (exito) {
+                    mostrarAlerta("Éxito", "Libro dado de baja", "El libro ha sido dado de baja correctamente.");
+                    // Aquí podríamos actualizar la tabla para reflejar los cambios
+                    //cargarDatosTablas();
+                } else {
+                    mostrarAlerta("Error", "No se pudo dar de baja el libro", "Hubo un error al intentar dar de baja el libro.");
+                }
+            }
+        });
     }
 
     @FXML
@@ -302,4 +333,12 @@ public class ControlerGeneral {
         }
     }
 
+    // Metodo para mostrar alertas
+    private void mostrarAlerta(String titulo, String cabecera, String contenido) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(cabecera);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
 }
