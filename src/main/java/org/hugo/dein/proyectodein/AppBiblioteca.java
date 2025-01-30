@@ -41,6 +41,7 @@ public class AppBiblioteca extends Application {
 
         // Configurar la ventana
         stage.setTitle("BiblioRusty");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

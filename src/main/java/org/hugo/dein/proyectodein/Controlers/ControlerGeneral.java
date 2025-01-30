@@ -218,14 +218,14 @@ public class ControlerGeneral implements Initializable {
                 return new SimpleObjectProperty<>(imageView);
             }
         });
-/*
+
         // Tabla de préstamos
         List<ModeloPrestamo> prestamos = DaoPrestamo.cargarListado();
         tablaPrestamos.getItems().setAll(prestamos);
         col_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
         col_alumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDni()));
         col_libroPrestamo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitulo()));
-        */
+
 
 /*
         // Tabla de histórico de préstamos
