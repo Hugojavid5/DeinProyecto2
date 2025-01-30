@@ -48,7 +48,7 @@ public class DaoLibro {
         ObservableList<ModeloLibro> libros = FXCollections.observableArrayList();
         try{
             connection = new ConexionBBDD();
-            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,portada FROM Libro";
+            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,portada FROM Libro WHERE baja = 0";
             PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
