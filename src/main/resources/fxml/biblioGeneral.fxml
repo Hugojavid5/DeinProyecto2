@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerGeneral">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerGeneral">
    <VBox fx:id="vbox_general" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0">
       <children>
          <MenuBar fx:id="menuBar_iia">
@@ -141,10 +141,10 @@
                            <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="786.0" spacing="30.0">
                               <children>
                                  <Label text="Filtro" />
-                                 <TextField fx:id="tfFiltrarPrestamo" onAction="#filtrarPrestamo" prefHeight="0.0" prefWidth="239.0" promptText="Buscar por filtro" />
+                                 <TextField fx:id="txt_FiltrarPrestamo" onAction="#filtrarPrestamo" prefHeight="0.0" prefWidth="239.0" promptText="Buscar por filtro" />
                               </children>
                            </HBox>
-                           <TableView layoutY="88.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="185.0" prefWidth="690.0">
+                           <TableView fx:id="tablaPrestamos" layoutY="88.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="185.0" prefWidth="690.0">
                               <columns>
                                  <TableColumn prefWidth="75.0" text="Id prestamo" />
                                  <TableColumn prefWidth="75.0" text="Dni del alumno" />

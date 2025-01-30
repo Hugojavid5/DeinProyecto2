@@ -9,11 +9,16 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hugo.dein.proyectodein.Dao.DaoAlumno;
+import org.hugo.dein.proyectodein.Dao.DaoPrestamo;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import org.hugo.dein.proyectodein.Dao.DaoLibro;
+import org.hugo.dein.proyectodein.Modelos.ModeloPrestamo;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ControlerGeneral {
 
@@ -106,9 +111,11 @@ public class ControlerGeneral {
 
     @FXML
     private TableColumn<?, ?> tcTituloTabLibros;
+    @FXML
+    private TableView<ModeloPrestamo> tablaPrestamos;
 
     @FXML
-    private TextField tfFiltrarPrestamo;
+    private TextField txt_FiltrarPrestamo;
 
     @FXML
     private TextField txt_filtarAlumn;
@@ -234,23 +241,47 @@ public class ControlerGeneral {
 
     @FXML
     void filtrarAlumno(ActionEvent event) {
+        String filtro = txt_filtarAlumn.getText().trim().toLowerCase();
+        List<ModeloAlumno> alumnosFiltrados = DaoAlumno.cargarListado().stream()
+                .filter(alumno -> alumno.getNombre().toLowerCase().contains(filtro))
+                .collect(Collectors.toList());
 
+        tablaAlumnos.getItems().setAll(alumnosFiltrados);
     }
 
     @FXML
     void filtrarHistorico(ActionEvent event) {
+        String filtro = txt_FiltrarPrestamo.getText().trim();
 
+        List<ModeloPrestamo> prestamosFiltrados = DaoPrestamo.cargarListado().stream()
+                .filter(prestamo -> prestamo.getFecha_prestamo().toString().contains(filtro))
+                .collect(Collectors.toList());
+
+        tablaPrestamos.getItems().setAll(prestamosFiltrados);
     }
 
     @FXML
     void filtrarLibros(ActionEvent event) {
+        String filtro = txt_filtrarLibros.getText().trim().toLowerCase();
 
+        List<ModeloLibro> librosFiltrados = DaoLibro.cargarListado().stream()
+                .filter(libro -> libro.getTitulo().toLowerCase().contains(filtro))
+                .collect(Collectors.toList());
+
+        tablaLibros.getItems().setAll(librosFiltrados);
     }
 
     @FXML
     void filtrarPrestamo(ActionEvent event) {
+        String filtro = txt_FiltrarPrestamo.getText().trim();
 
+        List<ModeloPrestamo> prestamosFiltrados = DaoPrestamo.cargarListado().stream()
+                .filter(prestamo -> prestamo.getFecha_prestamo().toString().contains(filtro))
+                .collect(Collectors.toList());
+
+        tablaPrestamos.getItems().setAll(prestamosFiltrados);
     }
+
 
     @FXML
     void idiomaEspaniol(ActionEvent event) {
@@ -333,7 +364,7 @@ public class ControlerGeneral {
         }
     }
 
-    // Metodo para mostrar alertas
+
     private void mostrarAlerta(String titulo, String cabecera, String contenido) {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
         alerta.setTitle(titulo);
