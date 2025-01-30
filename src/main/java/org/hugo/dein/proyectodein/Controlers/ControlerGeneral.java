@@ -196,7 +196,7 @@ public class ControlerGeneral implements Initializable {
         col_ape2.setCellValueFactory(new PropertyValueFactory<>("apellido2"));
 
         //Tabla de libros
-        List<ModeloLibro> libros = DaoLibro.getTodosLibrosConBajaA0();
+        List<ModeloLibro> libros = DaoLibro.todosLibrosActivos();
         tablaLibros.getItems().setAll(libros);
         tcTituloTabLibros.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         tcAutorTabLibros.setCellValueFactory(new PropertyValueFactory<>("autor"));
@@ -435,7 +435,7 @@ public class ControlerGeneral implements Initializable {
     void filtrarLibros(ActionEvent event) {
         String filtro = txt_filtrarLibros.getText().trim().toLowerCase();
 
-        List<ModeloLibro> librosFiltrados = DaoLibro.getTodosLibrosConBajaA0().stream()
+        List<ModeloLibro> librosFiltrados = DaoLibro.todosLibrosActivos().stream()
                 .filter(libro -> libro.getTitulo().toLowerCase().contains(filtro))
                 .collect(Collectors.toList());
 

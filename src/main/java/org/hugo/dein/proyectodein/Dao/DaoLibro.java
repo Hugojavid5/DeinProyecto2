@@ -42,33 +42,33 @@ public class DaoLibro {
         }
         return libro;
     }
-    private static Connection conn;
-
-    static {
-        conn = ConexionBBDD.getConnection();
-    }
-    public static ObservableList<ModeloLibro> getTodosLibrosConBajaA0() {
-        ObservableList<ModeloLibro> listaLibros = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM Libro WHERE baja = 0";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
+    public static ObservableList<ModeloLibro> todosLibrosActivos() {
+        ConexionBBDD connection;
+        ObservableList<ModeloLibro> libros = FXCollections.observableArrayList();
+        try {
+            connection = new ConexionBBDD();
+            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,imagen FROM Libro WHERE baja=0";
+            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                listaLibros.add(new ModeloLibro(
-                        rs.getInt("codigo"),
-                        rs.getString("titulo"),
-                        rs.getString("autor"),
-                        rs.getString("editorial"),
-                        rs.getString("estado"),
-                        rs.getInt("baja"),
-                        rs.getBlob("imagen")
-                ));
+                int codigo = rs.getInt(1);
+                String titulo = rs.getString(2);
+                String autor = rs.getString(3);
+                String editorial = rs.getString(4);
+                String estado = rs.getString(5);
+                int baja = rs.getInt(6);
+                Blob foto = rs.getBlob(7);
+                ModeloLibro l=new ModeloLibro(codigo,titulo,autor,editorial,estado,baja,foto);
+                libros.add(l);
             }
+            rs.close();
+            connection.closeConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
-        return listaLibros;
+        return libros;
     }
+
 
     public static Blob convertBytesToBlob(byte[] bytes) {
         ConexionBBDD connection;
