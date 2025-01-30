@@ -42,32 +42,32 @@ public class DaoLibro {
         }
         return libro;
     }
+    private static Connection conn;
 
-    public static ObservableList<ModeloLibro> cargarListado() {
-        ConexionBBDD connection;
-        ObservableList<ModeloLibro> libros = FXCollections.observableArrayList();
-        try{
-            connection = new ConexionBBDD();
-            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,portada FROM Libro WHERE baja = 0";
-            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
-            ResultSet rs = ps.executeQuery();
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+    public static ObservableList<ModeloLibro> getTodosLibrosConBajaA0() {
+        ObservableList<ModeloLibro> listaLibros = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM Libro WHERE baja = 0";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
             while (rs.next()) {
-                int codigo_db = rs.getInt("codigo");
-                String titulo = rs.getString("titulo");
-                String autor = rs.getString("autor");
-                String editorial = rs.getString("editorial");
-                String estado = rs.getString("estado");
-                int baja = rs.getInt("baja");
-                Blob portada = rs.getBlob("portada");
-                ModeloLibro libro = new ModeloLibro(codigo_db, titulo, autor, editorial, estado, baja, portada);
-                libros.add(libro);
+                listaLibros.add(new ModeloLibro(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getInt("baja"),
+                        rs.getBlob("imagen")
+                ));
             }
-            rs.close();
-            connection.closeConnection();
-        }catch (SQLException e) {
-            logger.error(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return libros;
+        return listaLibros;
     }
 
     public static Blob convertBytesToBlob(byte[] bytes) {
