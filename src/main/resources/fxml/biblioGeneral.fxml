@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -159,17 +160,22 @@
                      </AnchorPane>
                   </content>
                </Tab>
-               <Tab text="Historial prestamos">
+               <Tab fx:id="tablahistoricosPrestamos" text="Historial prestamos">
                   <content>
                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="210.0" prefWidth="786.0">
                         <children>
                            <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="600.0" spacing="25.0">
                               <children>
                                  <Label text="Filtrar por:" />
-                                 <ComboBox fx:id="cbFiltroHistorico" onAction="#filtrarHistorico" prefWidth="150.0" />
+                                 <ComboBox fx:id="cbFiltroHistorico" onAction="#filtrarHistoricoPrestamos" prefWidth="150.0" promptText="seleciona un filtro" />
+                                 <TextField fx:id="txtFiltrarporHistoricoPrestamos" onAction="#filtrarHistoricoPrestamos" prefHeight="0.0" prefWidth="239.0" promptText="filtrar por:">
+                                    <tooltip>
+                                       <Tooltip text="Filtra por lo seleccionado en el checkbox" />
+                                    </tooltip>
+                                 </TextField>
                               </children>
                            </HBox>
-                           <TableView layoutY="74.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="192.0" prefWidth="690.0">
+                           <TableView fx:id="tablaHistorico" layoutY="74.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="192.0" prefWidth="690.0">
                               <columns>
                                  <TableColumn prefWidth="75.0" text="Id prestamo" />
                                  <TableColumn prefWidth="75.0" text="Dni del alumno" />

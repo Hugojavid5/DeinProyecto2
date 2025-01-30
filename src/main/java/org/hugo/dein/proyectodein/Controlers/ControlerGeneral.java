@@ -1,26 +1,35 @@
 package org.hugo.dein.proyectodein.Controlers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import org.hugo.dein.proyectodein.Dao.DaoAlumno;
+import org.hugo.dein.proyectodein.Dao.DaoHistorialPrestamo;
 import org.hugo.dein.proyectodein.Dao.DaoPrestamo;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
+import org.hugo.dein.proyectodein.Modelos.ModeloHistoricoPrestamo;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloPrestamo;
 
 import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ControlerGeneral {
+public class ControlerGeneral implements Initializable {
 
     @FXML
     private Button btt_aniadir;
@@ -32,7 +41,10 @@ public class ControlerGeneral {
     private Button btt_modificar;
 
     @FXML
-    private ComboBox<?> cbFiltroHistorico;
+    private Tab tablahistoricosPrestamos;
+
+    @FXML
+    private ComboBox<String> cbFiltroHistorico;
 
     @FXML
     private Tab colAlumnos;
@@ -92,6 +104,8 @@ public class ControlerGeneral {
     private TableView<ModeloAlumno> tablaAlumnos;
 
     @FXML
+    private TableView<ModeloHistoricoPrestamo> tablaHistorico;
+    @FXML
     private TabPane tablaGeneral;
 
     @FXML
@@ -125,6 +139,21 @@ public class ControlerGeneral {
 
     @FXML
     private VBox vbox_general;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("iniciando...");
+        try {
+            ConexionBBDD con = new ConexionBBDD();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //cargarDatosTablas();
+        cargarFiltrosHistorico();
+    }
+
+
 
     @FXML
     void aniadirAlumno(ActionEvent event) {
@@ -363,6 +392,31 @@ public class ControlerGeneral {
             System.out.println(e.getMessage());
         }
     }
+
+    private void cargarFiltrosHistorico() {
+        ObservableList<String> filtros = FXCollections.observableArrayList("Por DNI Del alumno", "Por Título de libro");
+        cbFiltroHistorico.setItems(filtros);
+        cbFiltroHistorico.getSelectionModel().selectFirst();
+    }
+    @FXML
+    void filtrarHistoricoPrestamos(ActionEvent event) {
+        String filtro = txt_FiltrarPrestamo.getText().trim().toLowerCase();
+        String criterio = cbFiltroHistorico.getSelectionModel().getSelectedItem();
+
+        List<ModeloHistoricoPrestamo> historicoFiltrado = DaoHistorialPrestamo.cargarListado().stream()
+                .filter(historico -> {
+                    if ("dni del alumno".equals(criterio)) {
+                        return historico.getAlumno().getDni().toLowerCase().contains(filtro);
+                    } else if ("titulo libro".equals(criterio)) {
+                        return historico.getLibro().getTitulo().toLowerCase().contains(filtro);
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
+
+        tablaHistorico.getItems().setAll(historicoFiltrado);
+    }
+
 
 
     private void mostrarAlerta(String titulo, String cabecera, String contenido) {
