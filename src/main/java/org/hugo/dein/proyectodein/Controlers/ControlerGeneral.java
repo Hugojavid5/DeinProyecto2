@@ -272,7 +272,10 @@ public class ControlerGeneral implements Initializable {
 
     @FXML
     void cargarInforme2(ActionEvent event) {
-
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
+        parameters.put("SUBINFORME_PATH", getClass().getResource("/jasper/").toString());
+        generarReporte("/jasper/Informe2Libros.jasper", parameters);
     }
 
     @FXML
@@ -281,9 +284,9 @@ public class ControlerGeneral implements Initializable {
     }
 
     public void cargarInforme4(ActionEvent event) {
-       // Map<String, Object> parameters = new HashMap<>();
-        //parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
-        //generarReporte("/jasper/Informe4Datos.jasper", parameters);
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("IMAGE_PATH", getClass().getResource("/imagenes/").toString());
+        generarReporte("/jasper/Informe4Datos.jasper", parameters);
     }
 
     @FXML

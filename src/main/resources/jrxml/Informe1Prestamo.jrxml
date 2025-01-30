@@ -1,9 +1,9 @@
 <!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
-<jasperReport name="proyectoInforme1" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a40ea654-c589-4bf7-9018-9c2bc5a5234c">
+<jasperReport name="Informe1Prestamo" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a40ea654-c589-4bf7-9018-9c2bc5a5234c">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="115"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="885"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ContraDockerExamen1"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MariadbDein"/>
 	<parameter name="ID_PRESTAMO" class="java.lang.String"/>
 	<parameter name="IMAGE_PATH" class="java.lang.String"/>
 	<query language="SQL"><![CDATA[SELECT  libros.`Prestamo`.fecha_prestamo ,

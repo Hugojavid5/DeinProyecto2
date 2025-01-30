@@ -1,0 +1,122 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="Informe2Libros" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="469a4904-c352-475d-a716-d9a3e3311d69">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="288"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="700"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MariadbDein"/>
+	<parameter name="IMAGE_PATH" class="java.lang.String"/>
+	<parameter name="SUBINFORME_PATH" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT 
+    libros.`Libro`.codigo AS libro_id,
+    libros.`Libro`.titulo  AS titulo_libro,
+    libros.`Libro`.autor ,
+    libros.`Libro`.editorial ,
+    libros.`Libro`.estado,
+    libros.`Libro`.baja 
+FROM 
+     libros.`Libro`]]></query>
+	<field name="libro_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="libro_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="titulo_libro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titulo"/>
+		<property name="com.jaspersoft.studio.field.label" value="titulo_libro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="autor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="autor"/>
+		<property name="com.jaspersoft.studio.field.label" value="autor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="editorial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="editorial"/>
+		<property name="com.jaspersoft.studio.field.label" value="editorial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<field name="baja" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="baja"/>
+		<property name="com.jaspersoft.studio.field.label" value="baja"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="Libro"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="80" splitType="Stretch">
+		<element kind="staticText" uuid="191efedb-27bb-43ff-856c-96b1e184cb47" mode="Opaque" x="0" y="0" width="550" height="80" forecolor="#E0FF00" backcolor="#050000" fontSize="40.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Libros]]></text>
+		</element>
+	</title>
+	<pageHeader height="35" splitType="Stretch"/>
+	<columnHeader height="150" splitType="Stretch">
+		<element kind="staticText" uuid="8b8c2776-9df1-4e70-81d9-02cd16917696" mode="Opaque" x="80" y="-35" width="390" height="80" forecolor="#E0FF00" backcolor="#050000" fontSize="40.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[BiblioRusty]]></text>
+		</element>
+		<element kind="image" uuid="e78fb1f3-a2ef-43fe-9cf7-904d172d28ea" x="0" y="-35" width="80" height="80">
+			<expression><![CDATA[$P{IMAGE_PATH}+"biblioteca.png"]]></expression>
+		</element>
+		<element kind="line" uuid="0c3cdc78-ff24-4c6e-90ae-534c392c356b" x="0" y="120" width="549" height="1"/>
+		<element kind="image" uuid="92a908a3-ecb1-4742-bbd3-5e3e3ef71889" x="470" y="-35" width="80" height="80">
+			<expression><![CDATA[$P{IMAGE_PATH}+"biblioteca.png"]]></expression>
+		</element>
+		<element kind="staticText" uuid="846499f0-f5a1-421b-b32a-fb300ed76a18" mode="Opaque" x="0" y="45" width="550" height="30" forecolor="#E0FF00" backcolor="#050000" fontSize="20.0" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Libro]]></text>
+		</element>
+		<element kind="staticText" uuid="552cffa0-44c8-44b0-ab7a-5520556cacb2" mode="Opaque" x="0" y="75" width="280" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Id]]></text>
+		</element>
+		<element kind="staticText" uuid="992cb698-f562-4d73-bf18-8c07e4f17a28" mode="Opaque" x="280" y="75" width="269" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[  Estado]]></text>
+		</element>
+		<element kind="textField" uuid="7e3639b5-b272-4519-9fe7-595d20ff5806" mode="Opaque" x="0" y="115" width="549" height="30" forecolor="#E0FF00" backcolor="#050000" fontSize="20.0" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{titulo_libro}]]></expression>
+		</element>
+		<element kind="textField" uuid="693ede76-cd19-493a-a15b-dc03a6e51cd0" mode="Opaque" x="0" y="95" width="280" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{libro_id}]]></expression>
+		</element>
+		<element kind="textField" uuid="f1665c31-d7b9-4fac-a03f-ea2434104f0d" mode="Opaque" x="280" y="95" width="269" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$F{estado}]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</columnHeader>
+	<detail>
+		<band height="85" splitType="Stretch">
+			<element kind="staticText" uuid="585f567a-c23f-4c2e-97d1-50ed5609104e" mode="Opaque" x="280" y="-5" width="269" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Editor]]></text>
+			</element>
+			<element kind="textField" uuid="e1e9b7b8-d0c8-4d47-8347-23745e98b45d" mode="Opaque" x="280" y="15" width="269" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{editorial}]]></expression>
+			</element>
+			<element kind="textField" uuid="98e44b5a-c8cb-42fc-96ad-e11c33be9e4b" mode="Opaque" x="0" y="15" width="280" height="20" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[$F{autor}]]></expression>
+			</element>
+			<element kind="staticText" uuid="3369cadc-5edd-44e1-bed0-06872b549ece" mode="Opaque" x="0" y="-5" width="280" height="20" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[  Autor]]></text>
+			</element>
+			<element kind="subreport" uuid="f8c81360-c340-44a7-b879-f08384ef6d10" x="0" y="35" width="549" height="50">
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<expression><![CDATA[$P{SUBINFORME_PATH}+"Subinforme2Libros.jasper"]]></expression>
+				<parameter name="libro_id">
+					<expression><![CDATA[$F{libro_id}]]></expression>
+				</parameter>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="13" splitType="Stretch"/>
+	<pageFooter height="30" splitType="Stretch">
+		<element kind="textField" uuid="9b0c94e5-d9f6-43af-8988-f0c852d3476a" x="370" y="0" width="100" height="30" hTextAlign="Right" vTextAlign="Middle">
+			<expression><![CDATA["Página "+$V{PAGE_NUMBER}+" /"]]></expression>
+		</element>
+		<element kind="textField" uuid="3ba7d551-5f06-46c8-b1c4-fb1331d47202" x="470" y="0" width="79" height="30" evaluationTime="Report" vTextAlign="Middle">
+			<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="89fa3541-a1fb-48e0-9dcc-7d8eb3e88b01" x="0" y="14" width="230" height="15" pattern="EEEE, d 'de' MMMM 'del' yyyy">
+			<expression><![CDATA[new java.util.Date()]]></expression>
+		</element>
+	</pageFooter>
+	<summary height="31" splitType="Stretch"/>
+</jasperReport>
