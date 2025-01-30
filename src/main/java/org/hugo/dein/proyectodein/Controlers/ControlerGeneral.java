@@ -55,9 +55,9 @@ public class ControlerGeneral implements Initializable {
     @FXML
     private TableColumn<LocalDateTime, ModeloPrestamo> col_fecha;
     @FXML
-    private TableColumn<ModeloAlumno, String> col_alumno;
+    private TableColumn<ModeloPrestamo, String> col_alumno;
     @FXML
-    private TableColumn<ModeloLibro, String> col_libroPrestamo;
+    private TableColumn<ModeloPrestamo, String> col_libroPrestamo;
     @FXML
     private TableColumn<ModeloHistoricoPrestamo, String> col_AlumnoHistorico;
     @FXML
@@ -223,8 +223,8 @@ public class ControlerGeneral implements Initializable {
         List<ModeloPrestamo> prestamos = DaoPrestamo.cargarListado();
         tablaPrestamos.getItems().setAll(prestamos);
         col_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
-        col_alumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDni()));
-        col_libroPrestamo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitulo()));
+        col_alumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
+        col_libroPrestamo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLibro().getTitulo()));
 
 
 /*
