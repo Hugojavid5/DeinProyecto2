@@ -70,7 +70,7 @@ public class ControlerGeneral implements Initializable {
     private TableColumn<LocalDateTime, ModeloHistoricoPrestamo> col_fechaPrestamo;
 
     @FXML
-    private TableColumn<ModeloHistoricoPrestamo, LocalDateTime> col_fechaDevolucion;
+    private TableColumn<LocalDateTime, ModeloHistoricoPrestamo> col_fechaDevolucion;
 
     @FXML
     private Button btt_modificar;
