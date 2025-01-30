@@ -19,6 +19,7 @@ public class ModeloPrestamo {
     }
 
 
+
     public ModeloPrestamo() {}
 
 
@@ -51,6 +52,7 @@ public class ModeloPrestamo {
     public void setLibro(ModeloLibro libro) {
         this.libro = libro;
     }
+
 
     public LocalDateTime getFecha_prestamo() {
         return fecha_prestamo;

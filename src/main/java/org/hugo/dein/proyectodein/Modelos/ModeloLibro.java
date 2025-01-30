@@ -47,7 +47,6 @@ public class ModeloLibro {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
     public String getAutor() {
         return autor;
     }
