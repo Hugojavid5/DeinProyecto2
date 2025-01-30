@@ -178,8 +178,8 @@
                            <TableView fx:id="tablaHistorico" layoutY="74.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="192.0" prefWidth="690.0">
                               <columns>
                                  <TableColumn prefWidth="75.0" text="Id prestamo" />
-                                 <TableColumn prefWidth="75.0" text="Dni del alumno" />
-                                 <TableColumn prefWidth="75.0" text="Titulo del libro" />
+                                 <TableColumn fx:id="col_AlumnoHistorico" prefWidth="75.0" text="Dni del alumno" />
+                                 <TableColumn fx:id="col_LibroHistorico" prefWidth="75.0" text="Titulo del libro" />
                                  <TableColumn fx:id="col_fechaPrestamo" prefWidth="75.0" text="Fecha  prestamo" />
                                  <TableColumn fx:id="col_fechaDevolucion" prefWidth="75.0" text="Fecha devolucion" />
                               </columns>
