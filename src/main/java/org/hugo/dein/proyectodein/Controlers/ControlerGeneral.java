@@ -274,6 +274,7 @@ public class ControlerGeneral implements Initializable {
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
      }
     }
@@ -456,10 +457,8 @@ public class ControlerGeneral implements Initializable {
         ModeloAlumno alumno=tablaAlumnos.getSelectionModel().getSelectedItem();
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/alumnos.fxml"));
+            fxmlLoader.setControllerFactory(c -> new ControlerAlumno(alumno));
             Parent root = fxmlLoader.load();
-
-            ControlerAlumno controller=fxmlLoader.getController();
-            controller.setAlumnos(alumno);
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();

@@ -9,7 +9,12 @@ import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Dao.DaoAlumno;
 
 public class ControlerAlumno {
-
+    public ControlerAlumno(ModeloAlumno a) {
+        alumnos = a;
+    }
+    public ControlerAlumno(){
+        this(null);
+    }
     @FXML
     private TextField txt_ape1;
 
@@ -70,30 +75,45 @@ public class ControlerAlumno {
             return;
         }
 
+        // Verificar que el alumno ya exista y que se trata de una modificación
+        if (alumnos != null) {
+            // Modificar el alumno existente
+            txt_dni.setDisable(true);
+            alumnos.setNombre(nombre);
+            alumnos.setApellido1(primerApellido);
+            alumnos.setApellido2(segundoApellido);
 
-        ModeloAlumno alumno = new ModeloAlumno();
-        alumno.setDni(dni);
-        alumno.setNombre(nombre);
-        alumno.setApellido1(primerApellido);
-        alumno.setApellido2(segundoApellido);
+            // Actualizar el alumno en la base de datos
+            try {
+                DaoAlumno.modificar(alumnos);  // Actualizamos el alumno
+                mostrarAlerta("Éxito", "El alumno ha sido actualizado correctamente.");
 
-        // Insertar el alumno en la base de datos
-        try {
-            DaoAlumno.insertar(alumno);
-            mostrarAlerta("Éxito", "El alumno ha sido registrado correctamente.");
+                // Ejecutar el callback para actualizar la tabla
+                if (onCloseCallback != null) {
+                    onCloseCallback.run();
+                }
 
-            // Cerrar la ventana después de guardar
-            cancelar(event);
-
-        } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo registrar el alumno: " + e.getMessage());
+                cancelar(event);  // Cerrar la ventana
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo actualizar el alumno: " + e.getMessage());
+            }
+        } else {
+            mostrarAlerta("Error", "No se ha seleccionado un alumno para modificar.");
         }
     }
 
-    private ModeloAlumno alumnos;
 
-    public void setAlumnos(ModeloAlumno alumnos) {
-        this.alumnos = alumnos;
+
+    private final ModeloAlumno alumnos;
+
+    public void initialize() {
+        if (alumnos != null) {
+            txt_dni.setText(alumnos.getDni());
+            txt_dni.setDisable(true);
+            txt_nombre.setText(alumnos.getNombre());
+            txt_ape1.setText(alumnos.getApellido1());
+            txt_ape2.setText(alumnos.getApellido2());
+        }
     }
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
