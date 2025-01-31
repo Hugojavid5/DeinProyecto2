@@ -8,9 +8,9 @@ import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * La clase pantallaBiblioteca gestiona la inicialización y el lanzamiento de la ventana principal
@@ -29,9 +29,14 @@ public class AppBiblioteca extends Application {
      */
     @Override
     public void start(Stage s) throws IOException {
-        Properties connConfig = ConexionBBDD.loadProperties();  // Carga la configuración de conexión a la base de datos
+        Properties connConfig = ConexionBBDD.loadProperties();
 
         stage = s;  // Establece el escenario principal
+        Properties properties = ConexionBBDD.cargarIdioma();
+        String lang = properties.getProperty("language");
+        // Cargar el recurso de idioma adecuado utilizando el archivo de propiedades
+        Locale locale = new Locale(lang);
+        ResourceBundle bundle = ResourceBundle.getBundle("languages/lang", locale);
 
         // Cargar el archivo FXML para la interfaz de la biblioteca
         FXMLLoader fxmlLoader = new FXMLLoader(AppBiblioteca.class.getResource("/fxml/biblioGeneral.fxml"));

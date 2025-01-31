@@ -419,7 +419,7 @@ public class ControlerGeneral implements Initializable {
 
     @FXML
     void idiomaIngles(ActionEvent event) {
-        ConexionBBDD.guardarIdioma("en");
+        ConexionBBDD.guardarIdioma("eus");
         Stage stage = (Stage) txt_filtarAlumn.getScene().getWindow();
         this.actualizarVentana(stage);
     }
@@ -432,7 +432,7 @@ public class ControlerGeneral implements Initializable {
 
             // Cargar el recurso de idioma adecuado utilizando el archivo de propiedadess
             Locale locale = new Locale(lang);
-            ResourceBundle bundle = ResourceBundle.getBundle("idiomas/lang", locale);
+            ResourceBundle bundle = ResourceBundle.getBundle("languages/lang", locale);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML), bundle);
             Parent root = loader.load();
 
@@ -570,7 +570,7 @@ public class ControlerGeneral implements Initializable {
             Properties properties = ConexionBBDD.cargarIdioma();
             String lang = properties.getProperty("language");
             Locale locale = new Locale(lang);
-            ResourceBundle bundle = ResourceBundle.getBundle("idiomas/lang", locale);
+            ResourceBundle bundle = ResourceBundle.getBundle("languages/lang", locale);
 
             // Cargar el archivo FXML de la ventana principal con el nuevo ResourceBundle
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/biblioGeneral.fxml"), bundle);
