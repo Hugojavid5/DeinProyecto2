@@ -83,14 +83,12 @@ public class DaoPrestamo {
             PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int id_prestamo_db = rs.getInt("id_prestamo");
-                String dni_alumno = rs.getString("dni_alumno");
-                ModeloAlumno alumno = DaoAlumno.getAlumno(dni_alumno);
-                int codigo_libro = rs.getInt("codigo_libro");
-                ModeloLibro libro = DaoLibro.getLibro(codigo_libro);
-                LocalDateTime fecha_prestamo = rs.getTimestamp("fecha_prestamo").toLocalDateTime();
-                ModeloPrestamo prestamo = new ModeloPrestamo(id_prestamo_db, alumno, libro, fecha_prestamo);
-                prestamos.add(prestamo);
+                prestamos.add(new ModeloPrestamo(
+                        rs.getInt("id_prestamo"),
+                        DaoAlumno.getAlumno(rs.getString("dni_alumno")),
+                        DaoLibro.getLibro(rs.getInt("codigo_libro")),
+                        rs.getTimestamp("fecha_prestamo").toLocalDateTime()
+                ));
             }
             rs.close();
             connection.closeConnection();

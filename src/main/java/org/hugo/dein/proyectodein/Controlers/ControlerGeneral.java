@@ -51,6 +51,8 @@ public class ControlerGeneral implements Initializable {
 
     @FXML
     private Button btt_aniadir;
+    @FXML
+    private TableColumn<Integer, ModeloHistoricoPrestamo> cod_idHistoricoPrestamo;
 
     @FXML
     private TableColumn<LocalDateTime, ModeloPrestamo> col_fecha;
@@ -150,7 +152,8 @@ public class ControlerGeneral implements Initializable {
     @FXML
     private TableColumn<String, ModeloLibro> tcAutorTabLibros;
 
-
+    @FXML
+    private TableColumn<Integer, ModeloPrestamo> col_idPrestamos;
     @FXML
     private TableColumn<String, ModeloLibro> tcEditorialTabLibros;
 
@@ -201,6 +204,7 @@ public class ControlerGeneral implements Initializable {
         tcTituloTabLibros.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         tcAutorTabLibros.setCellValueFactory(new PropertyValueFactory<>("autor"));
         tcEditorialTabLibros.setCellValueFactory(new PropertyValueFactory<>("editorial"));
+        tcEstadoTabLibros.setCellValueFactory(new PropertyValueFactory<>("estado"));
         tcBajaTabLibros.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ModeloLibro, ImageView>, ObservableValue<ImageView>>() {
             @Override
             public ObservableValue<ImageView> call(TableColumn.CellDataFeatures<ModeloLibro, ImageView> cellData) {
@@ -222,15 +226,16 @@ public class ControlerGeneral implements Initializable {
         // Tabla de préstamos
         List<ModeloPrestamo> prestamos = DaoPrestamo.cargarListado();
         tablaPrestamos.getItems().setAll(prestamos);
+        col_idPrestamos.setCellValueFactory(new PropertyValueFactory<>("id_prestamo"));
         col_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
         col_alumno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
         col_libroPrestamo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLibro().getTitulo()));
 
 
-/*
         // Tabla de histórico de préstamos
         List<ModeloHistoricoPrestamo> historicoPrestamos = DaoHistorialPrestamo.cargarListado();
         tablaHistorico.getItems().setAll(historicoPrestamos);
+        cod_idHistoricoPrestamo.setCellValueFactory(new PropertyValueFactory<>("id_prestamo"));
         col_fechaPrestamo.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
         col_fechaDevolucion.setCellValueFactory(new PropertyValueFactory<>("fecha_devolucion"));
         col_AlumnoHistorico.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlumno().getDni()));
@@ -241,10 +246,6 @@ public class ControlerGeneral implements Initializable {
                 return new SimpleStringProperty("Sin título");
             }
         });
-
-*/
-
-
     }
     private Image blobToImage(Blob blob) {
         try {

@@ -21,7 +21,7 @@ public class DaoLibro {
         ModeloLibro libro = null;
         try {
             connection = new ConexionBBDD();
-            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,portada FROM Libro WHERE codigo = ?";
+            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,imagen FROM Libro WHERE codigo = ?";
             PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
             ps.setInt(1, codigo);
             ResultSet rs = ps.executeQuery();
@@ -32,7 +32,7 @@ public class DaoLibro {
                 String editorial = rs.getString("editorial");
                 String estado = rs.getString("estado");
                 int baja = rs.getInt("baja");
-                Blob portada = rs.getBlob("portada");
+                Blob portada = rs.getBlob("imagen");
                 libro = new ModeloLibro(codigo_db, titulo, autor, editorial, estado, baja, portada);
             }
             rs.close();
