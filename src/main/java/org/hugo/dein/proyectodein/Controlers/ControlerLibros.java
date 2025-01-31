@@ -17,6 +17,7 @@ import java.io.File;
 import java.nio.file.Files;
 
 public class ControlerLibros {
+    ModeloLibro libro;
     private byte[] imagenBytes;
     @FXML
     private Button btt_borraImg;
@@ -118,25 +119,31 @@ public class ControlerLibros {
             return;
         }
 
-        // Crear el objeto LibroModel
-        ModeloLibro libro = new ModeloLibro();
-        libro.setTitulo(titulo);
-        libro.setAutor(autor);
-        libro.setEditorial(editorial);
-        libro.setEstado(estado);
+        if(libro.getCodigo()!=0){
+            // Crear el objeto LibroModel
+            ModeloLibro libro = new ModeloLibro();
+            libro.setTitulo(titulo);
+            libro.setAutor(autor);
+            libro.setEditorial(editorial);
+            libro.setEstado(estado);
+            // Convertir la imagen a Blob antes de insertar
+            try {
+                libro.setPortada(DaoLibro.convertBytesToBlob(imagenBytes));
+                DaoLibro.insertar(libro);
+                mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
 
-        // Convertir la imagen a Blob antes de insertar
-        try {
-            libro.setPortada(DaoLibro.convertBytesToBlob(imagenBytes));
-            DaoLibro.insertar(libro);
-            mostrarAlerta("Éxito", "El libro ha sido registrado correctamente.");
+                // Cerrar la ventana después de guardar
+                cancelarCambios(event);
 
-            // Cerrar la ventana después de guardar
-            cancelarCambios(event);
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo registrar el libro: " + e.getMessage());
+            }
 
-        } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo registrar el libro: " + e.getMessage());
+        }   else {
+
         }
+
+
     }
 
 
@@ -165,7 +172,6 @@ public class ControlerLibros {
         }
     }
 
-    private ModeloLibro libro;
 
     public void setLibro(ModeloLibro libro) {
         this.libro = libro;

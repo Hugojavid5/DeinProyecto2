@@ -48,6 +48,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static org.hugo.dein.proyectodein.Dao.DaoLibro.modificar;
+import static org.hugo.dein.proyectodein.Dao.DaoPrestamo.cargarListado;
 
 public class ControlerGeneral implements Initializable {
 
@@ -226,7 +227,7 @@ public class ControlerGeneral implements Initializable {
         });
 
         // Tabla de préstamos
-        List<ModeloPrestamo> prestamos = DaoPrestamo.cargarListado();
+        List<ModeloPrestamo> prestamos = cargarListado();
         tablaPrestamos.getItems().setAll(prestamos);
         col_idPrestamos.setCellValueFactory(new PropertyValueFactory<>("id_prestamo"));
         col_fecha.setCellValueFactory(new PropertyValueFactory<>("fecha_prestamo"));
@@ -272,6 +273,7 @@ public class ControlerGeneral implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.setOnHidden(windowEvent -> cargarDatosTablas());
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -401,7 +403,7 @@ public class ControlerGeneral implements Initializable {
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
             // Establecer un evento que se ejecute cuando se cierre la ventana
-            // stage.setOnHidden(windowEvent -> cargarPrestamos());
+             stage.setOnHidden(windowEvent -> cargarListado());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -434,7 +436,7 @@ public class ControlerGeneral implements Initializable {
     void filtrarPrestamo(ActionEvent event) {
         String filtro = txt_FiltrarPrestamo.getText().trim();
 
-        List<ModeloPrestamo> prestamosFiltrados = DaoPrestamo.cargarListado().stream()
+        List<ModeloPrestamo> prestamosFiltrados = cargarListado().stream()
                 .filter(prestamo -> prestamo.getFecha_prestamo().toString().contains(filtro))
                 .collect(Collectors.toList());
 
@@ -503,6 +505,9 @@ public class ControlerGeneral implements Initializable {
 
             // Establecer un evento que se ejecute cuando se cierre la ventana
             stage.setOnHidden(windowEvent -> modificar(libro));
+            stage.setOnHidden(windowEvent -> cargarDatosTablas());
+            System.out.println(libro.getCodigo());
+            System.out.println(libro.getTitulo());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
