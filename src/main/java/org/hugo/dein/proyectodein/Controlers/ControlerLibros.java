@@ -168,6 +168,10 @@ public class ControlerLibros {
 
     public void setLibro(ModeloLibro libro) {
         this.libro = libro;
+        txt_libro.setText(libro.getTitulo());
+        txt_editorial.setText(libro.getEditorial());
+        txt_autor.setText(libro.getAutor());
+
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {

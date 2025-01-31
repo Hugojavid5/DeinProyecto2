@@ -127,6 +127,7 @@ public class DaoLibro {
     public static boolean modificar(ModeloLibro libro) {
         ConexionBBDD connection;
         PreparedStatement ps;
+        System.out.println(libro.getTitulo());
         try {
             connection = new ConexionBBDD();
             String consulta = "UPDATE Libro SET titulo = ?,autor = ?,editorial = ?,estado = ?,baja = ?,portada = ? WHERE codigo = ?";

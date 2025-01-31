@@ -47,6 +47,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static org.hugo.dein.proyectodein.Dao.DaoLibro.modificar;
+
 public class ControlerGeneral implements Initializable {
 
     @FXML
@@ -483,7 +485,7 @@ public class ControlerGeneral implements Initializable {
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
             // Establecer un evento que se ejecute cuando se cierre la ventana
-            // stage.setOnHidden(windowEvent -> cargarAlumnos());
+             //stage.setOnHidden(windowEvent -> cargarAlumnos());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -508,8 +510,9 @@ public class ControlerGeneral implements Initializable {
             stage.setResizable(false);
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
+
             // Establecer un evento que se ejecute cuando se cierre la ventana
-           // stage.setOnHidden(windowEvent -> cargarLibros());
+            stage.setOnHidden(windowEvent -> modificar(libro));
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
