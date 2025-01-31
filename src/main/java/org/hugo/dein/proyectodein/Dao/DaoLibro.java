@@ -172,7 +172,7 @@ public class DaoLibro {
         PreparedStatement ps;
         try {
             connection = new ConexionBBDD();
-            String consulta = "INSERT INTO Libro (titulo,autor,editorial,estado,baja,portada) VALUES (?,?,?,?,?,?) ";
+            String consulta = "INSERT INTO Libro (titulo,autor,editorial,estado,baja,imagen) VALUES (?,?,?,?,?,?) ";
             ps = connection.getConnection().prepareStatement(consulta, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, libro.getTitulo());
             ps.setString(2, libro.getAutor());

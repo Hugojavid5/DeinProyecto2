@@ -189,7 +189,7 @@ public class ControlerGeneral implements Initializable {
         }
 
         cargarDatosTablas();
-//      cargarFiltrosHistorico();
+        cargarFiltrosHistorico();
     }
     void cargarDatosTablas() {
         // Tabla de alumnos
@@ -293,8 +293,6 @@ public class ControlerGeneral implements Initializable {
             stage.setResizable(false);
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
-            // Establecer un evento que se ejecute cuando se cierre la ventana
-           // stage.setOnHidden(windowEvent -> cargarLibros());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -328,7 +326,7 @@ public class ControlerGeneral implements Initializable {
                 if (exito) {
                     mostrarAlerta("Éxito", "Libro dado de baja", "El libro ha sido dado de baja correctamente.");
                     // Aquí podríamos actualizar la tabla para reflejar los cambios
-                    //cargarDatosTablas();
+                    cargarDatosTablas();
                 } else {
                     mostrarAlerta("Error", "No se pudo dar de baja el libro", "Hubo un error al intentar dar de baja el libro.");
                 }
