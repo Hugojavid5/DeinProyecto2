@@ -479,12 +479,20 @@ public class ControlerGeneral implements Initializable {
 
     @FXML
     void modificarLibro(ActionEvent event) {
-        ModeloLibro libro=tablaLibros.getSelectionModel().getSelectedItem();
+        ModeloLibro libro = tablaLibros.getSelectionModel().getSelectedItem();
+
+        // Verificar si hay un libro seleccionado
+        if (libro == null) {
+            // Mostrar un mensaje de error o notificar al usuario
+            System.out.println("No se ha seleccionado ningún libro.");
+            return;
+        }
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/libro.fxml"));
             Parent root = fxmlLoader.load();
 
-            ControlerLibros controller=fxmlLoader.getController();
+            ControlerLibros controller = fxmlLoader.getController();
             controller.setLibro(libro);
 
             Scene scene = new Scene(root);
@@ -494,7 +502,6 @@ public class ControlerGeneral implements Initializable {
             stage.setResizable(false);
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
-
             // Establecer un evento que se ejecute cuando se cierre la ventana
             stage.setOnHidden(windowEvent -> modificar(libro));
             stage.show();
@@ -502,6 +509,7 @@ public class ControlerGeneral implements Initializable {
             System.out.println(e.getMessage());
         }
     }
+
 
     @FXML
     void prestarLibro(ActionEvent event) {

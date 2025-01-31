@@ -12,6 +12,7 @@ import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import javafx.collections.ObservableList;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.file.Files;
 
@@ -171,8 +172,23 @@ public class ControlerLibros {
         txt_libro.setText(libro.getTitulo());
         txt_editorial.setText(libro.getEditorial());
         txt_autor.setText(libro.getAutor());
+        comboEstado.setValue(libro.getEstado());
 
+        // Cargar la imagen almacenada en la base de datos
+        if (libro.getPortada() != null) {
+            // Convertir el Blob de la base de datos a un byte[]
+            try {
+                byte[] imagenBytes = libro.getPortada().getBytes(1, (int) libro.getPortada().length());
+                Image image = new Image(new ByteArrayInputStream(imagenBytes));
+                img_portada.setImage(image);
+                this.imagenBytes = imagenBytes; // Guardar los bytes de la imagen para su posterior uso
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo cargar la imagen del libro: " + e.getMessage());
+            }
+        }
     }
+
+
 
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
