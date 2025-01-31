@@ -261,9 +261,6 @@ public class ControlerGeneral implements Initializable {
         return null;
     }
 
-
-
-
     @FXML
     void aniadirAlumno(ActionEvent event) {
         try {
@@ -292,7 +289,7 @@ public class ControlerGeneral implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-
+            stage.setOnHidden(windowEvent -> cargarDatosTablas());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -422,17 +419,6 @@ public class ControlerGeneral implements Initializable {
     }
 
     @FXML
-    void filtrarHistorico(ActionEvent event) {
-        String filtro = txt_FiltrarPrestamo.getText().trim();
-
-        List<ModeloPrestamo> prestamosFiltrados = DaoPrestamo.cargarListado().stream()
-                .filter(prestamo -> prestamo.getFecha_prestamo().toString().contains(filtro))
-                .collect(Collectors.toList());
-
-        tablaPrestamos.getItems().setAll(prestamosFiltrados);
-    }
-
-    @FXML
     void filtrarLibros(ActionEvent event) {
         String filtro = txt_filtrarLibros.getText().trim().toLowerCase();
 
@@ -483,7 +469,7 @@ public class ControlerGeneral implements Initializable {
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
             // Establecer un evento que se ejecute cuando se cierre la ventana
-             //stage.setOnHidden(windowEvent -> cargarAlumnos());
+             stage.setOnHidden(windowEvent -> cargarDatosTablas());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -530,7 +516,7 @@ public class ControlerGeneral implements Initializable {
             stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
             // Establecer un evento que se ejecute cuando se cierre la ventana
-            // stage.setOnHidden(windowEvent -> cargarPrestamos());
+             stage.setOnHidden(windowEvent -> cargarDatosTablas());
             stage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());

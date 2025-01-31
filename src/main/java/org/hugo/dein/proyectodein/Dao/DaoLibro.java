@@ -42,6 +42,28 @@ public class DaoLibro {
         }
         return libro;
     }
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+    public static boolean updateLibro(ModeloLibro libro) {
+        String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ?, imagen = ? WHERE codigo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, libro.getTitulo());
+            pstmt.setString(2, libro.getAutor());
+            pstmt.setString(3, libro.getEditorial());
+            pstmt.setString(4, libro.getEstado());
+            pstmt.setInt(5, libro.getBaja());
+            pstmt.setBlob(6, libro.getPortada());
+            pstmt.setInt(7, libro.getCodigo());
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public static ObservableList<ModeloLibro> todosLibrosActivos() {
         ConexionBBDD connection;
         ObservableList<ModeloLibro> libros = FXCollections.observableArrayList();

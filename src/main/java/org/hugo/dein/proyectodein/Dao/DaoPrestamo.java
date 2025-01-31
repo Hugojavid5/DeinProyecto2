@@ -148,14 +148,14 @@ public class DaoPrestamo {
         }
     }
 
-    public static boolean eliminar(ModeloPrestamo prestamo) {
+    public static boolean eliminar(int idPrestamo) {
         ConexionBBDD connection;
         PreparedStatement ps;
         try {
             connection = new ConexionBBDD();
             String consulta = "DELETE FROM Prestamo WHERE id_prestamo = ?";
             ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, prestamo.getId_prestamo());
+            ps.setInt(1, idPrestamo);
             int filasAfectadas = ps.executeUpdate();
             ps.close();
             connection.closeConnection();
@@ -165,4 +165,5 @@ public class DaoPrestamo {
             return false;
         }
     }
+
 }
