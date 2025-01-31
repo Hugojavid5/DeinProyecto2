@@ -115,7 +115,7 @@ public class ControlerPrestamo {
             parameters.put("ID_PRESTAMO", idPrestamo);  // Pasar el ID del préstamo
 
             // Generar el reporte
-            generarReporte("/jasper/Informe1Datos.jasper", parameters);
+            generarReporte("/jasper/Informe1Prestamo.jasper", parameters);
 
             cancelarCambios(event); // Cierra la ventana tras guardar correctamente
         } else {

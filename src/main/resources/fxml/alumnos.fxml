@@ -12,7 +12,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="244.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerAlumno">
    <children>
-      <Label alignment="CENTER" prefHeight="81.0" prefWidth="601.0" text="Alumnos" textAlignment="CENTER">
+      <Label alignment="CENTER" prefHeight="81.0" prefWidth="601.0" text="%lblTitulo" textAlignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>
@@ -29,20 +29,20 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="25.0" prefWidth="301.0" text="Introduce su dni:" textAlignment="CENTER" />
-            <Label prefHeight="25.0" prefWidth="229.0" text="Introduce su nombre:" textAlignment="CENTER" GridPane.rowIndex="1" />
-            <Label prefHeight="25.0" prefWidth="301.0" text="Introduce su primer apellido:" textAlignment="CENTER" GridPane.rowIndex="2" />
-            <Label prefHeight="25.0" prefWidth="230.0" text="Introduce su segundo apellido:" textAlignment="CENTER" GridPane.rowIndex="3" />
-            <TextField fx:id="txt_dni" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="319.0" promptText="Escribe el dni" GridPane.columnIndex="1" />
-            <TextField fx:id="txt_ape1" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="Escribe el primer apellido" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txt_ape2" alignment="TOP_LEFT" prefHeight="19.0" prefWidth="255.0" promptText="Escribe el segundo apellido" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="txt_nombre" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="Escribe el nombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label prefHeight="25.0" prefWidth="301.0" text="%lblDni" textAlignment="CENTER" />
+            <Label prefHeight="25.0" prefWidth="229.0" text="%lblNombre" textAlignment="CENTER" GridPane.rowIndex="1" />
+            <Label prefHeight="25.0" prefWidth="301.0" text="%lblAp1" textAlignment="CENTER" GridPane.rowIndex="2" />
+            <Label prefHeight="25.0" prefWidth="230.0" text="%lblAp2" textAlignment="CENTER" GridPane.rowIndex="3" />
+            <TextField fx:id="txt_dni" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="319.0" promptText="%textFieldDNI" GridPane.columnIndex="1" />
+            <TextField fx:id="txt_ape1" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="%textFieldAP1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txt_ape2" alignment="TOP_LEFT" prefHeight="19.0" prefWidth="255.0" promptText="%textFieldAp2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txt_nombre" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="%textFieldNombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="75.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#guardarLibro" prefHeight="40.0" prefWidth="191.0" text="Guardar" />
-            <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="189.0" text="Cancelar" />
+            <Button mnemonicParsing="false" onAction="#guardarLibro" prefHeight="40.0" prefWidth="191.0" text="%botonGuardarAlumno" />
+            <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="189.0" text="%botonCancelarAlumno" />
          </children>
       </HBox>
    </children>

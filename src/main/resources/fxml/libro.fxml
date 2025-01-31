@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerLibros">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerLibros">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="600.0" text="Libros">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="600.0" text="%tituloLibros">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -33,10 +33,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="17.0" prefWidth="303.0" text="Titulo del libro:" />
-            <Label prefHeight="17.0" prefWidth="221.0" text="Nombre de la editorial:" GridPane.rowIndex="2" />
-            <Label prefHeight="17.0" prefWidth="190.0" text="Nombre del autor:" GridPane.rowIndex="1" />
-            <Label prefHeight="17.0" prefWidth="94.0" text="Estado:" GridPane.rowIndex="3" />
+            <Label prefHeight="17.0" prefWidth="303.0" text="%lblTituloLibro" />
+            <Label prefHeight="17.0" prefWidth="221.0" text="%lblEditorialLibro" GridPane.rowIndex="2" />
+            <Label prefHeight="17.0" prefWidth="190.0" text="%lblNombreLibro" GridPane.rowIndex="1" />
+            <Label prefHeight="17.0" prefWidth="94.0" text="%lblEstado" GridPane.rowIndex="3" />
             <ComboBox fx:id="comboEstado" prefHeight="26.0" prefWidth="221.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="txt_editorial" prefHeight="26.0" prefWidth="307.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="txt_autor" prefHeight="26.0" prefWidth="307.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -47,9 +47,9 @@
          <children>
             <HBox prefHeight="39.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="lbl_imagen" prefHeight="40.0" prefWidth="165.0" text="Portada del libro:" />
-                  <Button fx:id="btt_seleccionar" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="45.0" prefWidth="253.0" text="Selecciona una imagen" />
-                  <Button fx:id="btt_borrar" mnemonicParsing="false" onAction="#borrarImagen" prefHeight="28.0" prefWidth="153.0" text="Borrar imagen" />
+                  <Label fx:id="lbl_imagen" prefHeight="40.0" prefWidth="165.0" text="%lblPortadaLibro" />
+                  <Button fx:id="btt_seleccionar" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="45.0" prefWidth="253.0" text="%botonSelecciona" />
+                  <Button fx:id="btt_borrar" mnemonicParsing="false" onAction="#borrarImagen" prefHeight="28.0" prefWidth="153.0" text="%botonBorrarImagen" />
                </children>
             </HBox>
             <ImageView fx:id="img_portada" fitHeight="133.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
@@ -62,8 +62,8 @@
             </ImageView>
             <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="600.0" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="btt_guardar" defaultButton="true" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="35.0" prefWidth="161.0" text="Guardar " />
-                  <Button fx:id="btt_cancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelarCambios" prefHeight="35.0" prefWidth="161.0" text="Cancelar" />
+                  <Button fx:id="btt_guardar" defaultButton="true" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="35.0" prefWidth="161.0" text="%botonGuardar" />
+                  <Button fx:id="btt_cancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelarCambios" prefHeight="35.0" prefWidth="161.0" text="%botonCancelar" />
                </children>
             </HBox>
          </children>

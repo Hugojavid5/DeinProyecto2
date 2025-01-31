@@ -11,10 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="566.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerPrestamo">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="628.0" text="Prestamo" textAlignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="628.0" text="%lblTituloPrestamo" textAlignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
@@ -30,18 +29,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="17.0" prefWidth="111.0" text="Alumno: " />
+            <Label prefHeight="17.0" prefWidth="111.0" text="%lblAlumno" />
             <ComboBox fx:id="comboEstudiante" prefWidth="150.0" GridPane.columnIndex="1" />
-            <Label text="Libro:" GridPane.rowIndex="1" />
-            <Label text="Fecha del prestamo:" GridPane.rowIndex="2" />
+            <Label text="%lblLibro" GridPane.rowIndex="1" />
+            <Label text="%fechaPrestamo" GridPane.rowIndex="2" />
             <DatePicker fx:id="dpFechaPrestamo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="comboLibro" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <HBox alignment="CENTER" prefHeight="41.0" prefWidth="410.0" spacing="75.0">
          <children>
-            <Button fx:id="btt_guardar" mnemonicParsing="false" onAction="#guardarCambios" text="Guardar" />
-            <Button fx:id="btt_cancelar" mnemonicParsing="false" onAction="#cancelarCambios" text="Cancelar" />
+            <Button fx:id="btt_guardar" mnemonicParsing="false" onAction="#guardarCambios" text="%botonGuardarPrestamos" />
+            <Button fx:id="btt_cancelar" mnemonicParsing="false" onAction="#cancelarCambios" text="%botonCancelarPrestamos" />
          </children>
       </HBox>
    </children>
