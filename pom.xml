@@ -42,12 +42,6 @@
             <artifactId>jasperreports-chart-themes</artifactId>
             <version>7.0.1</version>
         </dependency>
-        <!-- JasperReports dependency -->
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-            <version>6.18.1</version>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

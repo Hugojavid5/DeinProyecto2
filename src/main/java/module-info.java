@@ -4,7 +4,7 @@ module org.hugo.dein.proyectodein {
     requires cdi.api;
     requires java.sql.rowset;
     requires org.slf4j;
-    requires jasperreports;
+    requires net.sf.jasperreports.core;
 
     opens org.hugo.dein.proyectodein to javafx.fxml;
     opens org.hugo.dein.proyectodein.Modelos to javafx.base;
