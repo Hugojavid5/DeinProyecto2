@@ -9,6 +9,7 @@ import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -29,27 +30,50 @@ public class AppBiblioteca extends Application {
      */
     @Override
     public void start(Stage s) throws IOException {
+        // Cargar la configuración de la conexión (si es necesario)
         Properties connConfig = ConexionBBDD.loadProperties();
 
-        stage = s;  // Establece el escenario principal
+        // Establecer el escenario principal
+        stage = s;
+
+        // Cargar las propiedades del idioma
         Properties properties = ConexionBBDD.cargarIdioma();
         String lang = properties.getProperty("language");
-        // Cargar el recurso de idioma adecuado utilizando el archivo de propiedades
+
+        // Verificar si la propiedad 'language' está correctamente cargada
+        if (lang == null || lang.isEmpty()) {
+            // Si no se ha encontrado, podemos asignar un valor por defecto
+            lang = "es"; // Por ejemplo, español
+        }
+
+        // Crear el objeto Locale basado en el idioma cargado
         Locale locale = new Locale(lang);
-        ResourceBundle bundle = ResourceBundle.getBundle("languages/lang", locale);
+
+        // Intentar cargar el ResourceBundle, capturando excepciones si no se encuentra el archivo
+        ResourceBundle bundle = null;
+        try {
+            bundle = ResourceBundle.getBundle("languages.lang", locale);
+        } catch (MissingResourceException e) {
+            System.out.println("Error al cargar el archivo de idioma: " + e.getMessage());
+            // Como fallback, podemos cargar el idioma en español si no se encuentra el archivo
+            bundle = ResourceBundle.getBundle("languages.lang", new Locale("es"));
+        }
 
         // Cargar el archivo FXML para la interfaz de la biblioteca
         FXMLLoader fxmlLoader = new FXMLLoader(AppBiblioteca.class.getResource("/fxml/biblioGeneral.fxml"));
+        // Establecer el ResourceBundle en el FXMLLoader
+        fxmlLoader.setResources(bundle);
 
         // Crear la escena con el archivo FXML cargado
         Scene scene = new Scene(fxmlLoader.load());
 
         // Configurar la ventana
-        stage.setTitle("BiblioRusty");
+        stage.setTitle(bundle.getString("tituloapp"));
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
+
 
     /**
      * Devuelve el escenario principal de la aplicación.
