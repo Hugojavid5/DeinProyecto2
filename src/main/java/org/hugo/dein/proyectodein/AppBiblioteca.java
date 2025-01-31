@@ -39,11 +39,8 @@ public class AppBiblioteca extends Application {
         // Cargar las propiedades del idioma
         Properties properties = ConexionBBDD.cargarIdioma();
         String lang = properties.getProperty("language");
-
-        // Verificar si la propiedad 'language' está correctamente cargada
         if (lang == null || lang.isEmpty()) {
-            // Si no se ha encontrado, podemos asignar un valor por defecto
-            lang = "es"; // Por ejemplo, español
+            lang = "es";
         }
 
         // Crear el objeto Locale basado en el idioma cargado
