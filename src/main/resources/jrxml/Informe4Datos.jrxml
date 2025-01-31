@@ -65,10 +65,10 @@ ORDER BY
 			<text><![CDATA[BiblioRusty]]></text>
 		</element>
 		<element kind="image" uuid="a009dd98-3ac0-4c50-95e8-3bf2c63fde77" x="0" y="0" width="80" height="80">
-			<expression><![CDATA[$P{IMAGE_PATH}+"Biblioteca.png"]]></expression>
+			<expression><![CDATA[$P{IMAGE_PATH}+"biblioteca.png"]]></expression>
 		</element>
 		<element kind="image" uuid="3aae0cf5-585e-499b-80d1-0b435182f9b1" x="470" y="0" width="80" height="80">
-			<expression><![CDATA[$P{IMAGE_PATH}+"Biblioteca.png"]]></expression>
+			<expression><![CDATA[$P{IMAGE_PATH}+"biblioteca.png"]]></expression>
 		</element>
 		<element kind="textField" uuid="a3febc1b-b3ee-416f-8210-22cc03c4ad30" mode="Opaque" x="0" y="80" width="550" height="40" forecolor="#E0FF00" backcolor="#000000" fontSize="25.0" hTextAlign="Center" vTextAlign="Middle">
 			<expression><![CDATA[$F{nombre_alumno} + " "+ $F{apellido1_alumno} + " "+ $F{apellido2_alumno}]]></expression>
@@ -86,7 +86,7 @@ ORDER BY
 		</element>
 	</columnHeader>
 	<detail>
-		<band height="130" splitType="Stretch">
+		<band height="159" splitType="Stretch">
 			<element kind="textField" uuid="6f553017-f5ed-404e-882c-4b5a45f6f99e" mode="Opaque" x="180" y="-6" width="190" height="30" forecolor="#050000" backcolor="#E5E8E8" hTextAlign="Center" vTextAlign="Middle">
 				<expression><![CDATA[$F{num_libros_prestados}]]></expression>
 			</element>
