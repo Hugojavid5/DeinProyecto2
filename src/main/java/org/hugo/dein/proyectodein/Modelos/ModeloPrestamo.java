@@ -1,13 +1,28 @@
 package org.hugo.dein.proyectodein.Modelos;
 
-import org.hugo.dein.proyectodein.utils.FechaFormatter;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ModeloPrestamo {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ModeloPrestamo.class);
+
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+
     private int id_prestamo;
+
+
     private ModeloAlumno alumno;
+
+
     private ModeloLibro libro;
+
+
     private LocalDateTime fecha_prestamo;
 
 
@@ -19,19 +34,19 @@ public class ModeloPrestamo {
     }
 
 
-
     public ModeloPrestamo() {}
-
 
     @Override
     public String toString() {
-        return id_prestamo + " - " + alumno + " - " + libro + " - " + FechaFormatter.formatearFecha(fecha_prestamo);
+        String formattedFecha = FORMATTER.format(fecha_prestamo);
+        logger.info("Fecha formateada a string: {}", formattedFecha);
+        return id_prestamo + " - " + alumno + " - " + libro + " - " + formattedFecha;
     }
+
 
     public int getId_prestamo() {
         return id_prestamo;
     }
-
 
     public void setId_prestamo(int id_prestamo) {
         this.id_prestamo = id_prestamo;
@@ -48,6 +63,7 @@ public class ModeloPrestamo {
     public ModeloLibro getLibro() {
         return libro;
     }
+
 
     public void setLibro(ModeloLibro libro) {
         this.libro = libro;

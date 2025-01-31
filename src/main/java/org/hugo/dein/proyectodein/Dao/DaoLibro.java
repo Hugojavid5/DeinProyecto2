@@ -1,52 +1,150 @@
 package org.hugo.dein.proyectodein.Dao;
 
-import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
-import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
+import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DaoLibro {
 
-    private static final Logger logger = LoggerFactory.getLogger(DaoLibro.class);
-
-    public static ModeloLibro getLibro(int codigo) {
-        ConexionBBDD connection;
-        ModeloLibro libro = null;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,imagen FROM Libro WHERE codigo = ?";
-            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, codigo);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int codigo_db = rs.getInt("codigo");
-                String titulo = rs.getString("titulo");
-                String autor = rs.getString("autor");
-                String editorial = rs.getString("editorial");
-                String estado = rs.getString("estado");
-                int baja = rs.getInt("baja");
-                Blob portada = rs.getBlob("imagen");
-                libro = new ModeloLibro(codigo_db, titulo, autor, editorial, estado, baja, portada);
-            }
-            rs.close();
-            connection.closeConnection();
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-        return libro;
-    }
     private static Connection conn;
 
     static {
         conn = ConexionBBDD.getConnection();
     }
+
+    public DaoLibro() throws SQLException {
+    }
+
+    public static ModeloLibro getLibro(int codigo) {
+        String sql = "SELECT * FROM Libro WHERE codigo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, codigo);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new ModeloLibro(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getInt("baja"),
+                        rs.getBlob("imagen")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ObservableList<ModeloLibro> getTodosLibros() {
+        ObservableList<ModeloLibro> listaLibros = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM Libro";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                listaLibros.add(new ModeloLibro(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getInt("baja"),
+                        rs.getBlob("imagen")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaLibros;
+    }
+
+    public static ObservableList<ModeloLibro> getTodosLibrosConBajaA0() {
+        ObservableList<ModeloLibro> listaLibros = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM Libro WHERE baja = 0";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                listaLibros.add(new ModeloLibro(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getInt("baja"),
+                        rs.getBlob("imagen")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaLibros;
+    }
+
+
+    public static Blob convertirABlob(byte[] data) {
+        try {
+            Blob blob = conn.createBlob();
+            blob.setBytes(1, data);
+            return blob;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean insertLibro(ModeloLibro libro) {
+        String sql = "INSERT INTO Libro (titulo, autor, editorial, estado, baja, imagen) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, libro.getTitulo());
+            pstmt.setString(2, libro.getAutor());
+            pstmt.setString(3, libro.getEditorial());
+            pstmt.setString(4, libro.getEstado());
+            pstmt.setInt(5, libro.getBaja());
+            pstmt.setBlob(6, libro.getImagen());
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static List<ModeloLibro> getLibrosDisponibles() {
+        List<ModeloLibro> listaLibros = new ArrayList<>();
+        String sql = "SELECT * FROM Libro WHERE codigo NOT IN (SELECT codigo_libro FROM Prestamo)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                listaLibros.add(new ModeloLibro(
+                        rs.getInt("codigo"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getString("editorial"),
+                        rs.getString("estado"),
+                        rs.getInt("baja"),
+                        rs.getBlob("imagen")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaLibros;
+    }
+
     public static boolean updateLibro(ModeloLibro libro) {
         String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ?, imagen = ? WHERE codigo = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -55,7 +153,7 @@ public class DaoLibro {
             pstmt.setString(3, libro.getEditorial());
             pstmt.setString(4, libro.getEstado());
             pstmt.setInt(5, libro.getBaja());
-            pstmt.setBlob(6, libro.getPortada());
+            pstmt.setBlob(6, libro.getImagen());
             pstmt.setInt(7, libro.getCodigo());
             return pstmt.executeUpdate() > 0;
 
@@ -64,179 +162,31 @@ public class DaoLibro {
         }
         return false;
     }
-    public static ObservableList<ModeloLibro> todosLibrosActivos() {
-        ConexionBBDD connection;
-        ObservableList<ModeloLibro> libros = FXCollections.observableArrayList();
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "SELECT codigo,titulo,autor,editorial,estado,baja,imagen FROM Libro WHERE baja=0";
-            PreparedStatement pstmt = connection.getConnection().prepareStatement(consulta);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                int codigo = rs.getInt(1);
-                String titulo = rs.getString(2);
-                String autor = rs.getString(3);
-                String editorial = rs.getString(4);
-                String estado = rs.getString(5);
-                int baja = rs.getInt(6);
-                Blob foto = rs.getBlob(7);
-                ModeloLibro l=new ModeloLibro(codigo,titulo,autor,editorial,estado,baja,foto);
-                libros.add(l);
-            }
-            rs.close();
-            connection.closeConnection();
+
+
+    public static boolean bajaDelLibro(int codigo) {
+        String sql = "UPDATE Libro SET baja = 1 WHERE codigo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, codigo);
+            return pstmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return libros;
-    }
-
-
-    public static Blob convertBytesToBlob(byte[] bytes) {
-        ConexionBBDD connection;
-        try {
-            connection = new ConexionBBDD();
-            try (Connection conn = connection.getConnection()) {
-                Blob blob = conn.createBlob();
-                blob.setBytes(1, bytes);
-                return blob;
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return null;
-        }
-    }
-
-
-    public static boolean esEliminable(ModeloLibro libro) {
-        ConexionBBDD connection;
-        try {
-            connection = new ConexionBBDD();
-            // Prestamos
-            String consulta = "SELECT count(*) as cont FROM Prestamo WHERE codigo_libro = ?";
-            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, libro.getCodigo());
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int cont = rs.getInt("cont");
-                if (cont != 0) {
-                    rs.close();
-                    connection.closeConnection();
-                    return false;
-                }
-            }
-            rs.close();
-            ps.close();
-            // Historial_prestamos
-            consulta = "SELECT count(*) as cont FROM Historico_prestamo WHERE codigo_libro = ?";
-            ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, libro.getCodigo());
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                int cont = rs.getInt("cont");
-                rs.close();
-                connection.closeConnection();
-                return (cont == 0);
-            }
-            rs.close();
-            connection.closeConnection();
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }
 
-    public static boolean modificar(ModeloLibro libro) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        System.out.println(libro.getTitulo());
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "UPDATE Libro SET titulo = ?,autor = ?,editorial = ?,estado = ?,baja = ?,portada = ? WHERE codigo = ?";
-            ps = connection.getConnection().prepareStatement(consulta);
-            ps.setString(1, libro.getTitulo());
-            ps.setString(2, libro.getAutor());
-            ps.setString(3, libro.getEditorial());
-            ps.setString(4, libro.getEstado());
-            ps.setInt(5, libro.getBaja());
-            ps.setBlob(6, libro.getPortada());
-            ps.setInt(7, libro.getCodigo());
-            int filasAfectadas = ps.executeUpdate();
-            ps.close();
-            connection.closeConnection();
-            return filasAfectadas > 0;
+
+    public static boolean updateLibroEstado(int idLibro, String nuevoEstado) {
+        String sql = "UPDATE Libro SET estado = ? WHERE codigo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nuevoEstado);
+            pstmt.setInt(2, idLibro);
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return false;
+            e.printStackTrace();
         }
+        return false;
     }
 
-    public static boolean darDeBaja(ModeloLibro libro) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "UPDATE Libro SET baja = 1 WHERE codigo = ?";
-            ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, libro.getCodigo());
-            int filasAfectadas = ps.executeUpdate();
-            ps.close();
-            connection.closeConnection();
-            return filasAfectadas > 0;
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-    }
-
-    public  static int insertar(ModeloLibro libro) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "INSERT INTO Libro (titulo,autor,editorial,estado,baja,imagen) VALUES (?,?,?,?,?,?) ";
-            ps = connection.getConnection().prepareStatement(consulta, PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, libro.getTitulo());
-            ps.setString(2, libro.getAutor());
-            ps.setString(3, libro.getEditorial());
-            ps.setString(4, libro.getEstado());
-            ps.setInt(5, libro.getBaja());
-            ps.setBlob(6, libro.getPortada());
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    ps.close();
-                    connection.closeConnection();
-                    return id;
-                }
-            }
-            ps.close();
-            connection.closeConnection();
-            return -1;
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return -1;
-        }
-    }
-
-
-    public static boolean eliminar(ModeloLibro libro) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "DELETE FROM Libro WHERE codigo = ?";
-            ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, libro.getCodigo());
-            int filasAfectadas = ps.executeUpdate();
-            ps.close();
-            connection.closeConnection();
-            return filasAfectadas > 0;
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-    }
 }

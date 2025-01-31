@@ -7,13 +7,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
-import org.hugo.dein.proyectodein.Dao.DaoHistorialPrestamo;
+import org.hugo.dein.proyectodein.Dao.DaoHisoricoPrestamo;
 import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Dao.DaoPrestamo;
 import org.hugo.dein.proyectodein.Modelos.ModeloHistoricoPrestamo;
-import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloPrestamo;
 
+import javax.enterprise.inject.Model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -24,7 +24,6 @@ public class ControlerDevolucion {
 
     @FXML
     private Button btt_guardar;
-    private ModeloPrestamo prestamoSeleccionado;
 
     @FXML
     private ComboBox<String> comboLibro;
@@ -32,17 +31,16 @@ public class ControlerDevolucion {
     @FXML
     private DatePicker doFechaPrestamo;
 
-    @FXML
-    public void initialize() {
-        // Cargar los estados posibles del libro en el ComboBox
-        comboLibro.getItems().addAll(
-                "Nuevo", "Usado nuevo", "Usado seminuevo", "Usado estropeado", "Restaurado"
-        );
+    private Runnable onCloseCallback;
+    public void setOnCloseCallback(Runnable callback) {
+        this.onCloseCallback = callback;
     }
+
+
 
     @FXML
     void cancelarCambios(ActionEvent event) {
-        salir();
+        cerrarVentana();
     }
 
     @FXML
@@ -67,7 +65,7 @@ public class ControlerDevolucion {
         }
 
         // Eliminar el préstamo de la base de datos
-        boolean eliminado = DaoPrestamo.eliminar(prestamoSeleccionado.getId_prestamo());
+        boolean eliminado = DaoPrestamo.deletePrestamo(prestamoSeleccionado.getId_prestamo());
 
         if (!eliminado) {
             mostrarAlerta("Error", "No se pudo eliminar el préstamo de la base de datos.", Alert.AlertType.ERROR);
@@ -77,17 +75,12 @@ public class ControlerDevolucion {
         // Si el estado del libro ha cambiado, actualizarlo en la base de datos
         String nuevoEstado = comboLibro.getValue();
         if (nuevoEstado != null && !nuevoEstado.equals(prestamoSeleccionado.getLibro().getEstado())) {
-            // Crear un nuevo objeto ModeloLibro con el código y el nuevo estado
-            ModeloLibro libroActualizado = prestamoSeleccionado.getLibro();
-            libroActualizado.setEstado(nuevoEstado);  // Cambiar el estado del libro
-
-            boolean actualizado = DaoLibro.updateLibro(libroActualizado);  // Pasar el objeto ModeloLibro completo
+            boolean actualizado = DaoLibro.updateLibroEstado(prestamoSeleccionado.getLibro().getCodigo(), nuevoEstado);
             if (!actualizado) {
                 mostrarAlerta("Error", "No se pudo actualizar el estado del libro.", Alert.AlertType.ERROR);
                 return;
             }
         }
-
 
         // Insertar en el historial de préstamos
         ModeloHistoricoPrestamo historial = new ModeloHistoricoPrestamo(
@@ -98,7 +91,7 @@ public class ControlerDevolucion {
                 fechaDevolucionDateTime
         );
 
-        boolean insertado = DaoHistorialPrestamo.insertar(historial);
+        boolean insertado = DaoHisoricoPrestamo.insertHistorialPrestamo(historial);
 
         if (!insertado) {
             mostrarAlerta("Error", "No se pudo registrar el préstamo en el historial.", Alert.AlertType.ERROR);
@@ -106,10 +99,9 @@ public class ControlerDevolucion {
         }
 
         mostrarAlerta("Éxito", "El préstamo ha sido devuelto correctamente.", Alert.AlertType.INFORMATION);
-        salir();
+        cerrarVentana();
     }
-    private Runnable onCloseCallback;
-    private void salir() {
+    private void cerrarVentana() {
         if (onCloseCallback != null) {
             onCloseCallback.run();
         }
@@ -123,4 +115,22 @@ public class ControlerDevolucion {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+
+    @FXML
+    public void initialize() {
+        // Cargar los estados posibles del libro en el ComboBox
+        comboLibro.getItems().addAll(
+                "Nuevo", "Usado nuevo", "Usado seminuevo", "Usado estropeado", "Restaurado"
+        );
+    }
+    private ModeloPrestamo prestamoSeleccionado;
+    public void setPrestamo(ModeloPrestamo prestamo) {
+        this.prestamoSeleccionado = prestamo;
+        if (prestamo != null) {
+            // Establecer el estado actual del libro en el ComboBox
+            comboLibro.setValue(prestamo.getLibro().getEstado());
+        }
+    }
+
 }

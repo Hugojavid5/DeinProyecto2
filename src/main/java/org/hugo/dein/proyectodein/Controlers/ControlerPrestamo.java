@@ -14,8 +14,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
-import org.hugo.dein.proyectodein.Dao.DaoAlumno;
-import org.hugo.dein.proyectodein.Dao.DaoLibro;
 import org.hugo.dein.proyectodein.Dao.DaoPrestamo;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
@@ -30,11 +28,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ControlerPrestamo {
-
-    private Runnable onCloseCallback;
-    public void setOnCloseCallback(Runnable onCloseCallback) {
-        this.onCloseCallback = onCloseCallback;
-    }
 
     @FXML
     private Button btt_cancelar;
@@ -51,10 +44,20 @@ public class ControlerPrestamo {
     @FXML
     private DatePicker dpFechaPrestamo;
 
+    private Runnable onCloseCallback;
+    public void setOnCloseCallback(Runnable onCloseCallback) {
+        this.onCloseCallback = onCloseCallback;
+    }
     @FXML
     public void initialize() {
         cargarEstudiantes();
-        cargarLibros();
+        cargarLibrosDisponibles();
+    }
+    private void cargarEstudiantes() {
+        comboEstudiante.getItems().setAll(org.hugo.dein.proyectodein.Dao.DaoAlumno.getTodosAlumnos());
+    }
+    private void cargarLibrosDisponibles() {
+        comboLibro.getItems().setAll(org.hugo.dein.proyectodein.Dao.DaoLibro.getLibrosDisponibles());
     }
     @FXML
     void cancelarCambios(ActionEvent event) {
@@ -64,12 +67,6 @@ public class ControlerPrestamo {
         Stage stage = (Stage) comboEstudiante.getScene().getWindow();
         stage.close();
     }
-    private void cargarLibros() {
-        comboLibro.getItems().setAll(DaoLibro.todosLibrosActivos());
-    }
-    private void cargarEstudiantes() {
-        comboEstudiante.getItems().setAll(DaoAlumno.cargarListado());
-    }
 
     @FXML
     void guardarCambios(ActionEvent event) {
@@ -77,12 +74,12 @@ public class ControlerPrestamo {
 
         ModeloAlumno alumnoSeleccionado = comboEstudiante.getValue();
         if (alumnoSeleccionado == null) {
-            errores.add("Debe seleccionar un estudiante.");
+            errores.add("Selecciona un estudiante.");
         }
 
         ModeloLibro libroSeleccionado = comboLibro.getValue();
         if (libroSeleccionado == null) {
-            errores.add("Debe seleccionar un libro disponible.");
+            errores.add("Selecciona un libro disponible.");
         }
 
         LocalDate fechaSeleccionada = dpFechaPrestamo.getValue();
@@ -105,10 +102,12 @@ public class ControlerPrestamo {
                 fechaSeleccionada.atStartOfDay()
         );
 
-        int idPrestamo = DaoPrestamo.insertar(nuevoPrestamo);  // Obtenemos el ID del préstamo insertado
-        boolean exito = idPrestamo > 0;
+        boolean exito = DaoPrestamo.insertPrestamo(nuevoPrestamo);
         if (exito) {
             mostrarInformacion("Éxito", "Préstamo registrado correctamente.");
+
+            // Obtener el ID del préstamo recién creado
+            int idPrestamo = nuevoPrestamo.getId_prestamo();  // Asegúrate de que este campo esté correctamente configurado en PrestamoModel
 
             // Preparar los parámetros para el reporte
             Map<String, Object> parameters = new HashMap<>();
@@ -116,14 +115,13 @@ public class ControlerPrestamo {
             parameters.put("ID_PRESTAMO", idPrestamo);  // Pasar el ID del préstamo
 
             // Generar el reporte
-            generarReporte("/jasper/Informe1Prestamo.jasper", parameters);
+            generarReporte("/jasper/Informe1Datos.jasper", parameters);
 
             cancelarCambios(event); // Cierra la ventana tras guardar correctamente
         } else {
             mostrarError("Error", "No se pudo registrar el préstamo. Intente nuevamente.");
         }
     }
-
     private void generarReporte(String reportePath, Map<String, Object> parameters) {
         try {
             ConexionBBDD conexionBBDD = new ConexionBBDD();
@@ -141,8 +139,15 @@ public class ControlerPrestamo {
 
         } catch (SQLException | JRException e) {
             e.printStackTrace();
-            mostrarError("Error en la base de datos", "No se pudo conectar a la base de datos o generar el informe.");
+            mostrarError("Error en la base de datos", "O no se ha podido establecer conexion con la bbdd o no se ha podido generar el informe.");
         }
+    }
+    private void mostrarError(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
     private void mostrarInformacion(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -151,12 +156,5 @@ public class ControlerPrestamo {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-    private void mostrarError(String titulo, String mensaje) {
-        // Crear una ventana emergente de tipo "error"
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null); // No queremos un encabezado
-        alert.setContentText(mensaje); // El mensaje que queremos mostrar
-        alert.showAndWait(); // Mostrar el mensaje y esperar a que el usuario lo cierre
-    }
+
 }

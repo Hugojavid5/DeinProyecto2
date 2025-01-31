@@ -3,11 +3,19 @@ package org.hugo.dein.proyectodein.Modelos;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
 public class ModeloHistoricoPrestamo {
+
+
     private int id_prestamo;
+
+
     private ModeloAlumno alumno;
+
     private ModeloLibro libro;
+
     private LocalDateTime fecha_prestamo;
+
     private LocalDateTime fecha_devolucion;
 
     public ModeloHistoricoPrestamo(int id_prestamo, ModeloAlumno alumno, ModeloLibro libro, LocalDateTime fecha_prestamo, LocalDateTime fecha_devolucion) {
@@ -18,16 +26,18 @@ public class ModeloHistoricoPrestamo {
         this.fecha_devolucion = fecha_devolucion;
     }
 
-
     public ModeloHistoricoPrestamo() {}
+
 
     public int getId_prestamo() {
         return id_prestamo;
     }
 
+
     public void setId_prestamo(int id_prestamo) {
         this.id_prestamo = id_prestamo;
     }
+
 
     public ModeloAlumno getAlumno() {
         return alumno;
@@ -37,10 +47,16 @@ public class ModeloHistoricoPrestamo {
         this.alumno = alumno;
     }
 
+
     public ModeloLibro getLibro() {
         return libro;
     }
 
+    /**
+     * Establece el libro que fue prestado.
+     *
+     * @param libro El libro que fue prestado.
+     */
     public void setLibro(ModeloLibro libro) {
         this.libro = libro;
     }
@@ -55,11 +71,9 @@ public class ModeloHistoricoPrestamo {
         this.fecha_prestamo = fecha_prestamo;
     }
 
-
     public LocalDateTime getFecha_devolucion() {
         return fecha_devolucion;
     }
-
 
     public void setFecha_devolucion(LocalDateTime fecha_devolucion) {
         this.fecha_devolucion = fecha_devolucion;

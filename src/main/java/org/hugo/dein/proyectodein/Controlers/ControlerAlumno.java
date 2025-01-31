@@ -5,16 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Dao.DaoAlumno;
+import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 
 public class ControlerAlumno {
-    public ControlerAlumno(ModeloAlumno a) {
-        alumnos = a;
-    }
-    public ControlerAlumno(){
-        this(null);
-    }
+
     @FXML
     private TextField txt_ape1;
 
@@ -23,13 +18,26 @@ public class ControlerAlumno {
 
     @FXML
     private TextField txt_dni;
+
     @FXML
     private TextField txt_nombre;
 
+    // Referencia al controlador principal
     private Runnable onCloseCallback;
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
+
+    private ModeloAlumno alumnoSeleccionado; // Variable para almacenar el alumno a modificar
+
+    public void cargarDatosAlumno(ModeloAlumno alumno) {
+        this.alumnoSeleccionado = alumno;
+        txt_dni.setText(alumno.getDni());
+        txt_nombre.setText(alumno.getNombre());
+        txt_ape1.setText(alumno.getApellido1());
+        txt_ape2.setText(alumno.getApellido2());
+    }
+
 
     @FXML
     void cancelar(ActionEvent event) {
@@ -44,75 +52,71 @@ public class ControlerAlumno {
     }
 
     @FXML
-    void guardarAlumno(ActionEvent event) {
+    void guardarLibro(ActionEvent event) {
         StringBuilder errores = new StringBuilder();
 
         // Validar los campos
-        String dni = txt_dni.getText();
+        String dni = txt_dni.getText().toUpperCase();
         String nombre = txt_nombre.getText();
-        String primerApellido = txt_ape1.getText();
-        String segundoApellido = txt_ape2.getText();
-
+        String ap1 = txt_ape1.getText();
+        String ape2 = txt_ape2.getText();
         if (dni == null || dni.isEmpty() || !dni.matches("\\d{8}[A-Za-z]")) {
-            errores.append("- El DNI debe tener 8 números seguidos de una letra (ejemplo: 12345678A).\n");
+            errores.append("El DNI debe tener 8 nums y una letra\n");
         }
-
         if (nombre == null || nombre.isEmpty()) {
-            errores.append("- El nombre no puede estar vacío.\n");
+            errores.append("El campo nombre no puede estar vacío.\n");
+        }
+        if (ap1 == null || ap1.isEmpty()) {
+            errores.append("El campo del  primer apellido no puede estar vacío.\n");
         }
 
-        if (primerApellido == null || primerApellido.isEmpty()) {
-            errores.append("- El primer apellido no puede estar vacío.\n");
+        if (ape2 == null || ape2.isEmpty()) {
+            errores.append("El campo  segundo apellido no puede estar vacío.\n");
         }
-
-        if (segundoApellido == null || segundoApellido.isEmpty()) {
-            errores.append("- El segundo apellido no puede estar vacío.\n");
-        }
-
         // Mostrar errores si los hay
         if (errores.length() > 0) {
-            mostrarAlerta("Errores de Validación", errores.toString());
+            mostrarAlerta("Hay error en algun campo", errores.toString());
             return;
         }
+        // Crear un objeto ModeloAlumno con los nuevos datos
+        ModeloAlumno alumno = new ModeloAlumno();
+        alumno.setDni(dni);
+        alumno.setNombre(nombre);
+        alumno.setApellido1(ap1);
+        alumno.setApellido2(ape2);
 
-        // Verificar que el alumno ya exista y que se trata de una modificación
-        if (alumnos != null) {
-            // Modificar el alumno existente
-            txt_dni.setDisable(true);
-            alumnos.setNombre(nombre);
-            alumnos.setApellido1(primerApellido);
-            alumnos.setApellido2(segundoApellido);
+        // Verificar si realmente hay cambios en los datos
+        boolean hayCambios = !alumno.equals(alumnoSeleccionado);
 
-            // Actualizar el alumno en la base de datos
-            try {
-                DaoAlumno.modificar(alumnos);  // Actualizamos el alumno
-                mostrarAlerta("Éxito", "El alumno ha sido actualizado correctamente.");
-
-                // Ejecutar el callback para actualizar la tabla
-                if (onCloseCallback != null) {
-                    onCloseCallback.run();
-                }
-
-                cancelar(event);  // Cerrar la ventana
-            } catch (Exception e) {
-                mostrarAlerta("Error", "No se pudo actualizar el alumno: " + e.getMessage());
-            }
-        } else {
-            mostrarAlerta("Error", "No se ha seleccionado un alumno para modificar.");
+        if (!hayCambios) {
+            mostrarAlerta("Sin cambios", "No se han realizado cambios en los datos del alumno.");
+            cancelar(event);
+            return;
         }
-    }
+        // Si es una inserción, verificar si el alumno ya existe
+        if (alumnoSeleccionado == null) {
+            if (DaoAlumno.existeAlumno(dni)) {
+                mostrarAlerta("Error", "Ya existe un alumno con el mismo DNI en la base de datos.");
+                return;
+            }
+            // Si no existe, insertar el nuevo alumno
+            try {
+                DaoAlumno.insertAlumno(alumno);
+                mostrarAlerta("Éxito", "El alumno ha sido registrado correctamente.");
+                cancelar(event);
 
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo registrar el alumno: " + e.getMessage());
+            }
+        } else {// Si es una modificación, actualizar el alumno en la base de datos
+            try {
+                DaoAlumno.updateAlumno(alumno);
+                mostrarAlerta("Éxito", "El alumno ha sido modificado correctamente.");
+                cancelar(event);
 
-
-    private final ModeloAlumno alumnos;
-
-    public void initialize() {
-        if (alumnos != null) {
-            txt_dni.setText(alumnos.getDni());
-            txt_dni.setDisable(true);
-            txt_nombre.setText(alumnos.getNombre());
-            txt_ape1.setText(alumnos.getApellido1());
-            txt_ape2.setText(alumnos.getApellido2());
+            } catch (Exception e) {
+                mostrarAlerta("Error", "No se pudo modificar el alumno: " + e.getMessage());
+            }
         }
     }
     private void mostrarAlerta(String titulo, String mensaje) {

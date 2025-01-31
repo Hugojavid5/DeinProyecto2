@@ -1,169 +1,167 @@
 package org.hugo.dein.proyectodein.Dao;
 
-import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hugo.dein.proyectodein.BBDD.ConexionBBDD;
 import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 import org.hugo.dein.proyectodein.Modelos.ModeloLibro;
 import org.hugo.dein.proyectodein.Modelos.ModeloPrestamo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class DaoPrestamo {
 
-    private static final Logger logger = LoggerFactory.getLogger(DaoPrestamo.class);
+    private static Connection conn;
+
+    static {
+        conn = ConexionBBDD.getConnection();
+    }
+
+    public DaoPrestamo() throws SQLException {
+    }
 
 
-    public static ModeloPrestamo getPrestamo(String id_prestamo) {
-        ConexionBBDD connection;
-        ModeloPrestamo prestamo = null;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "SELECT id_prestamo,dni_alumno,codigo_libro,fecha_prestamo FROM Prestamo WHERE id_prestamo = ?";
-            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
-            ps.setString(1, id_prestamo);
-            ResultSet rs = ps.executeQuery();
+    public static ModeloPrestamo getPrestamo(int idPrestamo) {
+        String sql = "SELECT * FROM Prestamo WHERE id_prestamo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idPrestamo);
+            ResultSet rs = pstmt.executeQuery();
+
             if (rs.next()) {
-                int id_prestamo_db = rs.getInt("id_prestamo");
-                String dni_alumno = rs.getString("dni_alumno");
-                ModeloAlumno alumno = DaoAlumno.getAlumno(dni_alumno);
-                int codigo_libro = rs.getInt("codigo_libro");
-                ModeloLibro libro = DaoLibro.getLibro(codigo_libro);
-                LocalDateTime fecha_prestamo = rs.getTimestamp("fecha_prestamo").toLocalDateTime();
-                prestamo = new ModeloPrestamo(id_prestamo_db, alumno, libro, fecha_prestamo);
+                return new ModeloPrestamo(
+                        rs.getInt("id_prestamo"),
+                        DaoAlumno.getAlumno(rs.getString("dni_alumno")),
+                        DaoLibro.getLibro(rs.getInt("codigo_libro")),
+                        rs.getTimestamp("fecha_prestamo").toLocalDateTime()
+                );
             }
-            rs.close();
-            connection.closeConnection();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            e.printStackTrace();
         }
-        return prestamo;
+        return null;
     }
 
-    public static ObservableList<ModeloPrestamo> prestamosDeAlumno(ModeloAlumno alumno) {
-        ConexionBBDD connection;
-        ObservableList<ModeloPrestamo> prestamos = FXCollections.observableArrayList();
-        try{
-            connection = new ConexionBBDD();
-            String consulta = "SELECT id_prestamo,dni_alumno,codigo_libro,fecha_prestamo FROM Prestamo WHERE dni_alumno = ?";
-            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
-            ps.setString(1, alumno.getDni());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                int id_prestamo_db = rs.getInt("id_prestamo");
-                String dni_alumno = rs.getString("dni_alumno");
-                ModeloAlumno alumno_db = DaoAlumno.getAlumno(dni_alumno);
-                int codigo_libro = rs.getInt("codigo_libro");
-                ModeloLibro libro = DaoLibro.getLibro(codigo_libro);
-                LocalDateTime fecha_prestamo = rs.getTimestamp("fecha_prestamo").toLocalDateTime();
-                ModeloPrestamo prestamo = new ModeloPrestamo(id_prestamo_db, alumno_db, libro, fecha_prestamo);
-                prestamos.add(prestamo);
-            }
-            rs.close();
-            connection.closeConnection();
-        }catch (SQLException e) {
-            logger.error(e.getMessage());
-        }
-        return prestamos;
-    }
+    public static ObservableList<ModeloPrestamo> getTodosPrestamo() {
+        ObservableList<ModeloPrestamo> listaPrestamos = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM Prestamo";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
-    public static ObservableList<ModeloPrestamo> cargarListado() {
-        ConexionBBDD connection;
-        ObservableList<ModeloPrestamo> prestamos = FXCollections.observableArrayList();
-        try{
-            connection = new ConexionBBDD();
-            String consulta = "SELECT id_prestamo,dni_alumno,codigo_libro,fecha_prestamo FROM Prestamo";
-            PreparedStatement ps = connection.getConnection().prepareStatement(consulta);
-            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                prestamos.add(new ModeloPrestamo(
+                listaPrestamos.add(new ModeloPrestamo(
                         rs.getInt("id_prestamo"),
                         DaoAlumno.getAlumno(rs.getString("dni_alumno")),
                         DaoLibro.getLibro(rs.getInt("codigo_libro")),
                         rs.getTimestamp("fecha_prestamo").toLocalDateTime()
                 ));
             }
-            rs.close();
-            connection.closeConnection();
-        }catch (SQLException e) {
-            logger.error(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaPrestamos;
+    }
+
+    public static boolean insertPrestamo(ModeloPrestamo prestamo) {
+        if (!comprobarSiLibroSePuedePrestar(prestamo.getLibro().getCodigo())) {
+            return false;
+        }
+
+        String sql = "INSERT INTO Prestamo (dni_alumno, codigo_libro, fecha_prestamo) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Añadido Statement.RETURN_GENERATED_KEYS
+            pstmt.setString(1, prestamo.getAlumno().getDni());
+            pstmt.setInt(2, prestamo.getLibro().getCodigo());
+            pstmt.setTimestamp(3, Timestamp.valueOf(prestamo.getFecha_prestamo()));
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                // Recuperar el ID generado
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        prestamo.setId_prestamo(generatedKeys.getInt(1)); // Asignar el ID generado
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static List<ModeloPrestamo> getPrestamosDeAlumno(ModeloAlumno alumno) {
+        List<ModeloPrestamo> prestamos = new ArrayList<>();
+        String sql = "SELECT * FROM Prestamo WHERE dni_alumno = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, alumno.getDni());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                prestamos.add(new ModeloPrestamo(
+                        rs.getInt("id_prestamo"),
+                        alumno,
+                        DaoLibro.getLibro(rs.getInt("codigo_libro")),
+                        rs.getTimestamp("fecha_prestamo").toLocalDateTime()
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return prestamos;
     }
 
-    public static boolean modificar(ModeloPrestamo prestamo) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "UPDATE Prestamo SET dni_alumno = ?,codigo_libro = ?,fecha_prestamo = ? WHERE id_prestamo = ?";
-            ps = connection.getConnection().prepareStatement(consulta);
-            ps.setString(1, prestamo.getAlumno().getDni());
-            ps.setInt(2, prestamo.getLibro().getCodigo());
-            ps.setTimestamp(3, Timestamp.valueOf(prestamo.getFecha_prestamo()));
-            ps.setInt(4, prestamo.getId_prestamo());
-            int filasAfectadas = ps.executeUpdate();
-            ps.close();
-            connection.closeConnection();
-            return filasAfectadas > 0;
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-    }
+    public static List<ModeloPrestamo> getPrestamosDeLibro(ModeloLibro libro) {
+        List<ModeloPrestamo> prestamos = new ArrayList<>();
+        String sql = "SELECT * FROM Prestamo WHERE codigo_libro = ?";
 
-    public  static int insertar(ModeloPrestamo prestamo) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "INSERT INTO Prestamo (dni_alumno,codigo_libro,fecha_prestamo) VALUES (?,?,?) ";
-            ps = connection.getConnection().prepareStatement(consulta, PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, prestamo.getAlumno().getDni());
-            ps.setInt(2, prestamo.getLibro().getCodigo());
-            ps.setTimestamp(3, Timestamp.valueOf(prestamo.getFecha_prestamo()));
-            int filasAfectadas = ps.executeUpdate();
-            if (filasAfectadas > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    ps.close();
-                    connection.closeConnection();
-                    return id;
-                }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, libro.getCodigo());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                prestamos.add(new ModeloPrestamo(
+                        rs.getInt("id_prestamo"),
+                        DaoAlumno.getAlumno(rs.getString("dni_alumno")),
+                        libro,
+                        rs.getTimestamp("fecha_prestamo").toLocalDateTime()
+                ));
             }
-            ps.close();
-            connection.closeConnection();
-            return -1;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return -1;
+            e.printStackTrace();
         }
+        return prestamos;
     }
 
-    public static boolean eliminar(int idPrestamo) {
-        ConexionBBDD connection;
-        PreparedStatement ps;
-        try {
-            connection = new ConexionBBDD();
-            String consulta = "DELETE FROM Prestamo WHERE id_prestamo = ?";
-            ps = connection.getConnection().prepareStatement(consulta);
-            ps.setInt(1, idPrestamo);
-            int filasAfectadas = ps.executeUpdate();
-            ps.close();
-            connection.closeConnection();
-            return filasAfectadas > 0;
+
+    public static boolean comprobarSiLibroSePuedePrestar(int codigoLibro) {
+        String sql = "SELECT COUNT(*) FROM Prestamo WHERE codigo_libro = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, codigoLibro);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                return false; // Hay un préstamo activo para este libro.
+            }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
-            return false;
+            e.printStackTrace();
         }
+        return true;
     }
 
+
+    public static boolean deletePrestamo(int idPrestamo) {
+        String sql = "DELETE FROM Prestamo WHERE id_prestamo = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idPrestamo);
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

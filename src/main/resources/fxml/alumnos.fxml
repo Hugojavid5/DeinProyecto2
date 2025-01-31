@@ -41,7 +41,7 @@
       </GridPane>
       <HBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0" spacing="75.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#guardarAlumno" prefHeight="40.0" prefWidth="191.0" text="Guardar" />
+            <Button mnemonicParsing="false" onAction="#guardarLibro" prefHeight="40.0" prefWidth="191.0" text="Guardar" />
             <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="40.0" prefWidth="189.0" text="Cancelar" />
          </children>
       </HBox>
