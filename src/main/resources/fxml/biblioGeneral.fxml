@@ -27,7 +27,7 @@
                <Menu fx:id="menu_idioma" mnemonicParsing="false" text="%menubarIdioma">
                   <items>
                      <MenuItem fx:id="menuItem_espaniol" mnemonicParsing="false" onAction="#idiomaEspaniol" text="%menuItemEspañol" />
-                     <MenuItem fx:id="menuItem_euskera" mnemonicParsing="false" onAction="#idiomaIngles" text="%menuItemEuskera" />
+                     <MenuItem fx:id="menuItem_euskera" mnemonicParsing="false" onAction="#idiomaEuskera" text="%menuItemEuskera" />
                   </items>
                </Menu>
                <Menu fx:id="menu_informes" mnemonicParsing="false" text="%menubarInformes">

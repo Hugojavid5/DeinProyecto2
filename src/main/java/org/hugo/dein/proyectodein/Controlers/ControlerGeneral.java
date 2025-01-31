@@ -418,8 +418,8 @@ public class ControlerGeneral implements Initializable {
     }
 
     @FXML
-    void idiomaIngles(ActionEvent event) {
-        ConexionBBDD.guardarIdioma("eus");
+    void idiomaEuskera(ActionEvent event) {
+        ConexionBBDD.guardarIdioma("en");
         Stage stage = (Stage) txt_filtarAlumn.getScene().getWindow();
         this.actualizarVentana(stage);
     }
