@@ -33,6 +33,14 @@ public class ControlerDevolucion {
     private DatePicker doFechaPrestamo;
 
     @FXML
+    public void initialize() {
+        // Cargar los estados posibles del libro en el ComboBox
+        comboLibro.getItems().addAll(
+                "Nuevo", "Usado nuevo", "Usado seminuevo", "Usado estropeado", "Restaurado"
+        );
+    }
+
+    @FXML
     void cancelarCambios(ActionEvent event) {
         salir();
     }

@@ -30,7 +30,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="17.0" prefWidth="111.0" text="Estudiante: " />
+            <Label prefHeight="17.0" prefWidth="111.0" text="Alumno: " />
             <ComboBox fx:id="comboEstudiante" prefWidth="150.0" GridPane.columnIndex="1" />
             <Label text="Libro:" GridPane.rowIndex="1" />
             <Label text="Fecha del prestamo:" GridPane.rowIndex="2" />
