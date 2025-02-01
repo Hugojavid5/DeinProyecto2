@@ -7,7 +7,10 @@ import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 
 import java.sql.*;
 
-
+/**
+ * Clase DAO para gestionar las operaciones relacionadas con los alumnos en la base de datos.
+ * Esta clase permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los datos de los alumnos.
+ */
 public class DaoAlumno {
 
     private static Connection conn;
@@ -17,13 +20,20 @@ public class DaoAlumno {
     }
 
     /**
-     * constructor tipico
+     * Constructor por defecto de la clase DaoAlumno.
+     * Establece la conexión con la base de datos.
      *
-     * @throws SQLException
+     * @throws SQLException Si ocurre un error al establecer la conexión a la base de datos.
      */
     public DaoAlumno() throws SQLException {
     }
 
+    /**
+     * Obtiene un alumno de la base de datos utilizando su DNI.
+     *
+     * @param dni El DNI del alumno que se desea obtener.
+     * @return Un objeto ModeloAlumno con los datos del alumno, o null si no se encuentra.
+     */
     public static ModeloAlumno getAlumno(String dni) {
         String sql = "SELECT * FROM Alumno WHERE dni = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -44,6 +54,11 @@ public class DaoAlumno {
         return null;
     }
 
+    /**
+     * Obtiene todos los alumnos registrados en la base de datos.
+     *
+     * @return Una lista observable de todos los alumnos.
+     */
     public static ObservableList<ModeloAlumno> getTodosAlumnos() {
         ObservableList<ModeloAlumno> listaAlumnos = FXCollections.observableArrayList();
 
@@ -65,6 +80,12 @@ public class DaoAlumno {
         return listaAlumnos;
     }
 
+    /**
+     * Inserta un nuevo alumno en la base de datos.
+     *
+     * @param alumno El objeto ModeloAlumno que se desea insertar.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean insertAlumno(ModeloAlumno alumno) {
         String sql = "INSERT INTO Alumno (dni, nombre, apellido1, apellido2) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -80,6 +101,12 @@ public class DaoAlumno {
         return false;
     }
 
+    /**
+     * Actualiza los datos de un alumno en la base de datos.
+     *
+     * @param alumno El objeto ModeloAlumno con los nuevos datos del alumno.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean updateAlumno(ModeloAlumno alumno) {
         String sql = "UPDATE Alumno SET nombre = ?, apellido1 = ?, apellido2 = ? WHERE dni = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -95,7 +122,12 @@ public class DaoAlumno {
         return false;
     }
 
-
+    /**
+     * Elimina un alumno de la base de datos utilizando su DNI.
+     *
+     * @param dni El DNI del alumno que se desea eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean deleteAlumno(String dni) {
         String sql = "DELETE FROM Alumno WHERE dni = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -108,8 +140,13 @@ public class DaoAlumno {
         return false;
     }
 
-
-    public static boolean existeAlumno(String dni) {
+    /**
+     * Verifica si un alumno existe en la base de datos utilizando su DNI.
+     *
+     * @param dni El DNI del alumno que se desea verificar.
+     * @return true si el alumno existe, false en caso contrario.
+     */
+    public static boolean comprobarSiExiste(String dni) {
         String sql = "SELECT dni FROM Alumno WHERE dni = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, dni);

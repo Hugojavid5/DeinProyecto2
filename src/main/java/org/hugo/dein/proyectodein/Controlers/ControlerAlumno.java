@@ -24,12 +24,23 @@ public class ControlerAlumno {
 
     // Referencia al controlador principal
     private Runnable onCloseCallback;
+
+    /**
+     * Establece el callback que se ejecutará cuando se cierre la ventana.
+     *
+     * @param onCloseCallback El callback que se ejecutará al cerrar la ventana.
+     */
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
 
     private ModeloAlumno alumnoSeleccionado; // Variable para almacenar el alumno a modificar
 
+    /**
+     * Carga los datos de un alumno en los campos de texto para su visualización y modificación.
+     *
+     * @param alumno El objeto {@link ModeloAlumno} con los datos del alumno a cargar.
+     */
     public void cargarDatosAlumno(ModeloAlumno alumno) {
         this.alumnoSeleccionado = alumno;
         txt_dni.setText(alumno.getDni());
@@ -38,7 +49,12 @@ public class ControlerAlumno {
         txt_ape2.setText(alumno.getApellido2());
     }
 
-
+    /**
+     * Cancela la operación y cierra la ventana actual.
+     * Si se ha establecido un callback, se ejecutará antes de cerrar la ventana.
+     *
+     * @param event El evento de acción generado al hacer clic en el botón de cancelar.
+     */
     @FXML
     void cancelar(ActionEvent event) {
         // Ejecutar el callback si está configurado
@@ -51,6 +67,12 @@ public class ControlerAlumno {
         stage.close();
     }
 
+    /**
+     * Guarda los datos del alumno, realizando validaciones antes de insertar o actualizar
+     * el registro en la base de datos. Muestra alertas en caso de error o éxito.
+     *
+     * @param event El evento de acción generado al hacer clic en el botón de guardar.
+     */
     @FXML
     void guardarLibro(ActionEvent event) {
         StringBuilder errores = new StringBuilder();
@@ -60,24 +82,33 @@ public class ControlerAlumno {
         String nombre = txt_nombre.getText();
         String ap1 = txt_ape1.getText();
         String ape2 = txt_ape2.getText();
+
+        // Validación del DNI
         if (dni == null || dni.isEmpty() || !dni.matches("\\d{8}[A-Za-z]")) {
             errores.append("El DNI debe tener 8 nums y una letra\n");
         }
+
+        // Validación del nombre
         if (nombre == null || nombre.isEmpty()) {
             errores.append("El campo nombre no puede estar vacío.\n");
         }
+
+        // Validación del primer apellido
         if (ap1 == null || ap1.isEmpty()) {
-            errores.append("El campo del  primer apellido no puede estar vacío.\n");
+            errores.append("El campo del primer apellido no puede estar vacío.\n");
         }
 
+        // Validación del segundo apellido
         if (ape2 == null || ape2.isEmpty()) {
-            errores.append("El campo  segundo apellido no puede estar vacío.\n");
+            errores.append("El campo segundo apellido no puede estar vacío.\n");
         }
+
         // Mostrar errores si los hay
         if (errores.length() > 0) {
             mostrarAlerta("Hay error en algun campo", errores.toString());
             return;
         }
+
         // Crear un objeto ModeloAlumno con los nuevos datos
         ModeloAlumno alumno = new ModeloAlumno();
         alumno.setDni(dni);
@@ -86,39 +117,46 @@ public class ControlerAlumno {
         alumno.setApellido2(ape2);
 
         // Verificar si realmente hay cambios en los datos
-        boolean hayCambios = !alumno.equals(alumnoSeleccionado);
+        boolean cambio = !alumno.equals(alumnoSeleccionado);
 
-        if (!hayCambios) {
+        if (!cambio) {
             mostrarAlerta("Sin cambios", "No se han realizado cambios en los datos del alumno.");
             cancelar(event);
             return;
         }
+
         // Si es una inserción, verificar si el alumno ya existe
         if (alumnoSeleccionado == null) {
-            if (DaoAlumno.existeAlumno(dni)) {
+            if (DaoAlumno.comprobarSiExiste(dni)) {
                 mostrarAlerta("Error", "Ya existe un alumno con el mismo DNI en la base de datos.");
                 return;
             }
+
             // Si no existe, insertar el nuevo alumno
             try {
                 DaoAlumno.insertAlumno(alumno);
                 mostrarAlerta("Éxito", "El alumno ha sido registrado correctamente.");
                 cancelar(event);
-
             } catch (Exception e) {
                 mostrarAlerta("Error", "No se pudo registrar el alumno: " + e.getMessage());
             }
-        } else {// Si es una modificación, actualizar el alumno en la base de datos
+        } else { // Si es una modificación, actualizar el alumno en la base de datos
             try {
                 DaoAlumno.updateAlumno(alumno);
                 mostrarAlerta("Éxito", "El alumno ha sido modificado correctamente.");
                 cancelar(event);
-
             } catch (Exception e) {
                 mostrarAlerta("Error", "No se pudo modificar el alumno: " + e.getMessage());
             }
         }
     }
+
+    /**
+     * Muestra una alerta con un título y mensaje especificados.
+     *
+     * @param titulo El título de la alerta.
+     * @param mensaje El mensaje que se mostrará en la alerta.
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);

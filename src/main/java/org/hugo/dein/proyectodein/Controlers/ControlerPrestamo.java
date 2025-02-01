@@ -27,6 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador para la gestión de préstamos en la aplicación.
+ * Permite realizar el registro de un préstamo, mostrando un formulario para seleccionar el estudiante, el libro y la fecha.
+ */
 public class ControlerPrestamo {
 
     @FXML
@@ -45,20 +49,44 @@ public class ControlerPrestamo {
     private DatePicker dpFechaPrestamo;
 
     private Runnable onCloseCallback;
+
+    /**
+     * Configura el callback que se ejecutará al cerrar el formulario.
+     *
+     * @param onCloseCallback el callback que se ejecutará al cerrar el formulario.
+     */
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
+
+    /**
+     * Método de inicialización que carga los estudiantes y los libros disponibles en el formulario.
+     */
     @FXML
     public void initialize() {
         cargarEstudiantes();
         cargarLibrosDisponibles();
     }
+
+    /**
+     * Carga la lista de estudiantes en el ComboBox.
+     */
     private void cargarEstudiantes() {
         comboEstudiante.getItems().setAll(org.hugo.dein.proyectodein.Dao.DaoAlumno.getTodosAlumnos());
     }
+
+    /**
+     * Carga la lista de libros disponibles en el ComboBox.
+     */
     private void cargarLibrosDisponibles() {
         comboLibro.getItems().setAll(org.hugo.dein.proyectodein.Dao.DaoLibro.getLibrosDisponibles());
     }
+
+    /**
+     * Cancela el registro del préstamo y cierra el formulario.
+     *
+     * @param event el evento que ha disparado la acción.
+     */
     @FXML
     void cancelarCambios(ActionEvent event) {
         if (onCloseCallback != null) {
@@ -68,6 +96,11 @@ public class ControlerPrestamo {
         stage.close();
     }
 
+    /**
+     * Guarda los cambios del préstamo, realizando las validaciones necesarias y generando el reporte correspondiente.
+     *
+     * @param event el evento que ha disparado la acción.
+     */
     @FXML
     void guardarCambios(ActionEvent event) {
         List<String> errores = new ArrayList<>();
@@ -107,7 +140,7 @@ public class ControlerPrestamo {
             mostrarInformacion("Éxito", "Préstamo registrado correctamente.");
 
             // Obtener el ID del préstamo recién creado
-            int idPrestamo = nuevoPrestamo.getId_prestamo();  // Asegúrate de que este campo esté correctamente configurado en PrestamoModel
+            int idPrestamo = nuevoPrestamo.getId_prestamo();  // Asegúrate de que este campo esté correctamente configurado en ModeloPrestamo
 
             // Preparar los parámetros para el reporte
             Map<String, Object> parameters = new HashMap<>();
@@ -122,6 +155,13 @@ public class ControlerPrestamo {
             mostrarError("Error", "No se pudo registrar el préstamo. Intente nuevamente.");
         }
     }
+
+    /**
+     * Genera un reporte en formato Jasper utilizando los parámetros proporcionados.
+     *
+     * @param reportePath la ruta al archivo Jasper.
+     * @param parameters los parámetros necesarios para generar el reporte.
+     */
     private void generarReporte(String reportePath, Map<String, Object> parameters) {
         try {
             ConexionBBDD conexionBBDD = new ConexionBBDD();
@@ -142,6 +182,13 @@ public class ControlerPrestamo {
             mostrarError("Error en la base de datos", "O no se ha podido establecer conexion con la bbdd o no se ha podido generar el informe.");
         }
     }
+
+    /**
+     * Muestra un mensaje de error en una ventana emergente.
+     *
+     * @param titulo el título de la ventana de error.
+     * @param mensaje el mensaje de error a mostrar.
+     */
     private void mostrarError(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titulo);
@@ -149,6 +196,13 @@ public class ControlerPrestamo {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    /**
+     * Muestra un mensaje de información en una ventana emergente.
+     *
+     * @param titulo el título de la ventana de información.
+     * @param mensaje el mensaje de información a mostrar.
+     */
     private void mostrarInformacion(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);

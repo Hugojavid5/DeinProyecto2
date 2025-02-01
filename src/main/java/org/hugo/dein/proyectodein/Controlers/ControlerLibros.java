@@ -19,6 +19,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con los libros en la interfaz de usuario.
+ * Permite agregar, editar, eliminar y cargar libros, incluyendo la gestión de imágenes asociadas.
+ */
 public class ControlerLibros {
 
     @FXML
@@ -55,13 +59,26 @@ public class ControlerLibros {
     private ModeloLibro libroSeleccionado;
     private byte[] imagenBytes;
 
+    /**
+     * Establece el libro seleccionado y carga sus datos en la interfaz de usuario.
+     * @param libroSeleccionado El libro que se desea cargar en la interfaz.
+     */
     public void setLibroSeleccionado(ModeloLibro libroSeleccionado) {
         this.libroSeleccionado = libroSeleccionado;
         cargarDatosLibro(libroSeleccionado); // Cargar los datos del libro en los campos de la interfaz
     }
+
+    /**
+     * Establece el callback que se ejecutará al cerrar la ventana.
+     * @param onCloseCallback El callback a ejecutar al cerrar la ventana.
+     */
     public void setOnCloseCallback(Runnable onCloseCallback) {
         this.onCloseCallback = onCloseCallback;
     }
+
+    /**
+     * Inicializa el controlador, configurando la lista de estados de los libros en el ComboBox.
+     */
     @FXML
     public void initialize() {
         ObservableList<String> estados = FXCollections.observableArrayList(
@@ -72,8 +89,12 @@ public class ControlerLibros {
                 "Restaurado"
         );
         comboEstado.setItems(estados);
-
     }
+
+    /**
+     * Borra la imagen de portada y la reemplaza por una imagen predeterminada.
+     * @param event El evento que dispara la acción de borrar la imagen.
+     */
     @FXML
     void borrarImagen(ActionEvent event) {
         // Cargar la imagen desde la carpeta "imagenes" en resources
@@ -84,6 +105,11 @@ public class ControlerLibros {
         imagenBytes = convertirImagenABytes(new Image(imagePath));
     }
 
+    /**
+     * Convierte una imagen a un arreglo de bytes.
+     * @param image La imagen a convertir.
+     * @return Un arreglo de bytes que representa la imagen.
+     */
     private byte[] convertirImagenABytes(Image image) {
         try {
             // Cargar la imagen desde la carpeta "imagenes" en resources
@@ -107,7 +133,10 @@ public class ControlerLibros {
         }
     }
 
-
+    /**
+     * Cancela los cambios y cierra la ventana, ejecutando el callback si está configurado.
+     * @param event El evento que dispara la acción de cancelar cambios.
+     */
     @FXML
     void cancelarCambios(ActionEvent event) {
         // Ejecutar el callback si está configurado
@@ -119,6 +148,11 @@ public class ControlerLibros {
         Stage stage = (Stage) txt_libro.getScene().getWindow();
         stage.close();
     }
+
+    /**
+     * Carga los datos de un libro seleccionado en los campos de la interfaz de usuario.
+     * @param libroSeleccionado El libro cuyos datos se desean cargar.
+     */
     public void cargarDatosLibro(ModeloLibro libroSeleccionado) {
         if (libroSeleccionado != null) {
             // Rellenar los campos con los datos del libro seleccionado
@@ -141,6 +175,12 @@ public class ControlerLibros {
 
         }
     }
+
+    /**
+     * Convierte un objeto Blob a un arreglo de bytes.
+     * @param blob El Blob a convertir.
+     * @return Un arreglo de bytes que representa el Blob.
+     */
     public byte[] BlobABytes(java.sql.Blob blob) {
         if (blob == null) {
             return null;
@@ -159,6 +199,11 @@ public class ControlerLibros {
             return null;
         }
     }
+
+    /**
+     * Guarda los cambios realizados en un libro. Si el libro tiene un ID, se actualiza, si no, se inserta como nuevo.
+     * @param event El evento que dispara la acción de guardar los cambios.
+     */
     @FXML
     void guardarCambios(ActionEvent event) {
         StringBuilder errores = new StringBuilder();
@@ -223,7 +268,10 @@ public class ControlerLibros {
         }
     }
 
-
+    /**
+     * Permite seleccionar una imagen desde el sistema de archivos y cargarla en el ImageView.
+     * @param event El evento que dispara la acción de seleccionar una imagen.
+     */
     @FXML
     void seleccionarImagen(ActionEvent event) {
         // Abrir un explorador de archivos para seleccionar una imagen
@@ -255,6 +303,12 @@ public class ControlerLibros {
             }
         }
     }
+
+    /**
+     * Muestra una alerta con el título y mensaje proporcionados.
+     * @param titulo El título de la alerta.
+     * @param mensaje El mensaje a mostrar en la alerta.
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);

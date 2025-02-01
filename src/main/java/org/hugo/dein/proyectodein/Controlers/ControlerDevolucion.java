@@ -17,6 +17,11 @@ import javax.enterprise.inject.Model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Controlador de la vista de devolución de un préstamo de libro.
+ * Permite gestionar la devolución de un préstamo, actualizar el estado del libro
+ * y registrar la devolución en el historial.
+ */
 public class ControlerDevolucion {
 
     @FXML
@@ -31,27 +36,46 @@ public class ControlerDevolucion {
     @FXML
     private DatePicker doFechaPrestamo;
 
+    /**
+     * Callback que se ejecuta cuando se cierra la ventana de la devolución.
+     */
     private Runnable onCloseCallback;
+
+    /**
+     * Establece el callback que se ejecutará al cerrar la ventana.
+     *
+     * @param callback el callback a ejecutar
+     */
     public void setOnCloseCallback(Runnable callback) {
         this.onCloseCallback = callback;
     }
 
-
-
+    /**
+     * Cancela los cambios y cierra la ventana de la devolución.
+     *
+     * @param event el evento de acción
+     */
     @FXML
     void cancelarCambios(ActionEvent event) {
         cerrarVentana();
     }
 
+    /**
+     * Guarda la devolución del préstamo, actualiza el estado del libro y
+     * registra la devolución en el historial.
+     *
+     * @param event el evento de acción
+     */
     @FXML
     void guardarCambios(ActionEvent event) {
+        // Verifica si se ha seleccionado un préstamo
         if (prestamoSeleccionado == null) {
             mostrarAlerta("Error", "No se ha seleccionado ningún préstamo.", Alert.AlertType.ERROR);
             return;
         }
 
+        // Obtiene la fecha de devolución y la valida
         LocalDate fechaDevolucion = doFechaPrestamo.getValue();
-
         if (fechaDevolucion == null) {
             mostrarAlerta("Error", "Debe seleccionar una fecha de devolución.", Alert.AlertType.ERROR);
             return;
@@ -59,12 +83,13 @@ public class ControlerDevolucion {
 
         LocalDateTime fechaDevolucionDateTime = fechaDevolucion.atStartOfDay();
 
+        // Verifica que la fecha de devolución no sea anterior a la fecha del préstamo
         if (fechaDevolucionDateTime.isBefore(prestamoSeleccionado.getFecha_prestamo())) {
             mostrarAlerta("Error", "La fecha de devolución no puede ser anterior a la fecha de préstamo.", Alert.AlertType.ERROR);
             return;
         }
 
-        // Eliminar el préstamo de la base de datos
+        // Elimina el préstamo de la base de datos
         boolean eliminado = DaoPrestamo.deletePrestamo(prestamoSeleccionado.getId_prestamo());
 
         if (!eliminado) {
@@ -72,7 +97,7 @@ public class ControlerDevolucion {
             return;
         }
 
-        // Si el estado del libro ha cambiado, actualizarlo en la base de datos
+        // Si el estado del libro ha cambiado, lo actualiza en la base de datos
         String nuevoEstado = comboLibro.getValue();
         if (nuevoEstado != null && !nuevoEstado.equals(prestamoSeleccionado.getLibro().getEstado())) {
             boolean actualizado = DaoLibro.updateLibroEstado(prestamoSeleccionado.getLibro().getCodigo(), nuevoEstado);
@@ -82,7 +107,7 @@ public class ControlerDevolucion {
             }
         }
 
-        // Insertar en el historial de préstamos
+        // Inserta el historial del préstamo
         ModeloHistoricoPrestamo historial = new ModeloHistoricoPrestamo(
                 prestamoSeleccionado.getId_prestamo(),
                 prestamoSeleccionado.getAlumno(),
@@ -101,6 +126,10 @@ public class ControlerDevolucion {
         mostrarAlerta("Éxito", "El préstamo ha sido devuelto correctamente.", Alert.AlertType.INFORMATION);
         cerrarVentana();
     }
+
+    /**
+     * Cierra la ventana actual y ejecuta el callback si está configurado.
+     */
     private void cerrarVentana() {
         if (onCloseCallback != null) {
             onCloseCallback.run();
@@ -108,6 +137,14 @@ public class ControlerDevolucion {
         Stage stage = (Stage) comboLibro.getScene().getWindow();
         stage.close();
     }
+
+    /**
+     * Muestra una alerta con el título y el mensaje proporcionados.
+     *
+     * @param titulo el título de la alerta
+     * @param mensaje el mensaje de la alerta
+     * @param tipo el tipo de alerta (información, error, etc.)
+     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
@@ -116,7 +153,9 @@ public class ControlerDevolucion {
         alert.showAndWait();
     }
 
-
+    /**
+     * Inicializa el controlador. Carga los posibles estados del libro en el ComboBox.
+     */
     @FXML
     public void initialize() {
         // Cargar los estados posibles del libro en el ComboBox
@@ -124,7 +163,14 @@ public class ControlerDevolucion {
                 "Nuevo", "Usado nuevo", "Usado seminuevo", "Usado estropeado", "Restaurado"
         );
     }
+
     private ModeloPrestamo prestamoSeleccionado;
+
+    /**
+     * Establece el préstamo seleccionado para su devolución.
+     *
+     * @param prestamo el préstamo seleccionado
+     */
     public void setPrestamo(ModeloPrestamo prestamo) {
         this.prestamoSeleccionado = prestamo;
         if (prestamo != null) {

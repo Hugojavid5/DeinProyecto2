@@ -10,10 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Clase para gestionar la conexión a la base de datos MariaDB.
- * Proporciona métodos para establecer, mantener y cerrar la conexión
- * con la base de datos, así como cargar configuraciones desde un archivo
- * de propiedades.
+ * Clase ConexionBBDD la cual se conecta a la base de datos libros.sql y se elige el idioma
  */
 public class ConexionBBDD {
 
@@ -77,6 +74,13 @@ public class ConexionBBDD {
         }
         return null;
     }
+    /**
+     * Carga las propiedades de configuración desde el archivo `idioma.properties`.
+     * Este archivo debe contener las configuraciones de idioma para la aplicación.
+     *
+     * @return Un objeto {@link Properties} con las configuraciones de idioma cargadas,
+     *         o {@code null} si ocurre un error al leer el archivo.
+     */
     public static Properties cargarIdioma() {
         try (FileInputStream fs = new FileInputStream("idioma.properties")) {
             Properties props = new Properties();
@@ -87,6 +91,12 @@ public class ConexionBBDD {
         }
         return null;
     }
+    /**
+     * Guarda el nuevo idioma en el archivo `idioma.properties`.
+     * Si el archivo no existe, se creará. Si ya existe, se actualizará.
+     *
+     * @param nuevoIdioma El nuevo idioma a guardar, como "es" para español o "en" para inglés.
+     */
     public static void guardarIdioma(String nuevoIdioma) {
         Properties properties = cargarIdioma();
         if (properties != null) {

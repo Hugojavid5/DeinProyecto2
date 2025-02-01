@@ -11,7 +11,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class DaoLibro {
 
     private static Connection conn;
@@ -23,6 +22,12 @@ public class DaoLibro {
     public DaoLibro() throws SQLException {
     }
 
+    /**
+     * Obtiene un libro de la base de datos por su código.
+     *
+     * @param codigo El código del libro a buscar.
+     * @return El objeto {@link ModeloLibro} correspondiente al código, o null si no se encuentra.
+     */
     public static ModeloLibro getLibro(int codigo) {
         String sql = "SELECT * FROM Libro WHERE codigo = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -46,6 +51,11 @@ public class DaoLibro {
         return null;
     }
 
+    /**
+     * Obtiene todos los libros de la base de datos.
+     *
+     * @return Una lista observable de todos los libros.
+     */
     public static ObservableList<ModeloLibro> getTodosLibros() {
         ObservableList<ModeloLibro> listaLibros = FXCollections.observableArrayList();
         String sql = "SELECT * FROM Libro";
@@ -69,6 +79,11 @@ public class DaoLibro {
         return listaLibros;
     }
 
+    /**
+     * Obtiene todos los libros que no han sido dados de baja (baja = 0).
+     *
+     * @return Una lista observable de los libros no dados de baja.
+     */
     public static ObservableList<ModeloLibro> getTodosLibrosConBajaA0() {
         ObservableList<ModeloLibro> listaLibros = FXCollections.observableArrayList();
         String sql = "SELECT * FROM Libro WHERE baja = 0";
@@ -92,7 +107,12 @@ public class DaoLibro {
         return listaLibros;
     }
 
-
+    /**
+     * Convierte un arreglo de bytes en un objeto Blob.
+     *
+     * @param data El arreglo de bytes a convertir.
+     * @return El objeto {@link Blob} correspondiente.
+     */
     public static Blob convertirABlob(byte[] data) {
         try {
             Blob blob = conn.createBlob();
@@ -104,6 +124,12 @@ public class DaoLibro {
         return null;
     }
 
+    /**
+     * Inserta un nuevo libro en la base de datos.
+     *
+     * @param libro El objeto {@link ModeloLibro} a insertar.
+     * @return true si el libro se insertó correctamente, false si ocurrió un error.
+     */
     public static boolean insertLibro(ModeloLibro libro) {
         String sql = "INSERT INTO Libro (titulo, autor, editorial, estado, baja, imagen) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -121,6 +147,11 @@ public class DaoLibro {
         return false;
     }
 
+    /**
+     * Obtiene los libros que están disponibles para ser prestados (es decir, aquellos que no están en la tabla de préstamos).
+     *
+     * @return Una lista de los libros disponibles.
+     */
     public static List<ModeloLibro> getLibrosDisponibles() {
         List<ModeloLibro> listaLibros = new ArrayList<>();
         String sql = "SELECT * FROM Libro WHERE codigo NOT IN (SELECT codigo_libro FROM Prestamo)";
@@ -145,6 +176,12 @@ public class DaoLibro {
         return listaLibros;
     }
 
+    /**
+     * Actualiza la información de un libro en la base de datos.
+     *
+     * @param libro El objeto {@link ModeloLibro} con la información actualizada.
+     * @return true si la actualización fue exitosa, false si ocurrió un error.
+     */
     public static boolean updateLibro(ModeloLibro libro) {
         String sql = "UPDATE Libro SET titulo = ?, autor = ?, editorial = ?, estado = ?, baja = ?, imagen = ? WHERE codigo = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -163,7 +200,12 @@ public class DaoLibro {
         return false;
     }
 
-
+    /**
+     * Da de baja un libro, marcándolo como no disponible para préstamos.
+     *
+     * @param codigo El código del libro a dar de baja.
+     * @return true si la baja fue exitosa, false si ocurrió un error.
+     */
     public static boolean bajaDelLibro(int codigo) {
         String sql = "UPDATE Libro SET baja = 1 WHERE codigo = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -176,7 +218,13 @@ public class DaoLibro {
         return false;
     }
 
-
+    /**
+     * Actualiza el estado de un libro en la base de datos.
+     *
+     * @param idLibro El código del libro cuyo estado se actualizará.
+     * @param nuevoEstado El nuevo estado del libro.
+     * @return true si la actualización fue exitosa, false si ocurrió un error.
+     */
     public static boolean updateLibroEstado(int idLibro, String nuevoEstado) {
         String sql = "UPDATE Libro SET estado = ? WHERE codigo = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
