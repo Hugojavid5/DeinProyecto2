@@ -419,7 +419,7 @@ public class ControlerGeneral implements Initializable {
 
     @FXML
     void idiomaEuskera(ActionEvent event) {
-        ConexionBBDD.guardarIdioma("en");
+        ConexionBBDD.guardarIdioma("eus");
         Stage stage = (Stage) txt_filtarAlumn.getScene().getWindow();
         this.actualizarVentana(stage);
     }
