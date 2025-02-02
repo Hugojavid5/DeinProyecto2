@@ -80,8 +80,8 @@ public class ControlerAlumno {
         // Validar los campos
         String dni = txt_dni.getText().toUpperCase();
         String nombre = txt_nombre.getText();
-        String ap1 = txt_ape1.getText();
-        String ape2 = txt_ape2.getText();
+        String primerApellido = txt_ape1.getText();
+        String segundoApellido = txt_ape2.getText();
 
         // Validación del DNI
         if (dni == null || dni.isEmpty() || !dni.matches("\\d{8}[A-Za-z]")) {
@@ -94,12 +94,12 @@ public class ControlerAlumno {
         }
 
         // Validación del primer apellido
-        if (ap1 == null || ap1.isEmpty()) {
+        if (primerApellido == null || primerApellido.isEmpty()) {
             errores.append("El campo del primer apellido no puede estar vacío.\n");
         }
 
         // Validación del segundo apellido
-        if (ape2 == null || ape2.isEmpty()) {
+        if (segundoApellido == null || segundoApellido.isEmpty()) {
             errores.append("El campo segundo apellido no puede estar vacío.\n");
         }
 
@@ -113,8 +113,8 @@ public class ControlerAlumno {
         ModeloAlumno alumno = new ModeloAlumno();
         alumno.setDni(dni);
         alumno.setNombre(nombre);
-        alumno.setApellido1(ap1);
-        alumno.setApellido2(ape2);
+        alumno.setApellido1(primerApellido);
+        alumno.setApellido2(segundoApellido);
 
         // Verificar si realmente hay cambios en los datos
         boolean cambio = !alumno.equals(alumnoSeleccionado);

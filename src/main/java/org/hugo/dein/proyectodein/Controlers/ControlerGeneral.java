@@ -182,7 +182,7 @@ public class ControlerGeneral implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("iniciando...");
+        System.out.println("Conectando a la bbdd");
         try {
             ConexionBBDD conexionBBDD = new ConexionBBDD();
         } catch (SQLException e) {
