@@ -29,6 +29,9 @@ public class ConexionBBDD {
      */
     public ConexionBBDD() throws SQLException {
         Properties connConfig = loadProperties();
+        if (connConfig == null) {
+            throw new SQLException("Error: No se pudo cargar el archivo de configuración.");
+        }
         String url = connConfig.getProperty("dburl");
         connection = DriverManager.getConnection(url, connConfig);
         connection.setAutoCommit(true);
@@ -58,7 +61,7 @@ public class ConexionBBDD {
     }
 
     /**
-     * Carga las propiedades de configuración desde el archivo `configuration.properties`.
+     * Carga las propiedades de configuración desde el archivo `configuracion.properties`.
      * Este archivo debe contener la configuración de conexión necesaria para la base de datos.
      *
      * @return Un objeto {@link Properties} con las configuraciones cargadas,
@@ -70,10 +73,12 @@ public class ConexionBBDD {
             props.load(fs);
             return props;
         } catch (IOException e) {
+            System.err.println("Error: No se ha podido cargar el archivo de configuracion 'configuracion.properties'.");
             e.printStackTrace();
         }
         return null;
     }
+
     /**
      * Carga las propiedades de configuración desde el archivo `idioma.properties`.
      * Este archivo debe contener las configuraciones de idioma para la aplicación.
@@ -91,6 +96,7 @@ public class ConexionBBDD {
         }
         return null;
     }
+
     /**
      * Guarda el nuevo idioma en el archivo `idioma.properties`.
      * Si el archivo no existe, se creará. Si ya existe, se actualizará.
