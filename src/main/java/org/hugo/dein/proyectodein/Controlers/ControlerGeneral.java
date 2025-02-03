@@ -502,7 +502,7 @@ public class ControlerGeneral implements Initializable {
     private Image blobToImage(byte[] imageBytes) {
         if (imageBytes == null || imageBytes.length == 0) {
             // Si no hay imagen, usar una imagen por defecto
-            return new Image(getClass().getResource("/IMG/libroIcono.png").toString());
+            return new Image(getClass().getResource("/imagenes/portada.png").toString());
         }
 
         return new Image(new ByteArrayInputStream(imageBytes));
