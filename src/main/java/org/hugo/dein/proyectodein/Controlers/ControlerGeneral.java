@@ -501,12 +501,15 @@ public class ControlerGeneral implements Initializable {
     }
     private Image blobToImage(byte[] imageBytes) {
         if (imageBytes == null || imageBytes.length == 0) {
-            // Si no hay imagen, usar una imagen por defecto
-            return new Image(getClass().getResource("imagenes/portada.png").toString());
+            InputStream imageStream = getClass().getResourceAsStream("/imagenes/portada.png");
+            if (imageStream == null) {
+                return null;
+            }
+            return new Image(imageStream);
         }
-
         return new Image(new ByteArrayInputStream(imageBytes));
     }
+
     private byte[] blobToBytes(Blob blob) {
         if (blob == null) {
             return null; // Si el blob es nulo, devolvemos null
