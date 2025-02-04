@@ -11,8 +11,7 @@ target/
 *.iws
 *.iml
 *.ipr
-configuracion.properties
-/configuracion.properties
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -37,3 +36,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+configuracion.properties
