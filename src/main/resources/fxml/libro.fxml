@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="602.0" stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerLibros">
+<VBox stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerLibros">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="600.0" text="%tituloLibros">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="6.0" prefWidth="600.0" text="%tituloLibros">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -42,14 +42,24 @@
             <TextField fx:id="txt_autor" prefHeight="26.0" prefWidth="307.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="txt_libro" prefHeight="26.0" prefWidth="319.0" GridPane.columnIndex="1" />
          </children>
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
       </GridPane>
       <VBox prefHeight="219.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox prefHeight="39.0" prefWidth="600.0">
+            <HBox prefHeight="38.0" prefWidth="637.0">
                <children>
                   <Label fx:id="lbl_imagen" prefHeight="40.0" prefWidth="165.0" text="%lblPortadaLibro" />
-                  <Button fx:id="btt_seleccionar" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="45.0" prefWidth="253.0" text="%botonSelecciona" />
-                  <Button fx:id="btt_borrar" mnemonicParsing="false" onAction="#borrarImagen" prefHeight="28.0" prefWidth="153.0" text="%botonBorrarImagen" />
+                  <Button fx:id="btt_seleccionar" mnemonicParsing="false" onAction="#seleccionarImagen" prefHeight="45.0" prefWidth="253.0" text="%botonSelecciona">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btt_borrar" mnemonicParsing="false" onAction="#borrarImagen" prefHeight="38.0" prefWidth="197.0" text="%botonBorrarImagen">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
             <ImageView fx:id="img_portada" fitHeight="133.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
@@ -63,10 +73,16 @@
             <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="600.0" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
                   <Button fx:id="btt_guardar" defaultButton="true" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="35.0" prefWidth="161.0" text="%botonGuardar" />
-                  <Button fx:id="btt_cancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelarCambios" prefHeight="35.0" prefWidth="161.0" text="%botonCancelar" />
+                  <Button fx:id="btt_cancelar" cancelButton="true" mnemonicParsing="false" onAction="#cancelarCambios" prefHeight="35.0" prefWidth="161.0" text="%botonCancelar">
+                     <HBox.margin>
+                        <Insets bottom="10.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
          </children>
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
       </VBox>
    </children>
 </VBox>
