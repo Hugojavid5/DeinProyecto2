@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0" stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerGeneral">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0" stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerGeneral">
    <VBox fx:id="vbox_general" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0">
       <children>
          <MenuBar>
@@ -78,7 +78,7 @@
                            </HBox>
                            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="600.0" spacing="30.0">
                               <children>
-                                 <Label prefHeight="17.0" prefWidth="40.0" text="%lblFiltroLibro" />
+                                 <Label prefHeight="20.0" prefWidth="129.0" text="%lblFiltroLibro" />
                                  <TextField fx:id="txt_filtrarLibros" onAction="#filtrarLibros" prefHeight="0.0" prefWidth="239.0" promptText="%textFieldfiltroLibro" />
                               </children>
                            </HBox>
