@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -180,13 +182,15 @@ public class ControlerGeneral implements Initializable {
     private VBox vbox_general;
 
 
+    private static final Logger LOGGER = Logger.getLogger(ControlerGeneral.class.getName());
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Conectando a la bbdd");
+        LOGGER.info("Conectando a la BBDD...");
         try {
             ConexionBBDD conexionBBDD = new ConexionBBDD();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error: No se pudo conectar a la base de datos.", e);
         }
 
         cargarDatosTablas();
