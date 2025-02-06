@@ -34,8 +34,8 @@
             <Label prefHeight="25.0" prefWidth="301.0" text="%lblAp1" textAlignment="CENTER" GridPane.rowIndex="2" />
             <Label prefHeight="25.0" prefWidth="230.0" text="%lblAp2" textAlignment="CENTER" GridPane.rowIndex="3" />
             <TextField fx:id="txt_dni" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="319.0" promptText="%textFieldDNI" GridPane.columnIndex="1" />
-            <TextField fx:id="txt_ape1" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="%textFieldAP1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txt_ape2" alignment="TOP_LEFT" prefHeight="19.0" prefWidth="255.0" promptText="%textFieldAp2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txt_primerApellido" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="%textFieldAP1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txt_segundoApellido" alignment="TOP_LEFT" prefHeight="19.0" prefWidth="255.0" promptText="%textFieldAp2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="txt_nombre" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="255.0" promptText="%textFieldNombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>

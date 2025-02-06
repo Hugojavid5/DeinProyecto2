@@ -11,10 +11,10 @@ import org.hugo.dein.proyectodein.Modelos.ModeloAlumno;
 public class ControlerAlumno {
 
     @FXML
-    private TextField txt_ape1;
+    private TextField txt_primerApellido;
 
     @FXML
-    private TextField txt_ape2;
+    private TextField txt_segundoApellido;
 
     @FXML
     private TextField txt_dni;
@@ -45,8 +45,8 @@ public class ControlerAlumno {
         this.alumnoSeleccionado = alumno;
         txt_dni.setText(alumno.getDni());
         txt_nombre.setText(alumno.getNombre());
-        txt_ape1.setText(alumno.getApellido1());
-        txt_ape2.setText(alumno.getApellido2());
+        txt_primerApellido.setText(alumno.getApellido1());
+        txt_segundoApellido.setText(alumno.getApellido2());
     }
 
     /**
@@ -80,8 +80,8 @@ public class ControlerAlumno {
         // Validar los campos
         String dni = txt_dni.getText().toUpperCase();
         String nombre = txt_nombre.getText();
-        String primerApellido = txt_ape1.getText();
-        String segundoApellido = txt_ape2.getText();
+        String primerApellido = txt_primerApellido.getText();
+        String segundoApellido = txt_segundoApellido.getText();
 
         // Validación del DNI
         if (dni == null || dni.isEmpty() || !dni.matches("\\d{8}[A-Za-z]")) {
