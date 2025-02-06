@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manual de Usuario - Sistema de Gestión de Préstamos</title>
+    </head>
+    <body>
+        <h1>Sistema de Gestión de Préstamos de Libros</h1>
+        <ul>
+            <li><a href="#objeto1">Gestión de Alumnos</a></li>
+            <li><a href="#objeto2">Gestión de Libros</a></li>
+            <li><a href="#objeto3">Gestión de Préstamos</a></li>
+            <li><a href="#objeto4">Gestión de Devoluciones</a></li>
+            <li><a href="#objeto5">Generación de Informes</a></li>
+        </ul>
+        <h2 id="objeto1">Gestión de Alumnos</h2>
+        <ul>
+            <li>
+                <h3>Tabla de Alumnos</h3>
+                <p>Esta tabla muestra los datos de los alumnos registrados en el sistema.</p>
+                <ul>
+                    <li><p>DNI: El número de identificación del alumno</p></li>
+                    <li><p>Nombre: El nombre del alumno</p></li>
+                    <li><p>Primer Apellido: El primer apellido del alumno</p></li>
+                    <li><p>Segundo Apellido: El segundo apellido del alumno</p></li>
+                </ul>
+            </li>
+            <li>
+                <h3>Filtros de Búsqueda</h3>
+                <p>Permite filtrar los alumnos por nombre utilizando un texto de búsqueda.</p>
+            </li>
+            <li>
+                <h3>Botón Añadir</h3>
+                <p>Botón que permite agregar un nuevo alumno al sistema.</p>
+            </li>
+            <li>
+                <h3>Botón Modificar</h3>
+                <p>Botón para modificar los datos de un alumno seleccionado.</p>
+            </li>
+        </ul>
+        <h2 id="objeto2">Gestión de Libros</h2>
+        <ul>
+            <li>
+                <h3>Tabla de Libros</h3>
+                <p>Esta tabla muestra los detalles de los libros disponibles en el sistema.</p>
+                <ul>
+                    <li><p>Código: El código único del libro</p></li>
+                    <li><p>Título: El título del libro</p></li>
+                    <li><p>Autor: El autor del libro</p></li>
+                    <li><p>Editorial: La editorial que publicó el libro</p></li>
+                    <li><p>Estado: El estado del libro (disponible, prestado, etc.)</p></li>
+                    <li><p>Baja: Indica si el libro está dado de baja</p></li>
+                    <li><p>Portada: La imagen de la portada del libro</p></li>
+                </ul>
+            </li>
+            <li>
+                <h3>Filtros de Búsqueda</h3>
+                <p>Permite buscar libros por título introduciendo un texto específico.</p>
+            </li>
+            <li>
+                <h3>Botón Añadir</h3>
+                <p>Botón que permite añadir un nuevo libro al sistema.</p>
+            </li>
+            <li>
+                <h3>Botón Modificar</h3>
+                <p>Botón para modificar los detalles de un libro seleccionado.</p>
+            </li>
+            <li>
+                <h3>Botón Baja</h3>
+                <p>Botón para dar de baja un libro seleccionado.</p>
+            </li>
+        </ul>
+        <h2 id="objeto3">Gestión de Préstamos</h2>
+        <ul>
+            <li>
+                <h3>Tabla de Préstamos</h3>
+                <p>Esta tabla muestra el historial de préstamos de libros a los alumnos.</p>
+                <ul>
+                    <li><p>Id del Préstamo: El identificador único del préstamo</p></li>
+                    <li><p>DNI del Alumno: El DNI del alumno que realiza el préstamo</p></li>
+                    <li><p>Código del Libro: El código del libro que se presta</p></li>
+                    <li><p>Fecha de Préstamo: La fecha en que se realiza el préstamo</p></li>
+                    <li><p>Fecha de Devolución: La fecha en que se devuelve el libro</p></li>
+                </ul>
+            </li>
+            <li>
+                <h3>Botones de Filtro</h3>
+                <p>Permiten visualizar los préstamos filtrados por estado (devueltos, no devueltos, todos).</p>
+            </li>
+            <li>
+                <h3>Filtros por DNI y Libro</h3>
+                <p>Filtros que permiten buscar préstamos por el DNI del alumno o el código del libro.</p>
+            </li>
+            <li>
+                <h3>Botón Añadir</h3>
+                <p>Botón para registrar un nuevo préstamo en el sistema.</p>
+            </li>
+        </ul>
+        <h2 id="objeto4">Gestión de Devoluciones</h2>
+        <ul>
+            <li>
+                <h3>Tabla de Préstamos No Devueltos</h3>
+                <p>Esta tabla muestra los préstamos de libros que aún no han sido devueltos.</p>
+                <ul>
+                    <li><p>Id del Préstamo: El identificador del préstamo</p></li>
+                    <li><p>DNI del Alumno: El DNI del alumno que tiene el préstamo</p></li>
+                    <li><p>Código del Libro: El código del libro prestado</p></li>
+                    <li><p>Fecha de Préstamo: La fecha en que se prestó el libro</p></li>
+                </ul>
+            </li>
+            <li>
+                <h3>Botón Devolver</h3>
+                <p>Botón para marcar un préstamo como devuelto y actualizar su estado.</p>
+            </li>
+        </ul>
+
+        <h2 id="objeto5">Generación de Informes</h2>
+        <ul>
+            <li>
+                <h3>Informe de Lista de Libros</h3>
+                <p>Botón que genera un informe con todos los libros registrados en el sistema.</p>
+            </li>
+            <li>
+                <h3>Informe Gráfico</h3>
+                <p>Botón para generar informes visuales en forma de gráficos.</p>
+            </li>
+            <li>
+                <h3>Informe de Cálculos</h3>
+                <p>Botón para generar informes detallados con cálculos sobre los datos de los alumnos y préstamos.</p>
+            </li>
+        </ul>
+    </body>
+</html>

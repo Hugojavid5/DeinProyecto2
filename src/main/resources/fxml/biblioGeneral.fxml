@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0" stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerGeneral">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0" stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.hugo.dein.proyectodein.Controlers.ControlerGeneral">
    <VBox fx:id="vbox_general" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="394.0" prefWidth="690.0">
       <children>
          <MenuBar>
@@ -38,12 +38,10 @@
                      <MenuItem fx:id="menuItem_inforDatos" mnemonicParsing="false" onAction="#cargarInforme4Datos" text="%menuItemInforme3" />
                   </items>
                </Menu>
-               <Menu fx:id="menu_ayuda" mnemonicParsing="false" text="%menubarAyuda">
-                  <items>
-                     <MenuItem fx:id="menuItem_ayuda" mnemonicParsing="false" text="%menuItemAyuda" />
-                  </items>
-               </Menu>
             </menus>
+            <tooltip>
+               <Tooltip text="%tooltipMenu" />
+            </tooltip>
          </MenuBar>
          <HBox alignment="CENTER" prefHeight="61.0" prefWidth="563.0" spacing="60.0">
             <children>
@@ -56,6 +54,9 @@
                   <font>
                      <Font size="36.0" />
                   </font>
+                  <tooltip>
+                     <Tooltip text="%tooltipTitulo" />
+                  </tooltip>
                </Label>
                <ImageView fx:id="imgView_biblio1" fitHeight="62.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true">
                   <image>
@@ -72,12 +73,21 @@
                         <children>
                            <HBox alignment="TOP_CENTER" layoutY="40.0" maxWidth="1.7976931348623157E308" spacing="100.0">
                               <children>
-                                 <Button fx:id="btt_aniadir" mnemonicParsing="false" onAction="#aniadirLibro" prefHeight="29.0" prefWidth="137.0" text="%botonAniadir" />
-                                 <Button fx:id="btt_modificar" mnemonicParsing="false" onAction="#modificarLibro" prefHeight="29.0" prefWidth="138.0" text="%botonModificar" />
+                                 <Button fx:id="btt_aniadir" mnemonicParsing="false" onAction="#aniadirLibro" prefHeight="29.0" prefWidth="137.0" text="%botonAniadir">
+                                    <tooltip>
+                                       <Tooltip text="%tooltipAniadir" />
+                                    </tooltip></Button>
+                                 <Button fx:id="btt_modificar" mnemonicParsing="false" onAction="#modificarLibro" prefHeight="29.0" prefWidth="138.0" text="%botonModificar">
+                                    <tooltip>
+                                       <Tooltip text="%tooltipModificar" />
+                                    </tooltip></Button>
                                  <Button fx:id="btt_baja" mnemonicParsing="false" onAction="#bajaLibro" prefHeight="29.0" prefWidth="138.0" text="%botonDarBaja" textAlignment="CENTER">
                                     <padding>
                                        <Insets bottom="5.0" right="5.0" />
-                                    </padding></Button>
+                                    </padding>
+                                    <tooltip>
+                                       <Tooltip text="%tooltipDarDeBaja" />
+                                    </tooltip></Button>
                               </children>
                               <padding>
                                  <Insets left="5.0" />
@@ -120,8 +130,14 @@
                         <children>
                            <HBox alignment="CENTER_LEFT" layoutY="40.0" prefHeight="42.0" prefWidth="840.0" spacing="100.0">
                               <children>
-                                 <Button mnemonicParsing="false" onAction="#aniadirAlumno" prefHeight="25.0" prefWidth="135.0" text="%botonAniadirAlumno" />
-                                 <Button mnemonicParsing="false" onAction="#modificarAlumno" prefHeight="25.0" prefWidth="133.0" text="%botonModificarAlumno" />
+                                 <Button mnemonicParsing="false" onAction="#aniadirAlumno" prefHeight="25.0" prefWidth="135.0" text="%botonAniadirAlumno">
+                                    <tooltip>
+                                       <Tooltip text="%tooltipAniadirAlu" />
+                                    </tooltip></Button>
+                                 <Button mnemonicParsing="false" onAction="#modificarAlumno" prefHeight="25.0" prefWidth="133.0" text="%botonModificarAlumno">
+                                    <tooltip>
+                                       <Tooltip text="%tooltipModificarAlu" />
+                                    </tooltip></Button>
                               </children>
                               <padding>
                                  <Insets left="5.0" />
@@ -166,8 +182,14 @@
                                  <Button mnemonicParsing="false" onAction="#prestarLibro" prefHeight="25.0" prefWidth="125.0" text="%botonAniadirPrestamo">
                                     <padding>
                                        <Insets bottom="5.0" left="5.0" />
-                                    </padding></Button>
-                                 <Button mnemonicParsing="false" onAction="#devolverLibro" prefHeight="25.0" prefWidth="159.0" text="%botonDevolverPrestamo" />
+                                    </padding>
+                                    <tooltip>
+                                       <Tooltip text="%tooltipAniadirPrestamo" />
+                                    </tooltip></Button>
+                                 <Button mnemonicParsing="false" onAction="#devolverLibro" prefHeight="25.0" prefWidth="159.0" text="%botonDevolverPrestamo">
+                                    <tooltip>
+                                       <Tooltip text="%tooltipDevolverPrestamo" />
+                                    </tooltip></Button>
                               </children>
                               <padding>
                                  <Insets left="5.0" />
