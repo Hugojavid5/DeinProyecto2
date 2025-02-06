@@ -30,7 +30,7 @@ public class ConexionBBDD {
     public ConexionBBDD() throws SQLException {
         Properties connConfig = loadProperties();
         if (connConfig == null) {
-            throw new SQLException("Error: No se pudo cargar el archivo de configuración.");
+            throw new SQLException("Error: No se puede cargar el archivo de configuración.");
         }
         String url = connConfig.getProperty("dburl");
         connection = DriverManager.getConnection(url, connConfig);
